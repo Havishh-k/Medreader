@@ -92,7 +92,7 @@ export class StateMachine {
       const normX = Math.min(Math.max(x / rect.width, 0), 1);
       const normY = Math.min(Math.max(y / rect.height, 0), 1);
 
-      singleTapTimer = setTimeout(() => {
+      singleTapTimer = setTimeout(async () => {
         this.focusRing.style.left = `${x}px`;
         this.focusRing.style.top = `${y}px`;
         this.focusRing.hidden = false;
@@ -100,12 +100,23 @@ export class StateMachine {
         void this.focusRing.offsetWidth; // force DOM reflow
         this.focusRing.classList.add('focus-ring--active');
 
+        // Tactile click haptic on tap
+        if ('vibrate' in navigator) {
+          try { navigator.vibrate(35); } catch {}
+        }
+
         setTimeout(() => {
           this.focusRing.classList.remove('focus-ring--active');
           setTimeout(() => { this.focusRing.hidden = true; }, 250);
         }, 600);
 
-        this.camera.triggerFocus({ x: normX, y: normY });
+        if (this.state === 'Guidance') {
+          this.setToast('Focusing camera...');
+          const ok = await this.camera.triggerFocus({ x: normX, y: normY });
+          if (ok) {
+            this.setToast('Focused ✓');
+          }
+        }
       }, 280);
     });
 

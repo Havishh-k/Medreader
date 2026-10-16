@@ -126,34 +126,86 @@ export class CameraStream {
 
   /**
    * Triggers re-focusing, optionally at a specific normalized tap point (0.0 to 1.0).
+   * Forces the camera driver / Camera2 API to perform a physical lens autofocus sweep.
    */
-  async triggerFocus(point?: { x: number; y: number }): Promise<void> {
-    if (!this.stream) return;
+  async triggerFocus(point?: { x: number; y: number }): Promise<boolean> {
+    if (!this.stream) return false;
     const track = this.stream.getVideoTracks()[0];
-    if (!track) return;
+    if (!track) return false;
 
     const capabilities = (track.getCapabilities ? track.getCapabilities() : {}) as any;
 
+    // Strategy 1: Explicit 'single-shot' autofocus trigger (standard Camera2 AF sweep)
     try {
-      const advancedConstraints: any = {};
-      
-      if (capabilities.focusMode && capabilities.focusMode.includes('continuous')) {
-        advancedConstraints.focusMode = 'continuous';
-      } else if (capabilities.focusMode && capabilities.focusMode.includes('single-shot')) {
-        advancedConstraints.focusMode = 'single-shot';
-      }
-
+      const advanced: any = { focusMode: 'single-shot' };
       if (point && capabilities.pointsOfInterest) {
-        advancedConstraints.pointsOfInterest = [{ x: point.x, y: point.y }];
+        advanced.pointsOfInterest = [{ x: point.x, y: point.y }];
       }
+      await (track as any).applyConstraints({ advanced: [advanced] });
+      console.log('[Camera] Triggered single-shot AF sweep');
 
-      if (Object.keys(advancedConstraints).length > 0) {
-        await (track as any).applyConstraints({
-          advanced: [advancedConstraints]
-        });
-      }
+      // Return to continuous auto-focus after the sweep completes
+      setTimeout(async () => {
+        try {
+          await (track as any).applyConstraints({
+            advanced: [{ focusMode: 'continuous' }]
+          });
+        } catch {}
+      }, 1200);
+
+      return true;
     } catch (err) {
-      console.warn('[Camera] Tap-to-focus constraint error:', err);
+      console.warn('[Camera] single-shot focus failed, trying focusMode cycling:', err);
     }
+
+    // Strategy 2: Cycle focusMode ('manual' -> 'continuous') to force firmware re-metering
+    try {
+      await (track as any).applyConstraints({
+        advanced: [{ focusMode: 'manual' }]
+      });
+      await (track as any).applyConstraints({
+        advanced: [{ focusMode: 'continuous' }]
+      });
+      console.log('[Camera] Cycled focusMode to trigger re-focus');
+      return true;
+    } catch (err) {
+      console.warn('[Camera] Focus mode cycling failed, trying macro focusDistance:', err);
+    }
+
+    // Strategy 3: If manual focusDistance is supported, set optimal reading distance (e.g. 15-20cm macro)
+    if (capabilities.focusDistance) {
+      try {
+        const { min = 0, max = 10 } = capabilities.focusDistance;
+        // Setting higher diopter value (e.g. 60-70% toward macro) brings close-up medicine into sharp focus
+        const closeUpDist = min + (max - min) * 0.7;
+        await (track as any).applyConstraints({
+          advanced: [{ focusMode: 'manual', focusDistance: closeUpDist }]
+        });
+        console.log('[Camera] Applied macro focusDistance:', closeUpDist);
+        return true;
+      } catch (err) {
+        console.warn('[Camera] Focus distance constraint failed:', err);
+      }
+    }
+
+    // Strategy 4: Universal fallback — nudge zoom constraint to force ISP autofocus re-evaluation
+    if (capabilities.zoom) {
+      try {
+        const currentSettings = track.getSettings() as any;
+        const currentZoom = currentSettings.zoom || capabilities.zoom.min || 1.0;
+        await (track as any).applyConstraints({
+          advanced: [{ zoom: Math.min(currentZoom + 0.05, capabilities.zoom.max || 2.0) }]
+        });
+        setTimeout(async () => {
+          try {
+            await (track as any).applyConstraints({ advanced: [{ zoom: currentZoom }] });
+          } catch {}
+        }, 150);
+        console.log('[Camera] Nudged zoom to force ISP refocus');
+        return true;
+      } catch {}
+    }
+
+    return false;
   }
 }
