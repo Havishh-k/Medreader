@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#1a1a1a" />
+    <title>Medicine Reader</title>
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="stylesheet" href="/src/styles/reset.css" />
+    <link rel="stylesheet" href="/src/styles/sr-only.css" />
+    <link rel="stylesheet" href="/src/styles/app.css" />
+  </head>
+  <body>
+    <!-- ARIA Live Regions for TalkBack -->
+    <div id="live-polite" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+    <div id="live-assertive" class="sr-only" aria-live="assertive" aria-atomic="true"></div>
+
+    <div id="app-root">
+      <!-- Top Bar -->
+      <header class="top-bar">
+        <h1>MedReader</h1>
+        <button id="settings-btn" aria-label="Settings">⚙</button>
+      </header>
+
+      <!-- Mode Toggle (Document / Medicine) -->
+      <div id="mode-toggle" role="radiogroup" aria-label="Select reading mode" class="mode-toggle">
+        <button role="radio" aria-checked="false" data-mode="document"
+                class="mode-btn" tabindex="0">
+          📄 Document
+        </button>
+        <button role="radio" aria-checked="true" data-mode="medicine"
+                class="mode-btn mode-btn--active" tabindex="0">
+          💊 Medicine
+        </button>
+      </div>
+
+      <!-- Camera Viewport -->
+      <main class="camera-container">
+        <video id="camera" autoplay playsinline muted></video>
+        <div id="visual-framing-guide"></div>
+        <div id="visual-toast" hidden>Hold steady...</div>
+      </main>
+
+      <!-- Bottom Panel -->
+      <footer class="bottom-panel">
+        <div id="results-card" hidden>
+          <div class="result-header">
+            <h2 id="res-brand">Brand Name</h2>
+            <span id="res-status" class="status-badge">Valid</span>
+          </div>
+          <p id="res-strength" class="res-detail">Strength: --</p>
+          <p id="res-expiry" class="res-detail">Expiry: --</p>
+        </div>
+        
+        <button id="scan-trigger" class="btn-primary" aria-describedby="scan-instructions">Start Scan</button>
+        <div id="scan-instructions" class="sr-only">Double-tap to scan, or press Bluetooth trigger.</div>
+      </footer>
+    </div>
+
+    <!-- Modals -->
+    <div id="settings-screen" hidden></div>
+    <div id="about-screen" hidden></div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

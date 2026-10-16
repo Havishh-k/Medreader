@@ -1,0 +1,7 @@
+{
+  "surface": "glossy",
+  "curvature": "cylindrical",
+  "lighting": "good",
+  "distance_cm": 20,
+  "capture_device": ""
+}
