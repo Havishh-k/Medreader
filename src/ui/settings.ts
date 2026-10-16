@@ -99,20 +99,36 @@ export class SettingsScreen {
           </h3>
           <div class="gesture-grid">
             <div class="gesture-card">
-              <span class="gesture-icon-title">${ICONS.tap(18)} <span>Single Tap</span></span>
-              <span class="gesture-desc">Tap camera viewfinder anywhere to trigger physical autofocus.</span>
-            </div>
-            <div class="gesture-card">
               <span class="gesture-icon-title">${ICONS.doubleTap(18)} <span>Double Tap</span></span>
-              <span class="gesture-desc">Quick double-tap anywhere on screen to toggle start/stop scan.</span>
+              <span class="gesture-desc"><strong>In Results:</strong> Read detailed clinical instructions & directions.<br/><strong>In Camera:</strong> Start or stop scan.</span>
             </div>
             <div class="gesture-card">
-              <span class="gesture-icon-title">${ICONS.flashlight(18)} <span>Flashlight</span></span>
-              <span class="gesture-desc">Tap torch icon in top-right to illuminate label in dark rooms.</span>
+              <span class="gesture-icon-title">${ICONS.hold(18)} <span>Hold Screen</span></span>
+              <span class="gesture-desc"><strong>In Results:</strong> Read full clinical details & warnings.<br/><strong>In Camera:</strong> Toggle flashlight in dark rooms.</span>
             </div>
             <div class="gesture-card">
-              <span class="gesture-icon-title">${ICONS.keyboard(18)} <span>Remote Shutter</span></span>
-              <span class="gesture-desc">Press Spacebar, Enter, or Bluetooth shutter button to scan.</span>
+              <span class="gesture-icon-title">${ICONS.swipeDown(18)} <span>Swipe Down</span></span>
+              <span class="gesture-desc">Instantly stop and silence speech readout at any moment.</span>
+            </div>
+            <div class="gesture-card">
+              <span class="gesture-icon-title">${ICONS.tap(18)} <span>Swipe Up</span></span>
+              <span class="gesture-desc">Start new scan or scan next medicine immediately.</span>
+            </div>
+            <div class="gesture-card">
+              <span class="gesture-icon-title">${ICONS.swipeHorizontal(18)} <span>Swipe Left / Right</span></span>
+              <span class="gesture-desc">Switch between Medicine scanner and Document reading modes.</span>
+            </div>
+            <div class="gesture-card">
+              <span class="gesture-icon-title">${ICONS.shake(18)} <span>Device Shake</span></span>
+              <span class="gesture-desc">Shake phone to toggle flashlight or repeat prescription details.</span>
+            </div>
+            <div class="gesture-card">
+              <span class="gesture-icon-title">${ICONS.target(18)} <span>Single Tap</span></span>
+              <span class="gesture-desc">Autofocus camera lens, or replay concise prescription summary.</span>
+            </div>
+            <div class="gesture-card">
+              <span class="gesture-icon-title">${ICONS.keyboard(18)} <span>Bluetooth Clicker</span></span>
+              <span class="gesture-desc">Press Spacebar, Enter, or wireless shutter clicker to scan.</span>
             </div>
           </div>
         </div>

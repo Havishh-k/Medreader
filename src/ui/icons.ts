@@ -182,4 +182,30 @@ export const ICONS = {
     <line x1="15" y1="9" x2="9" y2="15"/>
     <line x1="9" y1="9" x2="15" y2="15"/>
   `, size, 'svg-icon svg-x-circle'),
+
+  // Hold / Long Press
+  hold: (size = 18) => svg(`
+    <circle cx="12" cy="12" r="10" stroke-dasharray="3 3"/>
+    <circle cx="12" cy="12" r="4" fill="currentColor"/>
+  `, size, 'svg-icon svg-hold'),
+
+  // Swipe Down / Silence
+  swipeDown: (size = 18) => svg(`
+    <line x1="12" y1="5" x2="12" y2="19"/>
+    <polyline points="19 12 12 19 5 12"/>
+  `, size, 'svg-icon svg-swipe-down'),
+
+  // Swipe Left / Right Horizontal Mode Switch
+  swipeHorizontal: (size = 18) => svg(`
+    <polyline points="7 8 3 12 7 16"/>
+    <line x1="3" y1="12" x2="21" y2="12"/>
+    <polyline points="17 8 21 12 17 16"/>
+  `, size, 'svg-icon svg-swipe-horizontal'),
+
+  // Device Shake / Motion
+  shake: (size = 18) => svg(`
+    <rect width="12" height="18" x="6" y="3" rx="2"/>
+    <path d="M2 8v8"/>
+    <path d="M22 8v8"/>
+  `, size, 'svg-icon svg-shake'),
 };

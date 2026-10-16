@@ -172,6 +172,9 @@ html, body {
   background-color: #000000;
   overflow: hidden;
   min-height: 0;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 #camera {

@@ -142,87 +142,13 @@ export class StateMachine {
       }
     });
 
-    // Tap / Double-tap on camera screen
-    let lastTapTime = 0;
-    let singleTapTimer: ReturnType<typeof setTimeout> | null = null;
-
-    this.cameraContainer.addEventListener('pointerdown', (e) => {
-      if ((e.target as HTMLElement).closest('#torch-btn')) return;
-
-      const now = Date.now();
-      const timeSinceLast = now - lastTapTime;
-
-      // Double-tap threshold (40ms - 350ms): toggle scan
-      if (timeSinceLast > 40 && timeSinceLast < 350) {
-        if (singleTapTimer) {
-          clearTimeout(singleTapTimer);
-          singleTapTimer = null;
-        }
-        lastTapTime = 0;
-
-        if (this.state === 'Idle' || this.state === 'Readout') {
-          this.transitionTo('Guidance');
-        } else if (this.state === 'Guidance') {
-          this.transitionTo('Idle');
-        }
-        return;
-      }
-
-      lastTapTime = now;
-
-      // Single tap (focus): delay slightly to allow double-tap detection
-      const rect = this.cameraContainer.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const normX = Math.min(Math.max(x / rect.width, 0), 1);
-      const normY = Math.min(Math.max(y / rect.height, 0), 1);
-
-      singleTapTimer = setTimeout(async () => {
-        this.focusRing.style.left = `${x}px`;
-        this.focusRing.style.top = `${y}px`;
-        this.focusRing.hidden = false;
-        this.focusRing.classList.remove('focus-ring--active');
-        void this.focusRing.offsetWidth; // force DOM reflow
-        this.focusRing.classList.add('focus-ring--active');
-
-        // Tactile click haptic on tap
-        if ('vibrate' in navigator) {
-          try { navigator.vibrate(35); } catch {}
-        }
-
-        setTimeout(() => {
-          this.focusRing.classList.remove('focus-ring--active');
-          setTimeout(() => { this.focusRing.hidden = true; }, 250);
-        }, 600);
-
-        if (this.state === 'Guidance') {
-          this.setToast('Focusing camera...', ICONS.target(18));
-          const ok = await this.camera.triggerFocus({ x: normX, y: normY });
-          if (ok) {
-            this.setToast('Focused', ICONS.check(18));
-          }
-        }
-      }, 280);
+    // Flashlight button
+    this.torchBtn.addEventListener('click', () => {
+      this.toggleTorch();
     });
 
-    // Manual torch / flash button
-    this.torchBtn.addEventListener('click', async () => {
-      if (this.state === 'Idle') {
-        this.setToast('Start scan first to use flash', ICONS.flashlight(18));
-        this.tts.speakPolite('Start scan first to use flash');
-        return;
-      }
-      this.autoTorchTriggered = true;
-      const nextState = !this.camera.isTorchOn;
-      const ok = await this.camera.setTorch(nextState);
-      if (ok) {
-        this.torchBtn.classList.toggle('torch-btn--active', nextState);
-        this.setToast(nextState ? 'Flash ON' : 'Flash OFF', ICONS.flashlight(18));
-        this.tts.speakPolite(nextState ? 'Flash on' : 'Flash off');
-      } else {
-        this.setToast('Flash not available on this device', ICONS.warning(18));
-      }
-    });
+    // Setup tactile touch and accessibility gestures
+    this.setupGestures();
 
     // Wire main button
     this.triggerBtn.addEventListener('click', () => {
@@ -246,25 +172,12 @@ export class StateMachine {
       }
     });
 
-    // Task 1.2: Wire mode toggle buttons
+    // Wire mode toggle buttons
     const modeButtons = document.querySelectorAll('#mode-toggle .mode-btn');
     modeButtons.forEach(btn => {
       btn.addEventListener('click', () => {
         const newMode = (btn as HTMLElement).dataset.mode as 'document' | 'medicine';
-        if (newMode === this.mode) return;
-        this.mode = newMode;
-        
-        // Update ARIA states
-        modeButtons.forEach(b => {
-          b.setAttribute('aria-checked', b === btn ? 'true' : 'false');
-          b.classList.toggle('mode-btn--active', b === btn);
-        });
-        
-        // If currently scanning, restart with new mode
-        if (this.state === 'Guidance') {
-          this.transitionTo('Idle');
-          this.transitionTo('Guidance');
-        }
+        this.switchMode(newMode);
       });
     });
 
@@ -508,7 +421,14 @@ export class StateMachine {
         
         // Build concise speech string
         const expiryText = this.resExpiry.textContent || '';
-        const readStr = `${this.resBrand.textContent}. Strength: ${this.resStrength.textContent}. Expiry: ${expiryText}.`;
+        let readStr = `${this.resBrand.textContent}. Strength: ${this.resStrength.textContent}. Expiry: ${expiryText}.`;
+        
+        if (this.resDescription.textContent && this.resDescription.textContent.trim().length > 0) {
+          readStr += ' Double tap or hold screen for detailed clinical instructions.';
+        } else {
+          readStr += ' Double tap or swipe up to scan another medicine.';
+        }
+        
         this.tts.speakAssertive(readStr);
         break;
     }
@@ -647,5 +567,337 @@ export class StateMachine {
       'Readout': `Medicine identified. ${this.resBrand.textContent}. Strength: ${this.resStrength.textContent}. Expiry: ${this.resExpiry.textContent}.`,
     };
     this.liveAssertive.textContent = announcements[this.state];
+  }
+
+  public switchMode(newMode: 'document' | 'medicine') {
+    if (newMode === this.mode) return;
+    this.mode = newMode;
+
+    const modeButtons = document.querySelectorAll('#mode-toggle .mode-btn');
+    modeButtons.forEach(btn => {
+      const isTarget = (btn as HTMLElement).dataset.mode === newMode;
+      btn.setAttribute('aria-checked', isTarget ? 'true' : 'false');
+      btn.classList.toggle('mode-btn--active', isTarget);
+    });
+
+    const modeName = newMode === 'medicine' ? 'Medicine Mode' : 'Document Mode';
+    this.setToast(modeName, newMode === 'medicine' ? ICONS.pill(18) : ICONS.document(18));
+    this.tts.speakPolite(`Switched to ${modeName}`);
+
+    if ('vibrate' in navigator) {
+      try { navigator.vibrate(40); } catch {}
+    }
+
+    if (this.state === 'Guidance') {
+      this.transitionTo('Idle');
+      this.transitionTo('Guidance');
+    }
+  }
+
+  public async toggleTorch(): Promise<boolean> {
+    if (this.state === 'Idle') {
+      this.setToast('Start scan first to use flash', ICONS.flashlight(18));
+      this.tts.speakPolite('Start scan first to use flash');
+      return false;
+    }
+    this.autoTorchTriggered = true;
+    const nextState = !this.camera.isTorchOn;
+    const ok = await this.camera.setTorch(nextState);
+    if (ok) {
+      this.torchBtn.classList.toggle('torch-btn--active', nextState);
+      this.setToast(nextState ? 'Flash ON' : 'Flash OFF', ICONS.flashlight(18));
+      this.tts.speakPolite(nextState ? 'Flash on' : 'Flash off');
+      if ('vibrate' in navigator) {
+        try { navigator.vibrate(nextState ? [50, 50] : [30]); } catch {}
+      }
+    } else {
+      this.setToast('Flash not available on this device', ICONS.warning(18));
+    }
+    return ok;
+  }
+
+  private speakFullInstructions() {
+    if (this.state !== 'Readout') return;
+
+    const brand = this.resBrand.textContent || 'Identified medicine';
+    const strength = this.resStrength.textContent || '';
+    const expiry = this.resExpiry.textContent || '';
+    const desc = this.resDescription.textContent?.replace(/^Directions & Details:\s*/i, '').trim();
+
+    if ('vibrate' in navigator) {
+      try { navigator.vibrate([60, 40, 100]); } catch {}
+    }
+
+    if (this.resAccordion && !this.resAccordion.hidden) {
+      this.resAccordion.open = true;
+    }
+    this.setToast('Reading full instructions...', ICONS.info(18));
+
+    let speech = `Detailed clinical instructions for ${brand}. `;
+    if (strength && strength !== '--') {
+      speech += `Strength: ${strength}. `;
+    }
+    if (expiry) {
+      speech += `Expiry status: ${expiry}. `;
+    }
+    if (desc && desc.length > 0) {
+      speech += `Directions and precautions: ${desc}. `;
+    } else {
+      speech += `Standard packaging. No additional clinical warnings or directions on label. `;
+    }
+    speech += `Swipe down to silence, or double tap to scan another medicine.`;
+
+    this.tts.speakAssertive(speech);
+  }
+
+  private async handleDeviceShake() {
+    if ('vibrate' in navigator) {
+      try { navigator.vibrate([50, 40, 80]); } catch {}
+    }
+
+    if (this.state === 'Guidance') {
+      await this.toggleTorch();
+    } else if (this.state === 'Readout') {
+      this.speakFullInstructions();
+    } else if (this.state === 'Idle') {
+      this.transitionTo('Guidance');
+    }
+  }
+
+  private setupGestures() {
+    let lastTapTime = 0;
+    let singleTapTimer: ReturnType<typeof setTimeout> | null = null;
+    let longPressTimer: ReturnType<typeof setTimeout> | null = null;
+    let startX = 0;
+    let startY = 0;
+    let startTime = 0;
+    let longPressTriggered = false;
+
+    const onPointerDown = (e: PointerEvent) => {
+      // Don't intercept explicit interactive buttons/inputs/controls
+      if ((e.target as HTMLElement).closest('#torch-btn, #res-replay-btn, #res-copy-btn, summary, details, button, select, input, a')) {
+        return;
+      }
+
+      startX = e.clientX;
+      startY = e.clientY;
+      startTime = Date.now();
+      longPressTriggered = false;
+
+      // Start long-press timer (600ms hold)
+      if (longPressTimer) clearTimeout(longPressTimer);
+      longPressTimer = setTimeout(() => {
+        longPressTriggered = true;
+        if (singleTapTimer) {
+          clearTimeout(singleTapTimer);
+          singleTapTimer = null;
+        }
+
+        if (this.state === 'Readout') {
+          this.speakFullInstructions();
+        } else if (this.state === 'Guidance') {
+          this.toggleTorch();
+        } else if (this.state === 'Idle') {
+          this.tts.speakPolite('MedReader ready. Double tap or swipe up to begin scanning.');
+        }
+
+        if ('vibrate' in navigator) {
+          try { navigator.vibrate([60, 40, 100]); } catch {}
+        }
+      }, 600);
+    };
+
+    const onPointerMove = (e: PointerEvent) => {
+      if (!startTime) return;
+      const moveDist = Math.hypot(e.clientX - startX, e.clientY - startY);
+      // Cancel long press if finger moved more than 15px
+      if (moveDist > 15 && longPressTimer) {
+        clearTimeout(longPressTimer);
+        longPressTimer = null;
+      }
+    };
+
+    const onPointerUp = async (e: PointerEvent) => {
+      if (!startTime) return;
+      if (longPressTimer) {
+        clearTimeout(longPressTimer);
+        longPressTimer = null;
+      }
+
+      if (longPressTriggered) {
+        longPressTriggered = false;
+        startTime = 0;
+        return;
+      }
+
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+      const dist = Math.hypot(dx, dy);
+      const elapsed = Date.now() - startTime;
+      startTime = 0;
+
+      // Swipe Detection (>45px movement within 650ms)
+      if (dist > 45 && elapsed < 650) {
+        if (singleTapTimer) {
+          clearTimeout(singleTapTimer);
+          singleTapTimer = null;
+        }
+        lastTapTime = 0;
+
+        if (Math.abs(dy) > Math.abs(dx)) {
+          // Vertical swipe
+          if (dy > 45) {
+            // Swipe Down: Instant Emergency Silence
+            this.tts.clear();
+            this.setToast('Speech silenced', ICONS.swipeDown(18));
+            if ('vibrate' in navigator) {
+              try { navigator.vibrate([30, 30]); } catch {}
+            }
+          } else if (dy < -45) {
+            // Swipe Up: Start scanning or next medicine
+            if (this.state === 'Readout' || this.state === 'Idle') {
+              this.setToast('Starting scan...', ICONS.zap(18));
+              this.transitionTo('Guidance');
+            } else if (this.state === 'Guidance') {
+              this.hints.resetThrottle();
+              this.tts.speakPolite(
+                this.mode === 'medicine'
+                  ? 'Guiding. Hold medicine steady inside frame.'
+                  : 'Guiding. Hold document flat and steady.'
+              );
+            }
+          }
+        } else {
+          // Horizontal swipe
+          if (dx < -45) {
+            // Swipe Left: Document mode
+            this.switchMode('document');
+          } else if (dx > 45) {
+            // Swipe Right: Medicine mode
+            this.switchMode('medicine');
+          }
+        }
+        return;
+      }
+
+      // Tap & Double Tap Detection
+      if (dist <= 15) {
+        const now = Date.now();
+        const timeSinceLast = now - lastTapTime;
+
+        if (timeSinceLast > 40 && timeSinceLast < 380) {
+          // Double-tap detected
+          if (singleTapTimer) {
+            clearTimeout(singleTapTimer);
+            singleTapTimer = null;
+          }
+          lastTapTime = 0;
+
+          if (this.state === 'Readout') {
+            // User requested: Double tap reads detailed clinical usage and instructions!
+            this.speakFullInstructions();
+          } else if (this.state === 'Idle') {
+            this.transitionTo('Guidance');
+          } else if (this.state === 'Guidance') {
+            this.transitionTo('Idle');
+          }
+
+          if ('vibrate' in navigator) {
+            try { navigator.vibrate([40, 40]); } catch {}
+          }
+          return;
+        }
+
+        lastTapTime = now;
+
+        // Calculate relative coordinates in camera viewport
+        const rect = this.cameraContainer.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const normX = Math.min(Math.max(x / rect.width, 0), 1);
+        const normY = Math.min(Math.max(y / rect.height, 0), 1);
+
+        singleTapTimer = setTimeout(async () => {
+          if (this.state === 'Guidance') {
+            // Visual focus ring animation
+            this.focusRing.style.left = `${x}px`;
+            this.focusRing.style.top = `${y}px`;
+            this.focusRing.hidden = false;
+            this.focusRing.classList.remove('focus-ring--active');
+            void this.focusRing.offsetWidth;
+            this.focusRing.classList.add('focus-ring--active');
+
+            if ('vibrate' in navigator) {
+              try { navigator.vibrate(35); } catch {}
+            }
+
+            setTimeout(() => {
+              this.focusRing.classList.remove('focus-ring--active');
+              setTimeout(() => { this.focusRing.hidden = true; }, 250);
+            }, 600);
+
+            this.setToast('Focusing camera...', ICONS.target(18));
+            const ok = await this.camera.triggerFocus({ x: normX, y: normY });
+            if (ok) {
+              this.setToast('Focused', ICONS.check(18));
+            }
+          } else if (this.state === 'Readout') {
+            // Single tap in readout re-reads concise prescription summary
+            const expiryText = this.resExpiry.textContent || '';
+            const readStr = `${this.resBrand.textContent}. Strength: ${this.resStrength.textContent}. Expiry: ${expiryText}.`;
+            this.tts.speakAssertive(readStr);
+            if ('vibrate' in navigator) {
+              try { navigator.vibrate(30); } catch {}
+            }
+          } else if (this.state === 'Idle') {
+            this.tts.speakPolite('MedReader ready. Double tap to scan medicine.');
+          }
+        }, 280);
+      }
+    };
+
+    const onPointerCancel = () => {
+      if (longPressTimer) {
+        clearTimeout(longPressTimer);
+        longPressTimer = null;
+      }
+      startTime = 0;
+      longPressTriggered = false;
+    };
+
+    // Attach to camera container and results card
+    [this.cameraContainer, this.resultsCard].forEach(elem => {
+      elem.addEventListener('pointerdown', onPointerDown);
+      elem.addEventListener('pointermove', onPointerMove);
+      elem.addEventListener('pointerup', onPointerUp);
+      elem.addEventListener('pointercancel', onPointerCancel);
+    });
+
+    // Device Shake Gesture
+    let lastShakeTime = 0;
+    let lastX = 0, lastY = 0, lastZ = 0;
+
+    if (typeof window !== 'undefined' && 'DeviceMotionEvent' in window) {
+      window.addEventListener('devicemotion', (event) => {
+        const acc = event.accelerationIncludingGravity;
+        if (!acc || acc.x === null || acc.y === null || acc.z === null) return;
+
+        const now = Date.now();
+        if (now - lastShakeTime < 1500) return; // 1.5s debounce
+
+        const deltaX = Math.abs(acc.x - lastX);
+        const deltaY = Math.abs(acc.y - lastY);
+        const deltaZ = Math.abs(acc.z - lastZ);
+
+        lastX = acc.x;
+        lastY = acc.y;
+        lastZ = acc.z;
+
+        if (deltaX + deltaY + deltaZ > 28) {
+          lastShakeTime = now;
+          this.handleDeviceShake();
+        }
+      }, { passive: true });
+    }
   }
 }
