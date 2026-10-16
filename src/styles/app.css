@@ -83,6 +83,55 @@ body {
   font-weight: bold;
 }
 
+.torch-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(30, 30, 30, 0.75);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  color: #fff;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 5;
+  transition: background 0.2s, border-color 0.2s, transform 0.1s;
+}
+
+.torch-btn:active {
+  transform: scale(0.92);
+}
+
+.torch-btn--active {
+  background: #ff9800;
+  border-color: #ffb74d;
+  color: #000;
+  box-shadow: 0 0 14px rgba(255, 152, 0, 0.7);
+}
+
+.focus-ring {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border: 2.5px solid #ff9800;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(1.4);
+  opacity: 0;
+  z-index: 6;
+  box-shadow: 0 0 8px rgba(255, 152, 0, 0.5);
+  transition: transform 0.25s ease-out, opacity 0.25s ease-out;
+}
+
+.focus-ring--active {
+  transform: translate(-50%, -50%) scale(1.0);
+  opacity: 1;
+}
+
 #loading-overlay {
   position: absolute;
   top: 0;

@@ -29,6 +29,10 @@ export class StateMachine {
   private scanInstructions: HTMLElement;
   // Task 1.3: ARIA live region for assertive announcements
   private liveAssertive: HTMLElement;
+  private cameraContainer: HTMLElement;
+  private focusRing: HTMLElement;
+  private torchBtn: HTMLElement;
+  private autoTorchTriggered = false;
 
   private rafId = 0;
   private capturingFrames = 0;
@@ -49,7 +53,48 @@ export class StateMachine {
     this.resStatus = document.getElementById('res-status')!;
     this.scanInstructions = document.getElementById('scan-instructions')!;
     this.liveAssertive = document.getElementById('live-assertive')!;
-    
+    this.cameraContainer = document.getElementById('camera-container')!;
+    this.focusRing = document.getElementById('focus-ring')!;
+    this.torchBtn = document.getElementById('torch-btn')!;
+
+    // Tap on camera screen to focus
+    this.cameraContainer.addEventListener('pointerdown', (e) => {
+      if ((e.target as HTMLElement).closest('#torch-btn')) return;
+
+      const rect = this.cameraContainer.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const normX = Math.min(Math.max(x / rect.width, 0), 1);
+      const normY = Math.min(Math.max(y / rect.height, 0), 1);
+
+      this.focusRing.style.left = `${x}px`;
+      this.focusRing.style.top = `${y}px`;
+      this.focusRing.hidden = false;
+      this.focusRing.classList.remove('focus-ring--active');
+      void this.focusRing.offsetWidth; // force DOM reflow
+      this.focusRing.classList.add('focus-ring--active');
+
+      setTimeout(() => {
+        this.focusRing.classList.remove('focus-ring--active');
+        setTimeout(() => { this.focusRing.hidden = true; }, 250);
+      }, 600);
+
+      this.camera.triggerFocus({ x: normX, y: normY });
+    });
+
+    // Manual torch / flash button
+    this.torchBtn.addEventListener('click', async () => {
+      this.autoTorchTriggered = true;
+      const nextState = !this.camera.isTorchOn;
+      const ok = await this.camera.setTorch(nextState);
+      if (ok) {
+        this.torchBtn.classList.toggle('torch-btn--active', nextState);
+        this.setToast(nextState ? 'Flash ON' : 'Flash OFF');
+      } else {
+        this.setToast('Flash not available on this device');
+      }
+    });
+
     // Wire main button
     this.triggerBtn.addEventListener('click', () => {
       if (this.state === 'Idle' || this.state === 'Readout') {
@@ -129,7 +174,7 @@ export class StateMachine {
              this.accumulatedReads.shift();
           }
           
-          // Check for consensus (3 out of 5 frames must agree on the brand name)
+          // Check for consensus (2 out of 5 frames must agree on the brand name)
           const brandCounts = new Map<string, number>();
           for (const read of this.accumulatedReads) {
              brandCounts.set(read.brand_name, (brandCounts.get(read.brand_name) || 0) + 1);
@@ -138,7 +183,7 @@ export class StateMachine {
           let consensusBrand = null;
           let bestStrength = '';
           for (const [brand, count] of brandCounts.entries()) {
-             if (count >= 3) {
+             if (count >= 2) {
                consensusBrand = brand;
                // Pick the strength from the most recent read of this brand
                const lastRead = [...this.accumulatedReads].reverse().find(r => r.brand_name === brand);
@@ -236,6 +281,11 @@ export class StateMachine {
     
     switch (newState) {
       case 'Idle':
+        if (this.camera.isTorchOn) {
+          this.camera.setTorch(false);
+          this.torchBtn.classList.remove('torch-btn--active');
+        }
+        this.autoTorchTriggered = false;
         this.camera.stop();
         this.sonification.mute();
         this.tts.clear();
@@ -250,6 +300,7 @@ export class StateMachine {
         break;
         
       case 'Guidance':
+        this.autoTorchTriggered = false;
         this.resetUI();
         this.accumulatedReads = [];  // Clear previous consensus
         this.consensusAttempts = 0;  // Reset abstention counter
@@ -257,8 +308,8 @@ export class StateMachine {
         
         // Task 1.2: Branch based on mode
         if (this.mode === 'medicine') {
-          // Medicine Mode: ONNX pipeline (or Tesseract fallback), NO Otsu, PSM 3, DB worker
-          this.pipeline = new ExtractionPipeline('onnx', '3', false);
+          // Medicine Mode: ONNX pipeline (or Tesseract fallback), NO Otsu, PSM 11 (sparse scene text), DB worker
+          this.pipeline = new ExtractionPipeline('onnx', '11', false);
           this.ensureDbWorker();
         } else {
           // Document Mode: Tesseract PSM 3 only with Otsu, NO DB worker (saves memory)
@@ -286,6 +337,10 @@ export class StateMachine {
         
       case 'Readout':
         vibrateSuccess();  // Task 4.2: haptic on success
+        if (this.camera.isTorchOn) {
+          this.camera.setTorch(false);
+          this.torchBtn.classList.remove('torch-btn--active');
+        }
         this.camera.stop();
         this.sonification.mute();
         this.resultsCard.hidden = false;
@@ -332,6 +387,18 @@ export class StateMachine {
           // Task 4.2: Haptic lock pulse when framing is excellent
           if (currentQuality.composite > 0.9) {
             vibrateLock();
+          }
+
+          // Low-light auto torch trigger (luminance < 45 on 0-255 scale)
+          if (currentQuality.luminance < 45 && !this.autoTorchTriggered && this.camera.hasTorch()) {
+            this.autoTorchTriggered = true;
+            this.camera.setTorch(true).then((ok) => {
+              if (ok) {
+                this.torchBtn.classList.add('torch-btn--active');
+                this.setToast('Low light: Flash enabled');
+                this.tts.speakPolite('Low light. Flash turned on.');
+              }
+            });
           }
           
           const hint = this.hints.generateHint(currentQuality);

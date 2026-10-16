@@ -3,9 +3,9 @@ import { SettingsScreen } from './ui/settings';
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/src/sw.ts').then(
+    navigator.serviceWorker.register('/sw.js').then(
       (registration) => console.log('SW registered: ', registration.scope),
-      (err) => console.error('SW registration failed: ', err)
+      (err) => console.warn('SW registration info: ', err)
     );
   });
 }

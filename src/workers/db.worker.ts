@@ -120,12 +120,15 @@ async function initDb() {
 
 initDb();
 
-// ─── Query handlers ───
+const STOP_WORDS = new Set(['THE', 'FOR', 'AND', 'WITH', 'NOT', 'USE', 'SOLUTION', 'TABLET', 'SYRUP', 'DROPS', 'FAST', 'RELIEF', 'NASAL', 'HYDROCHLORIDE', 'ONLY', 'KEEP']);
 
 function querySimple(text: string): any {
   if (!db) return null;
-  // Extract words with at least 3 characters
-  const words = text.split(/[^A-Za-z0-9]+/).filter(w => w.length >= 3);
+  // Extract words with at least 3 characters and ignore common packaging stop words
+  const words = text
+    .split(/[^A-Za-z0-9]+/)
+    .map(w => w.toUpperCase())
+    .filter(w => w.length >= 3 && !STOP_WORDS.has(w));
   
   for (const word of words) {
     try {
@@ -157,7 +160,7 @@ function queryFuzzy(text: string): any {
     for (let j = i + 1; j <= Math.min(i + 3, words.length); j++) {
       const window = words.slice(i, j).join(' ');
       const norm = normalizeName(window);
-      if (norm.length >= 3) candidates.add(norm);
+      if (norm.length >= 3 && !STOP_WORDS.has(norm)) candidates.add(norm);
     }
   }
 
@@ -188,8 +191,20 @@ function queryFuzzy(text: string): any {
     }
 
     for (const row of rows) {
-      const dist = weightedDistance(cand, row.name_norm);
-      const threshold = maxDist(cand.length);
+      // 1. Distance against full normalized brand name
+      let dist = weightedDistance(cand, row.name_norm);
+      let threshold = maxDist(cand.length);
+
+      // 2. Token-level matching for multi-word brands (e.g. cand "OXY" or "OTRIVIN" against "OTRIVIN OXY")
+      const tokens = row.name_norm.split(' ').filter((w: string) => w.length >= 3);
+      for (const tok of tokens) {
+        const dTok = weightedDistance(cand, tok);
+        const tTok = maxDist(cand.length);
+        if (dTok <= tTok && dTok < dist) {
+          dist = dTok;
+          threshold = tTok;
+        }
+      }
       
       if (dist <= threshold) {
         if (!bestMatch || dist < bestMatch.distance) {

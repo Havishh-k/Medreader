@@ -35,9 +35,13 @@
       </div>
 
       <!-- Camera Viewport -->
-      <main class="camera-container">
+      <main class="camera-container" id="camera-container">
         <video id="camera" autoplay playsinline muted></video>
         <div id="visual-framing-guide"></div>
+        <div id="focus-ring" class="focus-ring" hidden></div>
+        <button id="torch-btn" class="torch-btn" aria-label="Toggle Flash" title="Toggle Flash">
+          <span id="torch-icon">🔦</span>
+        </button>
         <div id="visual-toast" hidden>Hold steady...</div>
       </main>
 

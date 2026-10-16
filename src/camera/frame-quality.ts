@@ -4,6 +4,7 @@ export interface FrameQuality {
   centering: number;   // Distance from center (-1.0 to 1.0)
   coverage: number;    // Fraction of screen with high edge density
   composite: number;   // Overall score (0.0 to 1.0)
+  luminance: number;   // Average frame luminance (0 to 255) for low-light detection
 }
 
 // Reusable canvas for analysis to avoid GC thrashing
@@ -120,6 +121,7 @@ export function analyzeFrame(bitmap: ImageBitmap): FrameQuality {
     glare,
     centering: centeringX,
     coverage,
-    composite
+    composite,
+    luminance: mean
   };
 }
