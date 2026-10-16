@@ -12,7 +12,7 @@ class RealOcrWorker {
   private psm: '3' | '6' | '11';
   private isDocumentMode: boolean;
   
-  constructor(psm: '3' | '6' | '11' = '11', isDocumentMode: boolean = false) {
+  constructor(psm: '3' | '6' | '11' = '3', isDocumentMode: boolean = false) {
     this.psm = psm;
     this.isDocumentMode = isDocumentMode;
     this.initPromise = this.init();
@@ -56,23 +56,24 @@ class RealOcrWorker {
           applyOtsuThreshold(ctx, canvas.width, canvas.height);
         } else {
           // ─── Medicine Mode Pipeline ───
-          // Center 90% crop to avoid clipping text on package edges
-          const sw = bmp.width * 0.9;
-          const sh = bmp.height * 0.9;
-          const sx = bmp.width * 0.05;
-          const sy = bmp.height * 0.05;
+          // Center 75% crop (matches the visual framing guide)
+          const sw = bmp.width * 0.75;
+          const sh = bmp.height * 0.75;
+          const sx = bmp.width * 0.125;
+          const sy = bmp.height * 0.125;
           const cropped = await createImageBitmap(bmp, sx, sy, sw, sh);
           
-          const scale = cropped.width < 900 ? 1.5 : 1.0;
-          canvas = new OffscreenCanvas(cropped.width * scale, cropped.height * scale);
+          // 2.0x upscale with high-quality smoothing to boost font size into Tesseract LSTM sweet spot (35-45px)
+          const scale = 2.0;
+          canvas = new OffscreenCanvas(Math.round(cropped.width * scale), Math.round(cropped.height * scale));
           ctx = canvas.getContext('2d', { willReadFrequently: true })!;
           ctx.imageSmoothingEnabled = true;
           ctx.imageSmoothingQuality = 'high';
           ctx.drawImage(cropped, 0, 0, canvas.width, canvas.height);
           cropped.close();
           
-          // High-clarity grayscale conversion (ITU-R BT.601) to preserve anti-aliased character edges
-          this.toGrayscale(ctx, canvas.width, canvas.height);
+          // Local contrast normalization for colored medicine packaging (e.g. blue-on-cyan, red-on-white)
+          applyCLAHE(ctx, canvas.width, canvas.height, 8, 3.0);
         }
         
         const blob = await canvas.convertToBlob({ type: 'image/png' });
@@ -127,7 +128,7 @@ export class ExtractionPipeline {
   private psmMode: '3' | '6' | '11';
   private isDocumentMode: boolean;
 
-  constructor(engine: OcrEngine = 'tesseract', psmMode: '3' | '6' | '11' = '11', isDocumentMode: boolean = false) {
+  constructor(engine: OcrEngine = 'tesseract', psmMode: '3' | '6' | '11' = '3', isDocumentMode: boolean = false) {
     this.engine = engine;
     this.psmMode = psmMode;
     this.isDocumentMode = isDocumentMode;

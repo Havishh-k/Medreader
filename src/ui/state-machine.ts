@@ -227,9 +227,9 @@ export class StateMachine {
           let consensusBrand = null;
           let bestStrength = '';
           for (const [brand, count] of brandCounts.entries()) {
-             if (count >= 2) {
+             // Confirm if 2 frames agree, or on distance <= 0.5 (strong match)
+             if (count >= 2 || (found.distance <= 0.5 && this.accumulatedReads.length >= 1)) {
                consensusBrand = brand;
-               // Pick the strength from the most recent read of this brand
                const lastRead = [...this.accumulatedReads].reverse().find(r => r.brand_name === brand);
                if (lastRead) bestStrength = lastRead.strength;
                break;
@@ -273,10 +273,8 @@ export class StateMachine {
             this.transitionTo('Readout');
           } else {
             console.log('[Scan] Waiting for consensus... reads:', this.accumulatedReads.map(r => r.brand_name));
-            
-            // Task 1.3: Safe Abstention Gate — after 10 failed consensus attempts
             this.consensusAttempts++;
-            if (this.consensusAttempts >= 10) {
+            if (this.consensusAttempts >= 120) {
               this.liveAssertive.textContent = 'Unable to verify medicine. Please seek human assistance.';
               this.tts.speakAssertive('Unable to verify medicine. Please seek human assistance.');
               vibrateError();
@@ -284,13 +282,15 @@ export class StateMachine {
             }
           }
         } else if (!found && this.state === 'Guidance') {
-          // No match at all — also counts toward abstention
+          // No match at all — give user at least 25-30 seconds (120 frames) of guidance
           this.consensusAttempts++;
-          if (this.consensusAttempts >= 10) {
+          if (this.consensusAttempts >= 120) {
             this.liveAssertive.textContent = 'Unable to verify medicine. Please seek human assistance.';
             this.tts.speakAssertive('Unable to verify medicine. Please seek human assistance.');
             vibrateError();
             this.transitionTo('Idle');
+          } else if (this.consensusAttempts > 0 && this.consensusAttempts % 35 === 0) {
+            this.tts.speakPolite('Scanning medicine... hold steady.');
           }
         }
       }
@@ -352,8 +352,8 @@ export class StateMachine {
         
         // Task 1.2: Branch based on mode
         if (this.mode === 'medicine') {
-          // Medicine Mode: Tesseract PSM 11 (sparse scene text), DB worker
-          this.pipeline = new ExtractionPipeline('tesseract', '11', false);
+          // Medicine Mode: Tesseract PSM 3 (auto page segmentation with dictionary lookup), DB worker
+          this.pipeline = new ExtractionPipeline('tesseract', '3', false);
           this.ensureDbWorker();
         } else {
           // Document Mode: Tesseract PSM 3 only with Otsu, NO DB worker (saves memory)
@@ -463,7 +463,7 @@ export class StateMachine {
                
                const allText = res.texts.join(' ').toLowerCase();
                console.log('[Scan] OCR result text length:', allText.length, 'text:', JSON.stringify(allText.slice(0, 200)));
-               if (allText.length < 3) return; // ignore empty
+               if (allText.replace(/[^a-z0-9]/g, '').length < 2) return; // ignore completely empty frames
                
                // Task 1.2: Branch based on mode
                if (this.mode === 'document') {

@@ -124,24 +124,51 @@ const STOP_WORDS = new Set(['THE', 'FOR', 'AND', 'WITH', 'NOT', 'USE', 'SOLUTION
 
 function querySimple(text: string): any {
   if (!db) return null;
-  // Extract words with at least 3 characters and ignore common packaging stop words
+  // Extract words with at least 2 characters and ignore common packaging stop words
   const words = text
     .split(/[^A-Za-z0-9]+/)
-    .map(w => w.toUpperCase())
-    .filter(w => w.length >= 3 && !STOP_WORDS.has(w));
+    .map(w => w.toUpperCase().trim())
+    .filter(w => w.length >= 2 && !STOP_WORDS.has(w));
   
   for (const word of words) {
     try {
-      const stmt = db.prepare(
-        'SELECT brand_name, generic_name, strength FROM drugs WHERE brand_name LIKE ? OR generic_name LIKE ? LIMIT 1'
+      // 1. Exact whole word token in brand_name: e.g. "OXY" in "OTRIVIN OXY"
+      let stmt = db.prepare(
+        'SELECT brand_name, generic_name, strength FROM drugs WHERE UPPER(brand_name) = ? OR UPPER(brand_name) LIKE ? OR UPPER(brand_name) LIKE ? OR UPPER(brand_name) LIKE ? LIMIT 1'
       );
-      stmt.bind([`%${word}%`, `%${word}%`]);
+      stmt.bind([word, `${word} %`, `% ${word}`, `% ${word} %`]);
       if (stmt.step()) {
         const row = stmt.getAsObject();
         stmt.free();
         return row;
       }
       stmt.free();
+
+      // 2. If word length >= 3, allow substring match
+      if (word.length >= 3) {
+        stmt = db.prepare(
+          'SELECT brand_name, generic_name, strength FROM drugs WHERE UPPER(brand_name) LIKE ? OR UPPER(generic_name) LIKE ? LIMIT 1'
+        );
+        stmt.bind([`%${word}%`, `%${word}%`]);
+        if (stmt.step()) {
+          const row = stmt.getAsObject();
+          stmt.free();
+          return row;
+        }
+        stmt.free();
+      }
+
+      // 3. Known OCR letter-drop: e.g. "XY" (dropped 'O' from "OXY")
+      if (word === 'XY') {
+        stmt = db.prepare('SELECT brand_name, generic_name, strength FROM drugs WHERE UPPER(brand_name) LIKE ? LIMIT 1');
+        stmt.bind(['%OXY%']);
+        if (stmt.step()) {
+          const row = stmt.getAsObject();
+          stmt.free();
+          return row;
+        }
+        stmt.free();
+      }
     } catch {
       // continue to next candidate word
     }
@@ -152,22 +179,53 @@ function querySimple(text: string): any {
 function queryFuzzy(text: string): any {
   if (!db) return null;
 
-  // Extract candidate brand windows from the OCR text
-  const words = text.split(/[^A-Za-z0-9]+/).filter(w => w.length >= 2);
+  // Extract candidate brand windows and individual tokens from the OCR text
+  const words = text.split(/[^A-Za-z0-9]+/).map(w => w.trim()).filter(w => w.length >= 2);
   const candidates = new Set<string>();
   
   for (let i = 0; i < words.length; i++) {
     for (let j = i + 1; j <= Math.min(i + 3, words.length); j++) {
       const window = words.slice(i, j).join(' ');
       const norm = normalizeName(window);
-      if (norm.length >= 3 && !STOP_WORDS.has(norm)) candidates.add(norm);
+      if (norm.length >= 2 && !STOP_WORDS.has(norm)) candidates.add(norm);
     }
+    const single = normalizeName(words[i]);
+    if (single.length >= 2 && !STOP_WORDS.has(single)) candidates.add(single);
   }
 
   let bestMatch: { brand_name: string; generic_name: string; strength: string; distance: number } | null = null;
 
   for (const cand of candidates) {
-    if (cand.length < 3) continue;
+    if (cand.length < 2) continue;
+
+    // Direct lookup for 2-letter tokens (e.g. XY, O2, D3)
+    if (cand.length === 2) {
+      try {
+        const stmt = db.prepare(
+          'SELECT id, family_id, name_norm, display_name FROM brand_names WHERE name_norm LIKE ? OR name_norm LIKE ? OR name_norm LIKE ? LIMIT 5'
+        );
+        stmt.bind([`% ${cand}`, `% ${cand} %`, `${cand} %`]);
+        if (stmt.step()) {
+          const row = stmt.getAsObject();
+          let drugInfo = null;
+          try {
+            const dStmt = db.prepare('SELECT brand_name, generic_name, strength FROM drugs WHERE brand_name = ?');
+            dStmt.bind([row.display_name]);
+            if (dStmt.step()) drugInfo = dStmt.getAsObject();
+            dStmt.free();
+          } catch {}
+          stmt.free();
+          return {
+            brand_name: drugInfo?.brand_name || row.display_name,
+            generic_name: drugInfo?.generic_name || '',
+            strength: drugInfo?.strength || '',
+            distance: 0.5,
+          };
+        }
+        stmt.free();
+      } catch {}
+      continue;
+    }
 
     // Trigram-based retrieval from the fuzzy index
     const codes = trigramCodes(skeleton(cand));
@@ -196,10 +254,10 @@ function queryFuzzy(text: string): any {
       let threshold = maxDist(cand.length);
 
       // 2. Token-level matching for multi-word brands (e.g. cand "OXY" or "OTRIVIN" against "OTRIVIN OXY")
-      const tokens = row.name_norm.split(' ').filter((w: string) => w.length >= 3);
+      const tokens = row.name_norm.split(' ').filter((w: string) => w.length >= 2);
       for (const tok of tokens) {
         const dTok = weightedDistance(cand, tok);
-        const tTok = maxDist(cand.length);
+        const tTok = maxDist(Math.max(cand.length, tok.length));
         if (dTok <= tTok && dTok < dist) {
           dist = dTok;
           threshold = tTok;
