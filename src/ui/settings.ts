@@ -8,14 +8,21 @@ export class SettingsScreen {
     this.modal = document.getElementById('settings-screen')!;
     this.appRoot = document.getElementById('app-root')!;
 
-    this.btn.addEventListener('click', () => this.open());
-    
+    // Ensure hidden and display none initially
+    this.modal.hidden = true;
+    this.modal.style.display = 'none';
     this.modal.className = 'modal-overlay';
+    
+    this.btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.open();
+    });
+    
     this.modal.innerHTML = `
       <div class="settings-sheet" role="dialog" aria-modal="true" aria-labelledby="settings-heading">
         <div class="settings-header">
           <h2 id="settings-heading">Settings & Preferences</h2>
-          <button id="close-settings" class="modal-close-btn" aria-label="Close Settings">✕</button>
+          <button id="close-settings" class="modal-close-btn" aria-label="Close Settings" title="Close">✕</button>
         </div>
 
         <!-- Voice & Audio Guidance -->
@@ -99,14 +106,34 @@ export class SettingsScreen {
             </div>
           </div>
         </div>
+
+        <button id="done-settings" class="settings-done-btn">Done</button>
       </div>
     `;
 
-    document.getElementById('close-settings')!.addEventListener('click', () => this.close());
+    // Close handlers (both top ✕ and bottom Done button)
+    const handleClose = (e: Event) => {
+      e.preventDefault();
+      e.stopPropagation();
+      this.close();
+    };
+
+    const closeBtn = document.getElementById('close-settings');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', handleClose);
+      closeBtn.addEventListener('touchend', handleClose);
+    }
+
+    const doneBtn = document.getElementById('done-settings');
+    if (doneBtn) {
+      doneBtn.addEventListener('click', handleClose);
+      doneBtn.addEventListener('touchend', handleClose);
+    }
     
-    // Close when tapping outside the sheet on the overlay
+    // Close when tapping outside the sheet on the dark overlay
     this.modal.addEventListener('click', (e) => {
       if (e.target === this.modal) {
+        e.preventDefault();
         this.close();
       }
     });
@@ -152,7 +179,7 @@ export class SettingsScreen {
       localStorage.setItem('highContrast', String(on));
     });
 
-    // Tick mode toggle (dispatches custom event for sonification engine to listen)
+    // Tick mode toggle
     const tickToggle = document.getElementById('tick-toggle') as HTMLSelectElement;
     if (localStorage.getItem('tickMode') === 'true') {
       tickToggle.value = 'tick';
@@ -166,31 +193,35 @@ export class SettingsScreen {
 
   open() {
     this.modal.hidden = false;
-    // A11y: Trap focus and hide background
+    this.modal.style.display = 'flex';
     this.appRoot.setAttribute('inert', '');
     
-    // Push history state to handle Android Back button gracefully
-    history.pushState({ modal: 'settings' }, '');
-    window.addEventListener('popstate', this.onPopState);
+    try {
+      history.pushState({ modal: 'settings' }, '');
+      window.addEventListener('popstate', this.onPopState);
+    } catch {}
     
-    this.modal.querySelector('h2')?.focus();
+    const closeBtn = document.getElementById('close-settings');
+    closeBtn?.focus();
   }
 
   close() {
     this.modal.hidden = true;
+    this.modal.style.display = 'none';
     this.appRoot.removeAttribute('inert');
     window.removeEventListener('popstate', this.onPopState);
     
-    // If user clicked close button, pop the state manually
-    if (history.state?.modal === 'settings') {
-      history.back();
-    }
+    try {
+      if (history.state?.modal === 'settings') {
+        history.back();
+      }
+    } catch {}
   }
   
   private onPopState = (e: PopStateEvent) => {
-    // If we popped out of settings state, close it
     if (!e.state || e.state.modal !== 'settings') {
       this.modal.hidden = true;
+      this.modal.style.display = 'none';
       this.appRoot.removeAttribute('inert');
       window.removeEventListener('popstate', this.onPopState);
     }
