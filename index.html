@@ -19,47 +19,111 @@
     <div id="app-root">
       <!-- Top Bar -->
       <header class="top-bar">
-        <h1>MedReader</h1>
-        <button id="settings-btn" aria-label="Settings">⚙</button>
+        <div class="brand-badge" aria-label="MedReader App">
+          <span class="brand-pill-icon">💊</span>
+          <span class="brand-title">MedReader</span>
+        </div>
+        <div class="top-bar-actions">
+          <button id="sound-btn" class="icon-btn" aria-label="Toggle Audio Guidance Tone" title="Toggle Sound Tone">
+            <span id="sound-icon">🔊</span>
+          </button>
+          <button id="settings-btn" class="icon-btn" aria-label="Settings and Preferences" title="Settings">
+            <span id="settings-icon">⚙️</span>
+          </button>
+        </div>
       </header>
 
       <!-- Mode Toggle (Document / Medicine) -->
       <div id="mode-toggle" role="radiogroup" aria-label="Select reading mode" class="mode-toggle">
         <button role="radio" aria-checked="false" data-mode="document"
                 class="mode-btn" tabindex="0">
-          📄 Document
+          <span class="mode-icon">📄</span> Document
         </button>
         <button role="radio" aria-checked="true" data-mode="medicine"
                 class="mode-btn mode-btn--active" tabindex="0">
-          💊 Medicine
+          <span class="mode-icon">💊</span> Medicine
         </button>
       </div>
 
-      <!-- Camera Viewport -->
+      <!-- Camera Viewport & Assistive Scanner HUD -->
       <main class="camera-container" id="camera-container">
         <video id="camera" autoplay playsinline muted></video>
-        <div id="visual-framing-guide"></div>
+        
+        <!-- Corner Reticle HUD with Laser Scan Line -->
+        <div id="scanner-reticle" class="scanner-reticle" aria-hidden="true">
+          <div class="reticle-corner corner--tl"></div>
+          <div class="reticle-corner corner--tr"></div>
+          <div class="reticle-corner corner--bl"></div>
+          <div class="reticle-corner corner--br"></div>
+          <div id="scanner-laser" class="scanner-laser" hidden></div>
+        </div>
+
         <div id="focus-ring" class="focus-ring" hidden></div>
-        <button id="torch-btn" class="torch-btn" aria-label="Toggle Flash" title="Toggle Flash">
+
+        <button id="torch-btn" class="torch-btn" aria-label="Toggle Flashlight" title="Toggle Flashlight">
           <span id="torch-icon">🔦</span>
         </button>
-        <div id="visual-toast" hidden>Hold steady...</div>
+
+        <div id="visual-toast" class="visual-toast" hidden>
+          <span id="toast-icon">✨</span>
+          <span id="toast-msg">Hold steady...</span>
+        </div>
       </main>
 
-      <!-- Bottom Panel -->
+      <!-- Bottom Panel / Clinical Readout Sheet -->
       <footer class="bottom-panel">
-        <div id="results-card" hidden>
+        <div id="results-card" class="results-sheet" hidden>
           <div class="result-header">
-            <h2 id="res-brand">Brand Name</h2>
+            <div class="result-title-group">
+              <span class="result-category-label">Identified Medicine</span>
+              <h2 id="res-brand">Brand Name</h2>
+            </div>
             <span id="res-status" class="status-badge">Valid</span>
           </div>
-          <p id="res-strength" class="res-detail">Strength: --</p>
-          <p id="res-expiry" class="res-detail">Expiry: --</p>
-          <div id="res-description" class="res-description" hidden></div>
+
+          <!-- Structured Metadata Chips Grid -->
+          <div class="res-chips-grid">
+            <div class="res-chip" id="chip-dosage">
+              <span class="chip-icon">💊</span>
+              <div class="chip-content">
+                <span class="chip-label">Dosage / Strength</span>
+                <span id="res-strength" class="chip-value">--</span>
+              </div>
+            </div>
+            <div class="res-chip" id="chip-expiry">
+              <span class="chip-icon">📅</span>
+              <div class="chip-content">
+                <span class="chip-label">Expiry Date</span>
+                <span id="res-expiry" class="chip-value">--</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Collapsible Clinical Guide -->
+          <details id="res-accordion" class="res-accordion" hidden>
+            <summary class="res-accordion-summary">
+              <span>ℹ️ Clinical Usage & Instructions</span>
+              <span class="accordion-arrow">▾</span>
+            </summary>
+            <div id="res-description" class="res-description"></div>
+          </details>
+
+          <!-- Quick Action Toolbar -->
+          <div class="res-actions-toolbar">
+            <button id="res-replay-btn" class="btn-secondary" aria-label="Replay Voice Summary">
+              <span>🔊</span> Replay Voice
+            </button>
+            <button id="res-copy-btn" class="btn-secondary" aria-label="Copy Medicine Details">
+              <span>📋</span> Copy Info
+            </button>
+          </div>
         </div>
         
-        <button id="scan-trigger" class="btn-primary" aria-describedby="scan-instructions">Start Scan</button>
-        <div id="scan-instructions" class="sr-only">Double-tap to scan, or press Bluetooth trigger.</div>
+        <button id="scan-trigger" class="btn-primary" aria-describedby="scan-instructions">
+          <span id="scan-btn-icon">⚡</span>
+          <span id="scan-btn-text">Start Scan</span>
+        </button>
+        <div id="scan-instructions" class="sr-only">Double-tap screen or press Bluetooth trigger to scan.</div>
       </footer>
     </div>
 

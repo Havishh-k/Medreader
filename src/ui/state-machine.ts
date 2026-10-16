@@ -9,7 +9,7 @@ export type AppState = 'Idle' | 'Guidance' | 'Readout';
 
 function parseDosageAndUsage(raw: string): { dosage: string; usage: string } {
   if (!raw || !raw.trim()) {
-    return { dosage: 'Unknown', usage: '' };
+    return { dosage: 'Standard', usage: '' };
   }
   const clean = raw.trim();
 
@@ -46,19 +46,29 @@ export class StateMachine {
   
   // DOM Elements
   private triggerBtn: HTMLElement;
+  private scanBtnText: HTMLElement;
+  private scanBtnIcon: HTMLElement;
   private visualToast: HTMLElement;
+  private toastIcon: HTMLElement;
+  private toastMsg: HTMLElement;
   private resultsCard: HTMLElement;
   private resBrand: HTMLElement;
   private resStrength: HTMLElement;
   private resExpiry: HTMLElement;
   private resStatus: HTMLElement;
+  private resAccordion: HTMLDetailsElement;
   private resDescription: HTMLElement;
+  private resReplayBtn: HTMLElement;
+  private resCopyBtn: HTMLElement;
   private scanInstructions: HTMLElement;
-  // Task 1.3: ARIA live region for assertive announcements
   private liveAssertive: HTMLElement;
   private cameraContainer: HTMLElement;
   private focusRing: HTMLElement;
   private torchBtn: HTMLElement;
+  private soundBtn: HTMLElement;
+  private soundIcon: HTMLElement;
+  private scannerReticle: HTMLElement;
+  private scannerLaser: HTMLElement;
   private autoTorchTriggered = false;
 
   private rafId = 0;
@@ -72,18 +82,64 @@ export class StateMachine {
 
   constructor() {
     this.triggerBtn = document.getElementById('scan-trigger')!;
+    this.scanBtnText = document.getElementById('scan-btn-text')!;
+    this.scanBtnIcon = document.getElementById('scan-btn-icon')!;
     this.visualToast = document.getElementById('visual-toast')!;
+    this.toastIcon = document.getElementById('toast-icon')!;
+    this.toastMsg = document.getElementById('toast-msg')!;
     this.resultsCard = document.getElementById('results-card')!;
     this.resBrand = document.getElementById('res-brand')!;
     this.resStrength = document.getElementById('res-strength')!;
     this.resExpiry = document.getElementById('res-expiry')!;
     this.resStatus = document.getElementById('res-status')!;
+    this.resAccordion = document.getElementById('res-accordion') as HTMLDetailsElement;
     this.resDescription = document.getElementById('res-description')!;
+    this.resReplayBtn = document.getElementById('res-replay-btn')!;
+    this.resCopyBtn = document.getElementById('res-copy-btn')!;
     this.scanInstructions = document.getElementById('scan-instructions')!;
     this.liveAssertive = document.getElementById('live-assertive')!;
     this.cameraContainer = document.getElementById('camera-container')!;
     this.focusRing = document.getElementById('focus-ring')!;
     this.torchBtn = document.getElementById('torch-btn')!;
+    this.soundBtn = document.getElementById('sound-btn')!;
+    this.soundIcon = document.getElementById('sound-icon')!;
+    this.scannerReticle = document.getElementById('scanner-reticle')!;
+    this.scannerLaser = document.getElementById('scanner-laser')!;
+
+    // Sound mute/unmute header button
+    this.soundBtn.addEventListener('click', () => {
+      const isMuted = this.sonification.toggleMute();
+      this.soundIcon.textContent = isMuted ? '🔇' : '🔊';
+      this.soundBtn.setAttribute('aria-label', isMuted ? 'Unmute Audio Guidance Tone' : 'Mute Audio Guidance Tone');
+      this.setToast(isMuted ? 'Guidance Tone Muted' : 'Guidance Tone On', isMuted ? '🔇' : '🔊');
+      if ('vibrate' in navigator) {
+        try { navigator.vibrate(35); } catch {}
+      }
+    });
+
+    // Replay speech button
+    this.resReplayBtn.addEventListener('click', () => {
+      const expiryText = this.resExpiry.textContent || '';
+      const readStr = `${this.resBrand.textContent}. Strength: ${this.resStrength.textContent}. Expiry: ${expiryText}.`;
+      this.tts.speakAssertive(readStr);
+      if ('vibrate' in navigator) {
+        try { navigator.vibrate(30); } catch {}
+      }
+    });
+
+    // Copy prescription info to clipboard
+    this.resCopyBtn.addEventListener('click', async () => {
+      const textToCopy = `MedReader Prescription Info:\nBrand: ${this.resBrand.textContent}\nStrength: ${this.resStrength.textContent}\nExpiry: ${this.resExpiry.textContent}\n${this.resDescription.textContent ? 'Details: ' + this.resDescription.textContent : ''}`;
+      try {
+        await navigator.clipboard.writeText(textToCopy);
+        this.setToast('Copied to clipboard! ✓', '📋');
+      } catch (err) {
+        this.setToast('Failed to copy', '❌');
+      }
+      if ('vibrate' in navigator) {
+        try { navigator.vibrate(35); } catch {}
+      }
+    });
 
     // Tap / Double-tap on camera screen
     let lastTapTime = 0;
@@ -139,10 +195,10 @@ export class StateMachine {
         }, 600);
 
         if (this.state === 'Guidance') {
-          this.setToast('Focusing camera...');
+          this.setToast('Focusing camera...', '🔍');
           const ok = await this.camera.triggerFocus({ x: normX, y: normY });
           if (ok) {
-            this.setToast('Focused ✓');
+            this.setToast('Focused ✓', '🎯');
           }
         }
       }, 280);
@@ -151,7 +207,7 @@ export class StateMachine {
     // Manual torch / flash button
     this.torchBtn.addEventListener('click', async () => {
       if (this.state === 'Idle') {
-        this.setToast('Start scan first to use flash');
+        this.setToast('Start scan first to use flash', '🔦');
         this.tts.speakPolite('Start scan first to use flash');
         return;
       }
@@ -160,10 +216,10 @@ export class StateMachine {
       const ok = await this.camera.setTorch(nextState);
       if (ok) {
         this.torchBtn.classList.toggle('torch-btn--active', nextState);
-        this.setToast(nextState ? 'Flash ON' : 'Flash OFF');
+        this.setToast(nextState ? 'Flash ON' : 'Flash OFF', '🔦');
         this.tts.speakPolite(nextState ? 'Flash on' : 'Flash off');
       } else {
-        this.setToast('Flash not available on this device');
+        this.setToast('Flash not available on this device', '⚠️');
       }
     });
 
@@ -220,6 +276,16 @@ export class StateMachine {
     if (localStorage.getItem('tickMode') === 'true') {
       this.sonification.setTickMode(true);
     }
+
+    // Listen for language and rate changes from settings
+    window.addEventListener('languageChanged', (e: Event) => {
+      const lang = (e as CustomEvent).detail;
+      this.tts.setLanguage(lang);
+    });
+    window.addEventListener('rateChanged', (e: Event) => {
+      const rate = (e as CustomEvent).detail;
+      this.tts.setRate(rate);
+    });
     
     this.updateAria();
   }
@@ -267,17 +333,18 @@ export class StateMachine {
           if (consensusBrand) {
             this.resBrand.textContent = consensusBrand;
             const { dosage, usage } = parseDosageAndUsage(bestStrength);
-            this.resStrength.textContent = dosage ? `Strength: ${dosage}` : 'Strength: Unknown';
+            this.resStrength.textContent = dosage || 'Standard';
             
             if (usage && usage.length > 40) {
-              this.resDescription.innerHTML = `<strong>ℹ️ Details:</strong> ${usage}`;
-              this.resDescription.hidden = false;
+              this.resDescription.innerHTML = `<strong>ℹ️ Directions & Details:</strong><br/>${usage}`;
+              this.resAccordion.hidden = false;
+              this.resAccordion.open = false;
             } else {
               this.resDescription.innerHTML = '';
-              this.resDescription.hidden = true;
+              this.resAccordion.hidden = true;
             }
             
-            // Gap 1: Extract and display expiry date from accumulated reads
+            // Extract and display expiry date from accumulated reads
             const lastReadWithExpiry = [...this.accumulatedReads]
               .reverse()
               .find(r => r.expiry);
@@ -291,8 +358,8 @@ export class StateMachine {
                 (year === now.getFullYear() && month < now.getMonth() + 1);
               
               this.resExpiry.textContent = isExpired 
-                ? `⚠️ EXPIRED: ${monthNames[month-1]} ${year}` 
-                : `Expiry: ${monthNames[month-1]} ${year} ✓`;
+                ? `EXPIRED: ${monthNames[month-1]} ${year}` 
+                : `${monthNames[month-1]} ${year} ✓`;
               
               if (isExpired) {
                 this.resStatus.textContent = "Expired";
@@ -302,7 +369,7 @@ export class StateMachine {
                 this.resStatus.className = "status-badge";
               }
             } else {
-              this.resExpiry.textContent = "Expiry: Not found on label";
+              this.resExpiry.textContent = "Not specified";
               this.resStatus.textContent = "Valid";
               this.resStatus.className = "status-badge";
             }
@@ -345,7 +412,6 @@ export class StateMachine {
     }
   }
 
-  /** Terminate DB worker and free its ~20-50MB of WASM + DB memory */
   private teardownDbWorker() {
     if (this.dbWorker) {
       this.dbWorker.terminate();
@@ -371,7 +437,9 @@ export class StateMachine {
         this.sonification.mute();
         this.tts.clear();
         cancelAnimationFrame(this.rafId);
-        // Tear down pipeline (terminates Tesseract/ONNX worker) and DB worker to free memory
+        if (this.scannerLaser) this.scannerLaser.hidden = true;
+        if (this.scannerReticle) this.scannerReticle.classList.remove('reticle--locked');
+        // Tear down pipeline and DB worker to free memory
         if (this.pipeline) {
           this.pipeline.destroy();
           this.pipeline = null;
@@ -383,26 +451,27 @@ export class StateMachine {
       case 'Guidance':
         this.autoTorchTriggered = false;
         this.resetUI();
-        this.accumulatedReads = [];  // Clear previous consensus
-        this.consensusAttempts = 0;  // Reset abstention counter
-        this.triggerBtn.textContent = 'Stop Scan (Scanning...)';
+        this.accumulatedReads = [];
+        this.consensusAttempts = 0;
+        this.scanBtnText.textContent = 'Stop Scan';
+        this.scanBtnIcon.textContent = '🛑';
+        if (this.scannerLaser) this.scannerLaser.hidden = false;
         
         // Task 1.2: Branch based on mode
         if (this.mode === 'medicine') {
-          // Medicine Mode: Tesseract PSM 3 (auto page segmentation with dictionary lookup), DB worker
           this.pipeline = new ExtractionPipeline('tesseract', '3', false);
           this.ensureDbWorker();
         } else {
-          // Document Mode: Tesseract PSM 3 only with Otsu, NO DB worker (saves memory)
           this.pipeline = new ExtractionPipeline('tesseract', '3', true);
         }
         
         await this.camera.start();
         await this.sonification.init();
         
-        // Only unmute the buzzing if TalkBack (Screen Reader) mode is active
+        // Only unmute if TalkBack mode active or user unmuted via header
         if (this.tts.talkbackMode) {
           this.sonification.unmute();
+          this.soundIcon.textContent = '🔊';
         }
         
         this.hints.resetThrottle();
@@ -417,27 +486,28 @@ export class StateMachine {
         break;
         
       case 'Readout':
-        vibrateSuccess();  // Task 4.2: haptic on success
+        vibrateSuccess();
         if (this.camera.isTorchOn) {
           this.camera.setTorch(false);
           this.torchBtn.classList.remove('torch-btn--active');
         }
         this.camera.stop();
         this.sonification.mute();
+        if (this.scannerLaser) this.scannerLaser.hidden = true;
+        if (this.scannerReticle) this.scannerReticle.classList.add('reticle--locked');
         this.resultsCard.hidden = false;
         this.triggerBtn.removeAttribute('disabled');
-        this.triggerBtn.textContent = 'Scan Again';
+        this.scanBtnText.textContent = 'Scan Again';
+        this.scanBtnIcon.textContent = '🔄';
         cancelAnimationFrame(this.rafId);
-        // Tear down pipeline to free Tesseract/ONNX memory
         if (this.pipeline) {
           this.pipeline.destroy();
           this.pipeline = null;
         }
-        // Keep DB worker alive for quick re-scans, tear down on Idle
         
-        // Build speech string including expiry info
+        // Build concise speech string
         const expiryText = this.resExpiry.textContent || '';
-        const readStr = `${this.resBrand.textContent}. ${this.resStrength.textContent}. ${expiryText}.`;
+        const readStr = `${this.resBrand.textContent}. Strength: ${this.resStrength.textContent}. Expiry: ${expiryText}.`;
         this.tts.speakAssertive(readStr);
         break;
     }
@@ -451,7 +521,7 @@ export class StateMachine {
   private loop = async () => {
     if (this.state !== 'Guidance' || !this.pipeline) return;
     
-    // Phase 4B: Frame Throttling to 5 fps (200ms)
+    // Frame Throttling to 5 fps (200ms)
     const now = performance.now();
     if (now - this.lastCaptureTime > 200) {
       this.lastCaptureTime = now;
@@ -465,7 +535,13 @@ export class StateMachine {
           const currentQuality = frames[frames.length - 1].quality;
           this.sonification.update(currentQuality);
           
-          // Task 4.2: Haptic lock pulse when framing is excellent
+          // Visual reticle locked indicator: turns emerald green when sharp & clear
+          const isQualityLocked = currentQuality.sharpness > 140 && currentQuality.composite > 0.45;
+          if (this.scannerReticle) {
+            this.scannerReticle.classList.toggle('reticle--locked', isQualityLocked);
+          }
+
+          // Haptic lock pulse when framing is excellent
           if (currentQuality.composite > 0.9) {
             vibrateLock();
           }
@@ -476,7 +552,7 @@ export class StateMachine {
             this.camera.setTorch(true).then((ok) => {
               if (ok) {
                 this.torchBtn.classList.add('torch-btn--active');
-                this.setToast('Low light: Flash enabled');
+                this.setToast('Low light: Flash enabled', '💡');
                 this.tts.speakPolite('Low light. Flash turned on.');
               }
             });
@@ -484,11 +560,11 @@ export class StateMachine {
           
           const hint = this.hints.generateHint(currentQuality);
           if (hint) {
-            this.setToast(hint);
+            this.setToast(hint, '📐');
             this.tts.speakPolite(hint);
           }
           
-          // Continuous Real-Time Extraction: trigger whenever frame buffer has frames and adequate clarity
+          // Continuous Real-Time Extraction
           if (frames.length >= 1 && (currentQuality.composite > 0.15 || currentQuality.sharpness > 30) && !this.isExtracting) {
             this.isExtracting = true;
             console.log('[Scan] Triggering extraction, frames:', frames.length,
@@ -500,21 +576,17 @@ export class StateMachine {
                
                const allText = res.texts.join(' ').toLowerCase();
                console.log('[Scan] OCR result text length:', allText.length, 'text:', JSON.stringify(allText.slice(0, 200)));
-               if (allText.replace(/[^a-z0-9]/g, '').length < 2) return; // ignore completely empty frames
+               if (allText.replace(/[^a-z0-9]/g, '').length < 2) return;
                
                // Task 1.2: Branch based on mode
                if (this.mode === 'document') {
                  // Document Mode: speak text verbatim, no DB lookup
                  this.resBrand.textContent = 'Document Text';
-                 this.resStrength.textContent = allText.length > 80 ? allText.slice(0, 80) + '...' : allText;
-                 if (allText.length > 80) {
-                   this.resDescription.textContent = allText;
-                   this.resDescription.hidden = false;
-                 } else {
-                   this.resDescription.innerHTML = '';
-                   this.resDescription.hidden = true;
-                 }
-                 this.resExpiry.textContent = '';
+                 this.resStrength.textContent = 'Document';
+                 this.resExpiry.textContent = 'N/A';
+                 this.resDescription.textContent = allText;
+                 this.resAccordion.hidden = false;
+                 this.resAccordion.open = true;
                  this.resStatus.textContent = 'Read';
                  this.resStatus.className = 'status-badge';
                  this.transitionTo('Readout');
@@ -533,23 +605,34 @@ export class StateMachine {
     this.rafId = requestAnimationFrame(this.loop);
   };
   
-  private setToast(msg: string) {
-    this.visualToast.textContent = msg;
+  private setToast(msg: string, icon: string = '✨') {
+    if (this.toastIcon) this.toastIcon.textContent = icon;
+    if (this.toastMsg) this.toastMsg.textContent = msg;
     this.visualToast.hidden = false;
   }
 
   private resetUI() {
     this.visualToast.hidden = true;
     this.resultsCard.hidden = true;
+    if (this.scannerReticle) {
+      this.scannerReticle.classList.remove('reticle--locked');
+    }
+    if (this.scannerLaser) {
+      this.scannerLaser.hidden = true;
+    }
+    if (this.resAccordion) {
+      this.resAccordion.hidden = true;
+      this.resAccordion.open = false;
+    }
     if (this.resDescription) {
-      this.resDescription.hidden = true;
       this.resDescription.innerHTML = '';
     }
-    this.triggerBtn.textContent = 'Start Scan';
+    this.scanBtnText.textContent = 'Start Scan';
+    this.scanBtnIcon.textContent = '⚡';
     this.triggerBtn.removeAttribute('disabled');
   }
 
-  // Task 1.3: Enhanced ARIA with state transition announcements
+  // Enhanced ARIA with state transition announcements
   private updateAria() {
     if (this.state === 'Idle' || this.state === 'Readout') {
        this.triggerBtn.setAttribute('aria-label', this.state === 'Idle' ? "Start Scan" : "Scan Again");
@@ -557,11 +640,10 @@ export class StateMachine {
        this.triggerBtn.setAttribute('aria-label', "Stop Scan");
     }
     
-    // Inject state transition text into ARIA live region for screen readers
     const announcements: Record<AppState, string> = {
       'Idle': 'Scanning stopped.',
       'Guidance': 'Scanning started. Follow audio guidance.',
-      'Readout': `Medicine identified. ${this.resBrand.textContent}. ${this.resStrength.textContent}. ${this.resExpiry.textContent}.`,
+      'Readout': `Medicine identified. ${this.resBrand.textContent}. Strength: ${this.resStrength.textContent}. Expiry: ${this.resExpiry.textContent}.`,
     };
     this.liveAssertive.textContent = announcements[this.state];
   }

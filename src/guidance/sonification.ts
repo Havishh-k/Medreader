@@ -139,4 +139,17 @@ export class SonificationEngine {
     // Volume max 0.3 to avoid blasting user
     this.gainNode!.gain.setTargetAtTime(0.3, now, 0.05);
   }
+
+  isCurrentlyMuted(): boolean {
+    return this.isMuted;
+  }
+
+  toggleMute(): boolean {
+    if (this.isMuted) {
+      this.unmute();
+    } else {
+      this.mute();
+    }
+    return this.isMuted;
+  }
 }

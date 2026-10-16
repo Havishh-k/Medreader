@@ -14,7 +14,25 @@ export class TtsManager {
   public rate = 1.0;
 
   constructor() {
-    // initWorker() removed for now, using native speech
+    const savedRate = localStorage.getItem('ttsRate');
+    if (savedRate) {
+      const parsed = parseFloat(savedRate);
+      if (!isNaN(parsed)) this.rate = parsed;
+    }
+    const savedLang = localStorage.getItem('ttsLanguage');
+    if (savedLang === 'en' || savedLang === 'hi' || savedLang === 'mr') {
+      this.language = savedLang;
+    }
+  }
+
+  setRate(newRate: number) {
+    this.rate = Math.max(0.5, Math.min(2.0, newRate));
+    localStorage.setItem('ttsRate', String(this.rate));
+  }
+
+  setLanguage(newLang: SpeechLanguage) {
+    this.language = newLang;
+    localStorage.setItem('ttsLanguage', newLang);
   }
 
   /**
@@ -55,14 +73,15 @@ export class TtsManager {
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.rate = this.rate;
       
-      // Attempt to pick a good default English voice if available
+      // Match voice to chosen language (en, hi, mr)
       const voices = window.speechSynthesis.getVoices();
       if (voices.length > 0) {
-        const engVoice = voices.find(v => v.lang.startsWith('en-'));
-        if (engVoice) utterance.voice = engVoice;
+        const langPrefix = this.language === 'hi' ? 'hi' : this.language === 'mr' ? 'mr' : 'en';
+        const langVoice = voices.find(v => v.lang.toLowerCase().startsWith(langPrefix));
+        if (langVoice) utterance.voice = langVoice;
       }
       
-      console.log(`[TTS] Speaking: "${text}"`);
+      console.log(`[TTS] Speaking (${this.language}, ${this.rate}x): "${text}"`);
       window.speechSynthesis.speak(utterance);
     } else {
       console.warn('[TTS] Web Speech API not supported in this browser.');
