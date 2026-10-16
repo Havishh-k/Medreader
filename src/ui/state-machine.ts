@@ -7,6 +7,32 @@ import { vibrateLock, vibrateSuccess, vibrateError } from '../guidance/vibration
 
 export type AppState = 'Idle' | 'Guidance' | 'Readout';
 
+function parseDosageAndUsage(raw: string): { dosage: string; usage: string } {
+  if (!raw || !raw.trim()) {
+    return { dosage: 'Unknown', usage: '' };
+  }
+  const clean = raw.trim();
+
+  // If it's already a concise strength string (<= 40 chars) without clinical description sentences
+  if (clean.length <= 40 && !clean.toLowerCase().includes(' is a ') && !clean.toLowerCase().includes(' used for ')) {
+    return { dosage: clean, usage: '' };
+  }
+
+  // Regex pattern matching medicine strength e.g. "0.03 mg/0.15 mg", "500mg", "650 mg", "10ml", "400mg/325mg"
+  const dosageRegex = /\b\d+(\.\d+)?\s*(mg|mcg|µg|g|ml|%|w\/v)(\s*\/\s*\d+(\.\d+)?\s*(mg|mcg|µg|g|ml|%|w\/v))*/i;
+  const match = clean.match(dosageRegex);
+
+  let dosage = match ? match[0] : '';
+
+  if (!dosage) {
+    // If no unit matched, take the first short phrase up to first delimiter
+    const firstSentence = clean.split(/[.,;\n]/)[0].trim();
+    dosage = firstSentence.length <= 35 ? firstSentence : firstSentence.slice(0, 32) + '...';
+  }
+
+  return { dosage, usage: clean };
+}
+
 export class StateMachine {
   private state: AppState = 'Idle';
   private tts = new TtsManager();
@@ -26,6 +52,7 @@ export class StateMachine {
   private resStrength: HTMLElement;
   private resExpiry: HTMLElement;
   private resStatus: HTMLElement;
+  private resDescription: HTMLElement;
   private scanInstructions: HTMLElement;
   // Task 1.3: ARIA live region for assertive announcements
   private liveAssertive: HTMLElement;
@@ -51,6 +78,7 @@ export class StateMachine {
     this.resStrength = document.getElementById('res-strength')!;
     this.resExpiry = document.getElementById('res-expiry')!;
     this.resStatus = document.getElementById('res-status')!;
+    this.resDescription = document.getElementById('res-description')!;
     this.scanInstructions = document.getElementById('scan-instructions')!;
     this.liveAssertive = document.getElementById('live-assertive')!;
     this.cameraContainer = document.getElementById('camera-container')!;
@@ -238,7 +266,16 @@ export class StateMachine {
           
           if (consensusBrand) {
             this.resBrand.textContent = consensusBrand;
-            this.resStrength.textContent = bestStrength ? `Strength: ${bestStrength}` : 'Strength: Unknown';
+            const { dosage, usage } = parseDosageAndUsage(bestStrength);
+            this.resStrength.textContent = dosage ? `Strength: ${dosage}` : 'Strength: Unknown';
+            
+            if (usage && usage.length > 40) {
+              this.resDescription.innerHTML = `<strong>ℹ️ Details:</strong> ${usage}`;
+              this.resDescription.hidden = false;
+            } else {
+              this.resDescription.innerHTML = '';
+              this.resDescription.hidden = true;
+            }
             
             // Gap 1: Extract and display expiry date from accumulated reads
             const lastReadWithExpiry = [...this.accumulatedReads]
@@ -469,12 +506,19 @@ export class StateMachine {
                if (this.mode === 'document') {
                  // Document Mode: speak text verbatim, no DB lookup
                  this.resBrand.textContent = 'Document Text';
-                 this.resStrength.textContent = allText.slice(0, 500);
+                 this.resStrength.textContent = allText.length > 80 ? allText.slice(0, 80) + '...' : allText;
+                 if (allText.length > 80) {
+                   this.resDescription.textContent = allText;
+                   this.resDescription.hidden = false;
+                 } else {
+                   this.resDescription.innerHTML = '';
+                   this.resDescription.hidden = true;
+                 }
                  this.resExpiry.textContent = '';
                  this.resStatus.textContent = 'Read';
                  this.resStatus.className = 'status-badge';
                  this.transitionTo('Readout');
-                 this.tts.speakAssertive(allText);
+                 this.tts.speakAssertive(allText.slice(0, 250));
                  return;
                }
                
@@ -497,6 +541,10 @@ export class StateMachine {
   private resetUI() {
     this.visualToast.hidden = true;
     this.resultsCard.hidden = true;
+    if (this.resDescription) {
+      this.resDescription.hidden = true;
+      this.resDescription.innerHTML = '';
+    }
     this.triggerBtn.textContent = 'Start Scan';
     this.triggerBtn.removeAttribute('disabled');
   }
