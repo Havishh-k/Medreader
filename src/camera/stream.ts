@@ -65,11 +65,23 @@ export class CameraStream {
    * Checks if the active camera supports torch/flash mode.
    */
   hasTorch(): boolean {
-    if (!this.stream) return false;
+    if (!this.stream) {
+      // Check device constraint support if stream isn't open yet
+      const supported = (navigator.mediaDevices && navigator.mediaDevices.getSupportedConstraints)
+        ? (navigator.mediaDevices.getSupportedConstraints() as any)
+        : {};
+      return Boolean(supported.torch);
+    }
     const track = this.stream.getVideoTracks()[0];
     if (!track) return false;
     const capabilities = (track.getCapabilities ? track.getCapabilities() : {}) as any;
-    return Boolean(capabilities.torch);
+    if (typeof capabilities.torch === 'boolean') {
+      return capabilities.torch;
+    }
+    const supported = (navigator.mediaDevices && navigator.mediaDevices.getSupportedConstraints)
+      ? (navigator.mediaDevices.getSupportedConstraints() as any)
+      : {};
+    return Boolean(supported.torch);
   }
 
   get isTorchOn(): boolean {
@@ -80,12 +92,15 @@ export class CameraStream {
    * Turns the camera flash/torch on or off.
    */
   async setTorch(enabled: boolean): Promise<boolean> {
-    if (!this.stream) return false;
-    const track = this.stream.getVideoTracks()[0];
+    if (!this.stream) {
+      try {
+        await this.start();
+      } catch {
+        return false;
+      }
+    }
+    const track = this.stream?.getVideoTracks()[0];
     if (!track) return false;
-    
-    const capabilities = (track.getCapabilities ? track.getCapabilities() : {}) as any;
-    if (!capabilities.torch) return false;
 
     try {
       await (track as any).applyConstraints({
@@ -94,8 +109,18 @@ export class CameraStream {
       this._isTorchOn = enabled;
       return true;
     } catch (err) {
-      console.warn('[Camera] Failed to set torch:', err);
-      return false;
+      console.warn('[Camera] Standard torch constraint failed, trying fallback:', err);
+      try {
+        await (track as any).applyConstraints({
+          // @ts-ignore
+          torch: enabled
+        });
+        this._isTorchOn = enabled;
+        return true;
+      } catch (err2) {
+        console.warn('[Camera] Fallback torch failed:', err2);
+        return false;
+      }
     }
   }
 

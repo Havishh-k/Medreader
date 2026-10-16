@@ -57,39 +57,72 @@ export class StateMachine {
     this.focusRing = document.getElementById('focus-ring')!;
     this.torchBtn = document.getElementById('torch-btn')!;
 
-    // Tap on camera screen to focus
+    // Tap / Double-tap on camera screen
+    let lastTapTime = 0;
+    let singleTapTimer: ReturnType<typeof setTimeout> | null = null;
+
     this.cameraContainer.addEventListener('pointerdown', (e) => {
       if ((e.target as HTMLElement).closest('#torch-btn')) return;
 
+      const now = Date.now();
+      const timeSinceLast = now - lastTapTime;
+
+      // Double-tap threshold (40ms - 350ms): toggle scan
+      if (timeSinceLast > 40 && timeSinceLast < 350) {
+        if (singleTapTimer) {
+          clearTimeout(singleTapTimer);
+          singleTapTimer = null;
+        }
+        lastTapTime = 0;
+
+        if (this.state === 'Idle' || this.state === 'Readout') {
+          this.transitionTo('Guidance');
+        } else if (this.state === 'Guidance') {
+          this.transitionTo('Idle');
+        }
+        return;
+      }
+
+      lastTapTime = now;
+
+      // Single tap (focus): delay slightly to allow double-tap detection
       const rect = this.cameraContainer.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
       const normX = Math.min(Math.max(x / rect.width, 0), 1);
       const normY = Math.min(Math.max(y / rect.height, 0), 1);
 
-      this.focusRing.style.left = `${x}px`;
-      this.focusRing.style.top = `${y}px`;
-      this.focusRing.hidden = false;
-      this.focusRing.classList.remove('focus-ring--active');
-      void this.focusRing.offsetWidth; // force DOM reflow
-      this.focusRing.classList.add('focus-ring--active');
-
-      setTimeout(() => {
+      singleTapTimer = setTimeout(() => {
+        this.focusRing.style.left = `${x}px`;
+        this.focusRing.style.top = `${y}px`;
+        this.focusRing.hidden = false;
         this.focusRing.classList.remove('focus-ring--active');
-        setTimeout(() => { this.focusRing.hidden = true; }, 250);
-      }, 600);
+        void this.focusRing.offsetWidth; // force DOM reflow
+        this.focusRing.classList.add('focus-ring--active');
 
-      this.camera.triggerFocus({ x: normX, y: normY });
+        setTimeout(() => {
+          this.focusRing.classList.remove('focus-ring--active');
+          setTimeout(() => { this.focusRing.hidden = true; }, 250);
+        }, 600);
+
+        this.camera.triggerFocus({ x: normX, y: normY });
+      }, 280);
     });
 
     // Manual torch / flash button
     this.torchBtn.addEventListener('click', async () => {
+      if (this.state === 'Idle') {
+        this.setToast('Start scan first to use flash');
+        this.tts.speakPolite('Start scan first to use flash');
+        return;
+      }
       this.autoTorchTriggered = true;
       const nextState = !this.camera.isTorchOn;
       const ok = await this.camera.setTorch(nextState);
       if (ok) {
         this.torchBtn.classList.toggle('torch-btn--active', nextState);
         this.setToast(nextState ? 'Flash ON' : 'Flash OFF');
+        this.tts.speakPolite(nextState ? 'Flash on' : 'Flash off');
       } else {
         this.setToast('Flash not available on this device');
       }
@@ -308,8 +341,8 @@ export class StateMachine {
         
         // Task 1.2: Branch based on mode
         if (this.mode === 'medicine') {
-          // Medicine Mode: ONNX pipeline (or Tesseract fallback), NO Otsu, PSM 11 (sparse scene text), DB worker
-          this.pipeline = new ExtractionPipeline('onnx', '11', false);
+          // Medicine Mode: Tesseract PSM 11 (sparse scene text), DB worker
+          this.pipeline = new ExtractionPipeline('tesseract', '11', false);
           this.ensureDbWorker();
         } else {
           // Document Mode: Tesseract PSM 3 only with Otsu, NO DB worker (saves memory)
@@ -407,8 +440,8 @@ export class StateMachine {
             this.tts.speakPolite(hint);
           }
           
-          // Continuous Real-Time Extraction
-          if (frames.length >= 2 && currentQuality.composite > 0.35 && !this.isExtracting) {
+          // Continuous Real-Time Extraction: trigger whenever frame buffer has frames and adequate clarity
+          if (frames.length >= 1 && (currentQuality.composite > 0.15 || currentQuality.sharpness > 30) && !this.isExtracting) {
             this.isExtracting = true;
             console.log('[Scan] Triggering extraction, frames:', frames.length,
               'composite:', currentQuality.composite.toFixed(3),

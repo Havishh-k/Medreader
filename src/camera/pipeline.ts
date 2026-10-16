@@ -56,11 +56,14 @@ class RealOcrWorker {
           applyOtsuThreshold(ctx, canvas.width, canvas.height);
         } else {
           // ─── Medicine Mode Pipeline ───
-          // ROI Crop (85%) with natural colors preserved.
-          // Tesseract's internal Leptonica engine handles adaptive local binarization.
-          const cropped = await cropROI(bmp);
+          // Center 90% crop to avoid clipping text on package edges
+          const sw = bmp.width * 0.9;
+          const sh = bmp.height * 0.9;
+          const sx = bmp.width * 0.05;
+          const sy = bmp.height * 0.05;
+          const cropped = await createImageBitmap(bmp, sx, sy, sw, sh);
           
-          const scale = cropped.width < 800 ? 1.5 : 1.0;
+          const scale = cropped.width < 900 ? 1.5 : 1.0;
           canvas = new OffscreenCanvas(cropped.width * scale, cropped.height * scale);
           ctx = canvas.getContext('2d', { willReadFrequently: true })!;
           ctx.imageSmoothingEnabled = true;
@@ -68,8 +71,8 @@ class RealOcrWorker {
           ctx.drawImage(cropped, 0, 0, canvas.width, canvas.height);
           cropped.close();
           
-          // Gentle linear contrast stretch to make text crisp without introducing noise
-          this.stretchContrast(ctx, canvas.width, canvas.height);
+          // High-clarity grayscale conversion (ITU-R BT.601) to preserve anti-aliased character edges
+          this.toGrayscale(ctx, canvas.width, canvas.height);
         }
         
         const blob = await canvas.convertToBlob({ type: 'image/png' });
@@ -90,21 +93,14 @@ class RealOcrWorker {
     }
   }
 
-  private stretchContrast(ctx: OffscreenCanvasRenderingContext2D, width: number, height: number): void {
+  private toGrayscale(ctx: OffscreenCanvasRenderingContext2D, width: number, height: number): void {
     const imgData = ctx.getImageData(0, 0, width, height);
     const d = imgData.data;
-    let min = 255, max = 0;
-    for (let i = 0; i < d.length; i += 16) {
-      const luma = (d[i] * 299 + d[i + 1] * 587 + d[i + 2] * 114) / 1000;
-      if (luma < min) min = luma;
-      if (luma > max) max = luma;
-    }
-    if (max - min < 25) return;
-    const factor = 255 / (max - min);
     for (let i = 0; i < d.length; i += 4) {
-      d[i] = Math.min(255, Math.max(0, (d[i] - min) * factor));
-      d[i + 1] = Math.min(255, Math.max(0, (d[i + 1] - min) * factor));
-      d[i + 2] = Math.min(255, Math.max(0, (d[i + 2] - min) * factor));
+      const luma = (d[i] * 299 + d[i + 1] * 587 + d[i + 2] * 114) / 1000;
+      d[i] = luma;
+      d[i + 1] = luma;
+      d[i + 2] = luma;
     }
     ctx.putImageData(imgData, 0, 0);
   }
@@ -131,7 +127,7 @@ export class ExtractionPipeline {
   private psmMode: '3' | '6' | '11';
   private isDocumentMode: boolean;
 
-  constructor(engine: OcrEngine = 'onnx', psmMode: '3' | '6' | '11' = '11', isDocumentMode: boolean = false) {
+  constructor(engine: OcrEngine = 'tesseract', psmMode: '3' | '6' | '11' = '11', isDocumentMode: boolean = false) {
     this.engine = engine;
     this.psmMode = psmMode;
     this.isDocumentMode = isDocumentMode;
@@ -150,7 +146,7 @@ export class ExtractionPipeline {
 
   pushFrame(bitmap: ImageBitmap) {
     const quality = analyzeFrame(bitmap);
-    if (quality.composite > 0.2) {
+    if (quality.composite > 0.1 || quality.sharpness > 25) {
       this.buffer.add(bitmap, quality);
     } else {
       bitmap.close();
