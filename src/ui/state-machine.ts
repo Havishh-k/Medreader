@@ -4,6 +4,7 @@ import { HintGenerator } from '../guidance/hints';
 import { ExtractionPipeline } from '../camera/pipeline';
 import { CameraStream } from '../camera/stream';
 import { vibrateLock, vibrateSuccess, vibrateError } from '../guidance/vibration';
+import { ICONS } from './icons';
 
 export type AppState = 'Idle' | 'Guidance' | 'Readout';
 
@@ -109,9 +110,9 @@ export class StateMachine {
     // Sound mute/unmute header button
     this.soundBtn.addEventListener('click', () => {
       const isMuted = this.sonification.toggleMute();
-      this.soundIcon.textContent = isMuted ? '🔇' : '🔊';
+      this.soundIcon.innerHTML = isMuted ? ICONS.volumeMute(20) : ICONS.volume(20);
       this.soundBtn.setAttribute('aria-label', isMuted ? 'Unmute Audio Guidance Tone' : 'Mute Audio Guidance Tone');
-      this.setToast(isMuted ? 'Guidance Tone Muted' : 'Guidance Tone On', isMuted ? '🔇' : '🔊');
+      this.setToast(isMuted ? 'Guidance Tone Muted' : 'Guidance Tone On', isMuted ? ICONS.volumeMute(18) : ICONS.volume(18));
       if ('vibrate' in navigator) {
         try { navigator.vibrate(35); } catch {}
       }
@@ -132,9 +133,9 @@ export class StateMachine {
       const textToCopy = `MedReader Prescription Info:\nBrand: ${this.resBrand.textContent}\nStrength: ${this.resStrength.textContent}\nExpiry: ${this.resExpiry.textContent}\n${this.resDescription.textContent ? 'Details: ' + this.resDescription.textContent : ''}`;
       try {
         await navigator.clipboard.writeText(textToCopy);
-        this.setToast('Copied to clipboard! ✓', '📋');
+        this.setToast('Copied to clipboard!', ICONS.check(18));
       } catch (err) {
-        this.setToast('Failed to copy', '❌');
+        this.setToast('Failed to copy', ICONS.xCircle(18));
       }
       if ('vibrate' in navigator) {
         try { navigator.vibrate(35); } catch {}
@@ -195,10 +196,10 @@ export class StateMachine {
         }, 600);
 
         if (this.state === 'Guidance') {
-          this.setToast('Focusing camera...', '🔍');
+          this.setToast('Focusing camera...', ICONS.target(18));
           const ok = await this.camera.triggerFocus({ x: normX, y: normY });
           if (ok) {
-            this.setToast('Focused ✓', '🎯');
+            this.setToast('Focused', ICONS.check(18));
           }
         }
       }, 280);
@@ -207,7 +208,7 @@ export class StateMachine {
     // Manual torch / flash button
     this.torchBtn.addEventListener('click', async () => {
       if (this.state === 'Idle') {
-        this.setToast('Start scan first to use flash', '🔦');
+        this.setToast('Start scan first to use flash', ICONS.flashlight(18));
         this.tts.speakPolite('Start scan first to use flash');
         return;
       }
@@ -216,10 +217,10 @@ export class StateMachine {
       const ok = await this.camera.setTorch(nextState);
       if (ok) {
         this.torchBtn.classList.toggle('torch-btn--active', nextState);
-        this.setToast(nextState ? 'Flash ON' : 'Flash OFF', '🔦');
+        this.setToast(nextState ? 'Flash ON' : 'Flash OFF', ICONS.flashlight(18));
         this.tts.speakPolite(nextState ? 'Flash on' : 'Flash off');
       } else {
-        this.setToast('Flash not available on this device', '⚠️');
+        this.setToast('Flash not available on this device', ICONS.warning(18));
       }
     });
 
@@ -336,7 +337,7 @@ export class StateMachine {
             this.resStrength.textContent = dosage || 'Standard';
             
             if (usage && usage.length > 40) {
-              this.resDescription.innerHTML = `<strong>ℹ️ Directions & Details:</strong><br/>${usage}`;
+              this.resDescription.innerHTML = `<strong>Directions & Details:</strong><br/>${usage}`;
               this.resAccordion.hidden = false;
               this.resAccordion.open = false;
             } else {
@@ -359,7 +360,7 @@ export class StateMachine {
               
               this.resExpiry.textContent = isExpired 
                 ? `EXPIRED: ${monthNames[month-1]} ${year}` 
-                : `${monthNames[month-1]} ${year} ✓`;
+                : `${monthNames[month-1]} ${year} (Valid)`;
               
               if (isExpired) {
                 this.resStatus.textContent = "Expired";
@@ -454,7 +455,7 @@ export class StateMachine {
         this.accumulatedReads = [];
         this.consensusAttempts = 0;
         this.scanBtnText.textContent = 'Stop Scan';
-        this.scanBtnIcon.textContent = '🛑';
+        this.scanBtnIcon.innerHTML = ICONS.stop(20);
         if (this.scannerLaser) this.scannerLaser.hidden = false;
         
         // Task 1.2: Branch based on mode
@@ -471,7 +472,7 @@ export class StateMachine {
         // Only unmute if TalkBack mode active or user unmuted via header
         if (this.tts.talkbackMode) {
           this.sonification.unmute();
-          this.soundIcon.textContent = '🔊';
+          this.soundIcon.innerHTML = ICONS.volume(20);
         }
         
         this.hints.resetThrottle();
@@ -498,7 +499,7 @@ export class StateMachine {
         this.resultsCard.hidden = false;
         this.triggerBtn.removeAttribute('disabled');
         this.scanBtnText.textContent = 'Scan Again';
-        this.scanBtnIcon.textContent = '🔄';
+        this.scanBtnIcon.innerHTML = ICONS.refresh(20);
         cancelAnimationFrame(this.rafId);
         if (this.pipeline) {
           this.pipeline.destroy();
@@ -552,7 +553,7 @@ export class StateMachine {
             this.camera.setTorch(true).then((ok) => {
               if (ok) {
                 this.torchBtn.classList.add('torch-btn--active');
-                this.setToast('Low light: Flash enabled', '💡');
+                this.setToast('Low light: Flash enabled', ICONS.lightbulb(18));
                 this.tts.speakPolite('Low light. Flash turned on.');
               }
             });
@@ -560,7 +561,7 @@ export class StateMachine {
           
           const hint = this.hints.generateHint(currentQuality);
           if (hint) {
-            this.setToast(hint, '📐');
+            this.setToast(hint, ICONS.ruler(18));
             this.tts.speakPolite(hint);
           }
           
@@ -605,8 +606,8 @@ export class StateMachine {
     this.rafId = requestAnimationFrame(this.loop);
   };
   
-  private setToast(msg: string, icon: string = '✨') {
-    if (this.toastIcon) this.toastIcon.textContent = icon;
+  private setToast(msg: string, iconHtml?: string) {
+    if (this.toastIcon) this.toastIcon.innerHTML = iconHtml || ICONS.sparkle(18);
     if (this.toastMsg) this.toastMsg.textContent = msg;
     this.visualToast.hidden = false;
   }
@@ -628,7 +629,7 @@ export class StateMachine {
       this.resDescription.innerHTML = '';
     }
     this.scanBtnText.textContent = 'Start Scan';
-    this.scanBtnIcon.textContent = '⚡';
+    this.scanBtnIcon.innerHTML = ICONS.zap(20);
     this.triggerBtn.removeAttribute('disabled');
   }
 

@@ -69,8 +69,16 @@ html, body {
 }
 
 .brand-pill-icon {
-  font-size: 1.4rem;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+  display: flex;
+  align-items: center;
+  color: var(--accent-primary);
+  filter: drop-shadow(0 2px 6px var(--accent-glow));
+}
+
+.svg-icon {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
 }
 
 .brand-title {
@@ -518,9 +526,17 @@ html, body {
   color: #ffffff;
 }
 
+.accordion-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .accordion-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: transform 0.2s ease;
-  font-size: 0.85rem;
 }
 
 details[open] .accordion-arrow {

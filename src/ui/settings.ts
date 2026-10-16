@@ -1,3 +1,5 @@
+import { ICONS } from './icons';
+
 export class SettingsScreen {
   private btn: HTMLElement;
   private modal: HTMLElement;
@@ -22,22 +24,26 @@ export class SettingsScreen {
       <div class="settings-sheet" role="dialog" aria-modal="true" aria-labelledby="settings-heading">
         <div class="settings-header">
           <h2 id="settings-heading">Settings & Preferences</h2>
-          <button id="close-settings" class="modal-close-btn" aria-label="Close Settings" title="Close">✕</button>
+          <button id="close-settings" class="modal-close-btn" aria-label="Close Settings" title="Close">
+            ${ICONS.close(20)}
+          </button>
         </div>
 
         <!-- Voice & Audio Guidance -->
         <div class="settings-section">
-          <h3 class="settings-section-title">🔊 Speech & Audio</h3>
+          <h3 class="settings-section-title">
+            ${ICONS.volume(16)} <span>Speech & Audio</span>
+          </h3>
           <div class="settings-card">
             <div class="settings-row">
               <div class="settings-row-label">
                 <span class="settings-label-title">Language</span>
-                <span class="settings-label-desc">Text-to-Speech voice language</span>
+                <span class="settings-label-desc">Voice synthesizer language</span>
               </div>
               <select id="lang-select" class="settings-select" aria-label="Language selection">
-                <option value="en">English 🇬🇧</option>
-                <option value="hi">Hindi 🇮🇳</option>
-                <option value="mr">Marathi 🇮🇳</option>
+                <option value="en">English (US/UK)</option>
+                <option value="hi">Hindi (हिंदी)</option>
+                <option value="mr">Marathi (मराठी)</option>
               </select>
             </div>
 
@@ -69,7 +75,9 @@ export class SettingsScreen {
 
         <!-- Visual Accessibility -->
         <div class="settings-section">
-          <h3 class="settings-section-title">👁️ Visual Accessibility</h3>
+          <h3 class="settings-section-title">
+            ${ICONS.eye(16)} <span>Visual Accessibility</span>
+          </h3>
           <div class="settings-card">
             <div class="settings-row">
               <div class="settings-row-label">
@@ -86,22 +94,24 @@ export class SettingsScreen {
 
         <!-- Gesture Shortcuts Guide -->
         <div class="settings-section">
-          <h3 class="settings-section-title">⚡ Interactive Gesture Guide</h3>
+          <h3 class="settings-section-title">
+            ${ICONS.tap(16)} <span>Interactive Gesture Guide</span>
+          </h3>
           <div class="gesture-grid">
             <div class="gesture-card">
-              <span class="gesture-icon-title">👆 Single Tap</span>
+              <span class="gesture-icon-title">${ICONS.tap(18)} <span>Single Tap</span></span>
               <span class="gesture-desc">Tap camera viewfinder anywhere to trigger physical autofocus.</span>
             </div>
             <div class="gesture-card">
-              <span class="gesture-icon-title">✌️ Double Tap</span>
+              <span class="gesture-icon-title">${ICONS.doubleTap(18)} <span>Double Tap</span></span>
               <span class="gesture-desc">Quick double-tap anywhere on screen to toggle start/stop scan.</span>
             </div>
             <div class="gesture-card">
-              <span class="gesture-icon-title">🔦 Flash Button</span>
+              <span class="gesture-icon-title">${ICONS.flashlight(18)} <span>Flashlight</span></span>
               <span class="gesture-desc">Tap torch icon in top-right to illuminate label in dark rooms.</span>
             </div>
             <div class="gesture-card">
-              <span class="gesture-icon-title">⌨️ Remote Trigger</span>
+              <span class="gesture-icon-title">${ICONS.keyboard(18)} <span>Remote Shutter</span></span>
               <span class="gesture-desc">Press Spacebar, Enter, or Bluetooth shutter button to scan.</span>
             </div>
           </div>
@@ -111,7 +121,7 @@ export class SettingsScreen {
       </div>
     `;
 
-    // Close handlers (both top ✕ and bottom Done button)
+    // Close handlers (both top close button and bottom Done button)
     const handleClose = (e: Event) => {
       e.preventDefault();
       e.stopPropagation();
