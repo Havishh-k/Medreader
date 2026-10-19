@@ -3,14 +3,14 @@
 **Project Title:** OCR-Based Accessible Document and Medicine Label Reader with Audio Output
 **Institution:** Vidyalankar School of Information Technology (VSIT)
 **Project Type:** Community Engagement Project (CEP) — Final Year
-**Working Product Name:** MedReader
+**Working Product Name:** EchoSight
 **Platform:** Progressive Web App (PWA) — 100% Offline, Client-Side
 **Version:** 0.1 (Pre-Demo Draft)
 
 ---
 
 > [!IMPORTANT]
-> This document is the authoritative engineering reference for the MedReader project. It merges a full static analysis of the existing codebase with a peer-reviewed research dossier to produce actionable specifications across architecture, datasets, engineering tasks, evaluation methodology, academic citations, and institutional chapter mapping.
+> This document is the authoritative engineering reference for the EchoSight project. It merges a full static analysis of the existing codebase with a peer-reviewed research dossier to produce actionable specifications across architecture, datasets, engineering tasks, evaluation methodology, academic citations, and institutional chapter mapping.
 
 ---
 
@@ -29,7 +29,7 @@
 
 ### 1.1 Current Codebase Analysis
 
-The existing MedReader repository is a Vite-based TypeScript Progressive Web App. The following table summarises the implemented modules as they exist in the current workspace:
+The existing EchoSight repository is a Vite-based TypeScript Progressive Web App. The following table summarises the implemented modules as they exist in the current workspace:
 
 | Module | Location | Status | Key Responsibility |
 |:--|:--|:--|:--|
@@ -299,7 +299,7 @@ golden_dataset/
 
 **Collection Protocol:**
 1. Capture device: Budget Android phone (₹10–15K, 3–4 GB RAM) — matches target user hardware.
-2. All frames captured via the MedReader PWA's own `CameraStream.grabFrame()` to ensure identical sensor preprocessing.
+2. All frames captured via the EchoSight PWA's own `CameraStream.grabFrame()` to ensure identical sensor preprocessing.
 3. Each frame is captured 3 times; the median-quality frame (by Laplacian variance) is selected as the canonical sample.
 4. Ground truth text is manually transcribed by two independent annotators; disagreements resolved by a third.
 5. Medicine ground truth is additionally verified against the `medicines.db` database entry.
@@ -583,7 +583,7 @@ FPR = FP / (FP + TN)    [Rate of dangerous hallucinations]
 FNR = FN / (FN + TP)    [Rate of unnecessary abstentions]
 ```
 
-**Design philosophy of MedReader:**
+**Design philosophy of EchoSight:**
 
 > The system is explicitly designed to drive **FPR → 0%** at the cost of an elevated FNR. A false negative (temporary silence while the user adjusts the camera) is vastly preferable to a false positive (speaking an incorrect drug name that could cause harm).
 
@@ -661,43 +661,43 @@ The following references are formatted in strict MLA 9th Edition style. All cita
 
 1. Zhao, Yuhang, et al. "Finding the Target: Assisting Blind Users in Framing Objects for Computer Vision." *Proceedings of the 2018 CHI Conference on Human Factors in Computing*, Association for Computing Machinery, 2018, pp. 1–13. doi:10.1145/3173574.3173601.
 
-    > *Relevance:* Foundational study on the camera framing challenge for blind users. Demonstrates that sonification (non-speech audio) significantly improves framing accuracy over verbose speech instructions. Directly informs MedReader's `SonificationEngine` design.
+    > *Relevance:* Foundational study on the camera framing challenge for blind users. Demonstrates that sonification (non-speech audio) significantly improves framing accuracy over verbose speech instructions. Directly informs EchoSight's `SonificationEngine` design.
 
 2. Bujacz, Michał, et al. "Sonification of 3D Scenes in Electronic Travel Aids for the Blind." *IEEE Transactions on Human-Machine Systems*, vol. 46, no. 2, 2016, pp. 277–286. doi:10.1109/THMS.2015.2467693.
 
-    > *Relevance:* Exhaustive treatment of spatial audio mapping for blind navigation. Establishes pitch modulation and Geiger-counter ticking as effective paradigms for conveying spatial confidence. MedReader's pitch-mapped oscillator (220–880 Hz) is directly derived from this work.
+    > *Relevance:* Exhaustive treatment of spatial audio mapping for blind navigation. Establishes pitch modulation and Geiger-counter ticking as effective paradigms for conveying spatial confidence. EchoSight's pitch-mapped oscillator (220–880 Hz) is directly derived from this work.
 
 3. McCann, R. M., et al. "Help Needed in Medication Self-Management for People with Visual Impairment: Case-Control Study." *British Journal of General Practice*, vol. 62, no. 601, 2012, pp. e530–e537. doi:10.3399/bjgp12X653570.
 
-    > *Relevance:* Clinical case-control study establishing the prevalence and severity of medication self-management errors among visually impaired populations. Provides the clinical imperative for MedReader's safe abstention gate.
+    > *Relevance:* Clinical case-control study establishing the prevalence and severity of medication self-management errors among visually impaired populations. Provides the clinical imperative for EchoSight's safe abstention gate.
 
 4. Weeraratne, C. L., et al. "Challenges Faced by Visually Disabled People in Use of Medicines, Self-Adopted Coping Strategies and Medicine-Related Mishaps." *WHO South-East Asia Journal of Public Health*, vol. 1, no. 3, 2012, pp. 256–267. doi:10.4103/2224-3151.207022.
 
-    > *Relevance:* Documents medication administration error rates (30.13%) and self-adopted coping strategies among visually disabled patients. Provides the South-East Asian epidemiological context for MedReader's Indian user base.
+    > *Relevance:* Documents medication administration error rates (30.13%) and self-adopted coping strategies among visually disabled patients. Provides the South-East Asian epidemiological context for EchoSight's Indian user base.
 
 5. Otsu, Nobuyuki. "A Threshold Selection Method from Gray-Level Histograms." *IEEE Transactions on Systems, Man, and Cybernetics*, vol. 9, no. 1, 1979, pp. 62–66. doi:10.1109/TSMC.1979.4310076.
 
-    > *Relevance:* Seminal paper defining Otsu's thresholding algorithm (inter-class variance maximisation). The mathematical foundation for MedReader's Document Mode binarisation pipeline.
+    > *Relevance:* Seminal paper defining Otsu's thresholding algorithm (inter-class variance maximisation). The mathematical foundation for EchoSight's Document Mode binarisation pipeline.
 
 6. Haas, Andreas, et al. "Bringing the Web up to Speed with WebAssembly." *Proceedings of the 38th ACM SIGPLAN Conference on Programming Language Design and Implementation*, Association for Computing Machinery, 2017, pp. 185–200. doi:10.1145/3062341.3062363.
 
-    > *Relevance:* Definitive technical specification of the WebAssembly execution model. Establishes the performance characteristics and memory constraints (linear memory, no automatic GC) that govern MedReader's WASM worker lifecycle management.
+    > *Relevance:* Definitive technical specification of the WebAssembly execution model. Establishes the performance characteristics and memory constraints (linear memory, no automatic GC) that govern EchoSight's WASM worker lifecycle management.
 
 7. Bakkum, Peter, et al. "Using Web Workers to Improve the Performance of Client-Side Web Applications." *IEEE Internet Computing*, vol. 18, no. 2, 2014, pp. 16–23. doi:10.1109/MIC.2014.22.
 
-    > *Relevance:* Empirical analysis of Web Worker performance impact on UI responsiveness. Validates MedReader's architectural decision to delegate all WASM computation (Tesseract, sql.js) to off-main-thread workers.
+    > *Relevance:* Empirical analysis of Web Worker performance impact on UI responsiveness. Validates EchoSight's architectural decision to delegate all WASM computation (Tesseract, sql.js) to off-main-thread workers.
 
 8. Brooke, John. "SUS: A 'Quick and Dirty' Usability Scale." *Usability Evaluation in Industry*, edited by Patrick W. Jordan et al., Taylor & Francis, 1996, pp. 189–194.
 
-    > *Relevance:* Establishes the System Usability Scale (SUS) scoring methodology. MedReader's mSUS adaptation preserves Brooke's odd/even reverse-scoring algorithm while eliminating visual-centric language.
+    > *Relevance:* Establishes the System Usability Scale (SUS) scoring methodology. EchoSight's mSUS adaptation preserves Brooke's odd/even reverse-scoring algorithm while eliminating visual-centric language.
 
 9. Smith, Ray. "An Overview of the Tesseract OCR Engine." *Ninth International Conference on Document Analysis and Recognition (ICDAR 2007)*, IEEE, 2007, pp. 629–633. doi:10.1109/ICDAR.2007.4376991.
 
-    > *Relevance:* Architectural overview of the Tesseract OCR engine, including page segmentation modes (PSMs). Provides the technical rationale for MedReader's PSM 11 selection for sparse pharmaceutical text and PSM 3 for structured documents.
+    > *Relevance:* Architectural overview of the Tesseract OCR engine, including page segmentation modes (PSMs). Provides the technical rationale for EchoSight's PSM 11 selection for sparse pharmaceutical text and PSM 3 for structured documents.
 
 10. Tian, Yong, et al. "Camera-Based Assistive Text Reading for Blind Persons." *IEEE International Conference on Image Processing (ICIP)*, IEEE, 2010, pp. 1549–1552. doi:10.1109/ICIP.2010.5651464.
 
-    > *Relevance:* Early work on camera-based text reading systems for blind users, establishing the complete pipeline from camera capture through OCR to text-to-speech. Validates MedReader's end-to-end architectural pattern.
+    > *Relevance:* Early work on camera-based text reading systems for blind users, establishing the complete pipeline from camera capture through OCR to text-to-speech. Validates EchoSight's end-to-end architectural pattern.
 
 ---
 
@@ -725,7 +725,7 @@ The following references are formatted in strict MLA 9th Edition style. All cita
 |:--|:--|:--|
 | 2.1 Stakeholder Analysis | Persona table (P1: Independent TalkBack user, P2: Low-vision older adult, P3: Family caregiver) with needs and priority. | `01-PRD.md` §4 |
 | 2.2 Literature Review | Full research dossier content: HCI for VI (screen readers vs. voice assistants), sonification for navigation, pharmaceutical packaging CV challenges, clinical medication error statistics, binarisation algorithms (Otsu), hallucination prevention (skeletons, trigrams, Levenshtein), WebAssembly architecture, ARIA live regions, Web Audio API. Cite all 10 MLA references from Section 5 of this document. | Research Dossier §Domains 1–5, This document §5 |
-| 2.3 Gap Analysis | Comparison table: Existing solutions (Seeing AI, Envision, Be My Eyes) vs. MedReader. Gaps identified: cloud dependency, no pharmaceutical verification, no safe abstention, no guided framing, no offline drug database. | Original analysis |
+| 2.3 Gap Analysis | Comparison table: Existing solutions (Seeing AI, Envision, Be My Eyes) vs. EchoSight. Gaps identified: cloud dependency, no pharmaceutical verification, no safe abstention, no guided framing, no offline drug database. | Original analysis |
 | 2.4 Functional Requirements | User journey J0 (first run) and J1 (guided scan) from PRD. Field priority table (P0: brand/strength/expiry, P1: generic/Rx warning, P2: manufacturer/batch). | `01-PRD.md` §5–6 |
 | 2.5 Non-Functional Requirements | Performance targets from this document §4.3.2 (TTFA ≤ 3s, TTR ≤ 15s), memory budget (< 512 MB peak WASM), WCAG 2.1 AAA compliance, offline-only (no network permission). | This document §3, §4 |
 
@@ -784,7 +784,7 @@ The following references are formatted in strict MLA 9th Edition style. All cita
 
 | Section | Content to Insert | Source |
 |:--|:--|:--|
-| 7.1 Community Impact | Quantitative: medication error reduction potential (baseline 30.13% → projected reduction with MedReader). Qualitative: independence, dignity, reduced reliance on sighted assistance. Link to SDG 3, 4, 10. | Research Dossier §Domain 2, `01-PRD.md` §2 |
+| 7.1 Community Impact | Quantitative: medication error reduction potential (baseline 30.13% → projected reduction with EchoSight). Qualitative: independence, dignity, reduced reliance on sighted assistance. Link to SDG 3, 4, 10. | Research Dossier §Domain 2, `01-PRD.md` §2 |
 | 7.2 Stakeholder Feedback | Interview summaries and observations from NAB (National Association for the Blind) and XRCVC (Xavier's Resource Centre for the Visually Challenged) engagement sessions. | `01-PRD.md` §9 (validation plan) |
 | 7.3 Deliverables | Source code repository (GitHub), `medicines.db` (pre-built offline database), golden dataset (100 samples with ground truth), mSUS questionnaire template, this Master Blueprint document, demo video. | Project artefacts |
 | 7.4 Deployment Architecture | PWA deployment: single `index.html` + `dist/` bundle + `medicines.db` served from any static host. Installable on Android via Chrome "Add to Home Screen". Service Worker provides full offline capability after first load. | `src/sw.ts`, `public/manifest.json` |

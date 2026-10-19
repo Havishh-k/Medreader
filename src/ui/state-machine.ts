@@ -130,7 +130,7 @@ export class StateMachine {
 
     // Copy prescription info to clipboard
     this.resCopyBtn.addEventListener('click', async () => {
-      const textToCopy = `MedReader Prescription Info:\nBrand: ${this.resBrand.textContent}\nStrength: ${this.resStrength.textContent}\nExpiry: ${this.resExpiry.textContent}\n${this.resDescription.textContent ? 'Details: ' + this.resDescription.textContent : ''}`;
+      const textToCopy = `EchoSight Prescription Info:\nBrand: ${this.resBrand.textContent}\nStrength: ${this.resStrength.textContent}\nExpiry: ${this.resExpiry.textContent}\n${this.resDescription.textContent ? 'Details: ' + this.resDescription.textContent : ''}`;
       try {
         await navigator.clipboard.writeText(textToCopy);
         this.setToast('Copied to clipboard!', ICONS.check(18));
@@ -698,7 +698,7 @@ export class StateMachine {
         } else if (this.state === 'Guidance') {
           this.toggleTorch();
         } else if (this.state === 'Idle') {
-          this.tts.speakPolite('MedReader ready. Double tap or swipe up to begin scanning.');
+          this.tts.speakPolite('EchoSight ready. Double tap or swipe up to begin scanning.');
         }
 
         if ('vibrate' in navigator) {
@@ -850,7 +850,7 @@ export class StateMachine {
               try { navigator.vibrate(30); } catch {}
             }
           } else if (this.state === 'Idle') {
-            this.tts.speakPolite('MedReader ready. Double tap to scan medicine.');
+            this.tts.speakPolite('EchoSight ready. Double tap to scan medicine.');
           }
         }, 280);
       }

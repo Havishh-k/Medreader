@@ -1,9 +1,9 @@
-# MedReader 💊
+# EchoSight 💊
 
 > **OCR-Based Accessible Document and Medicine Label Reader with Audio Output**  
 > *Final Year Community Engagement Project (CEP) — Vidyalankar School of Information Technology (VSIT)*
 
-MedReader is an offline-first, client-side Progressive Web App (PWA) designed to empower visually impaired and elderly users to independently and safely identify Indian medicine packaging and read printed documents through real-time camera assistance, computer vision preprocessing, multi-frame consensus, and multi-modal audio/haptic guidance.
+EchoSight is an offline-first, client-side Progressive Web App (PWA) designed to empower visually impaired and elderly users to independently and safely identify Indian medicine packaging and read printed documents through real-time camera assistance, computer vision preprocessing, multi-frame consensus, and multi-modal audio/haptic guidance.
 
 ---
 
@@ -56,7 +56,7 @@ npm run test
 
 ## 🌐 Deployment to Vercel
 
-MedReader is built completely as a static Progressive Web App (PWA). There is **no backend server or Python venv required** for runtime!
+EchoSight is built completely as a static Progressive Web App (PWA). There is **no backend server or Python venv required** for runtime!
 
 To deploy on Vercel:
 1. Push your repository to GitHub.

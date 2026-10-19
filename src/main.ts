@@ -13,4 +13,4 @@ if ('serviceWorker' in navigator) {
 const settings = new SettingsScreen();
 const stateMachine = new StateMachine();
 
-console.log("Medicine Reader App Initialised.");
+console.log("EchoSight App Initialised.");

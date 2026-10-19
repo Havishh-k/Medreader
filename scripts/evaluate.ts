@@ -220,7 +220,7 @@ async function evaluate(goldenDatasetPath: string) {
   }
 
   // ── Generate Markdown Report ──
-  let md = '# MedReader Benchmark Results\n\n';
+  let md = '# EchoSight Benchmark Results\n\n';
   md += `**Date:** ${new Date().toISOString()}\n\n`;
   md += '| Sample | Category | Raw CER | Raw WER | Post-Val CER | Post-Val WER | Abstain? | FP? | FN? | Notes |\n';
   md += '|:-------|:---------|:--------|:--------|:-------------|:-------------|:---------|:----|:----|:------|\n';

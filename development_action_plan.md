@@ -1,6 +1,6 @@
-# Development & Implementation Action Plan: MedReader
+# Development & Implementation Action Plan: EchoSight
 
-This document serves as the instructional roadmap for the engineering team to implement the dual-engine architecture, accessibility hardening, and evaluation harness outlined in the MedReader Master Project Blueprint. 
+This document serves as the instructional roadmap for the engineering team to implement the dual-engine architecture, accessibility hardening, and evaluation harness outlined in the EchoSight Master Project Blueprint. 
 
 **Instructions for Developers:**
 - Do not modify core algorithmic logic unless explicitly specified.

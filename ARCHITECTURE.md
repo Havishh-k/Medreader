@@ -1,6 +1,6 @@
-# MedReader: System Architecture and Data Flow
+# EchoSight: System Architecture and Data Flow
 
-MedReader is a privacy-first, offline-capable Progressive Web App (PWA) designed to help visually impaired users read medicine labels. It runs entirely on the client side using WebAssembly (WASM) for computer vision and database queries.
+EchoSight is a privacy-first, offline-capable Progressive Web App (PWA) designed to help visually impaired users read medicine labels. It runs entirely on the client side using WebAssembly (WASM) for computer vision and database queries.
 
 ## 1. Core Components
 

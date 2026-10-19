@@ -2,8 +2,8 @@
 
 const sw = self as any;
 
-const CACHE_NAME = 'med-reader-shell-v1';
-const HEAVY_CACHE_NAME = 'med-reader-models-v1';
+const CACHE_NAME = 'echosight-shell-v1';
+const HEAVY_CACHE_NAME = 'echosight-models-v1';
 
 const SHELL_ASSETS = [
   '/',

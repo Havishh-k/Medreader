@@ -1,4 +1,4 @@
-# MedReader Golden Dataset
+# EchoSight Golden Dataset
 
 Structured evaluation dataset for benchmarking OCR accuracy across medicine labels and documents.
 
@@ -62,7 +62,7 @@ golden_dataset/
 
 ## Capture Protocol
 
-1. Use the MedReader PWA's own camera (or any phone camera at similar resolution)
+1. Use the EchoSight PWA's own camera (or any phone camera at similar resolution)
 2. Hold at ~20cm for medicines, ~25cm for documents
 3. Capture in realistic conditions (some dim, some glossy, some angled)
 4. Name directories sequentially: MED-001, MED-002, ..., DOC-001, DOC-002, ...

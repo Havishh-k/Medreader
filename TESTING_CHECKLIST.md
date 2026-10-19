@@ -1,4 +1,4 @@
-# MedReader — Android Device Testing Checklist
+# EchoSight — Android Device Testing Checklist
 
 ## Prerequisites
 
