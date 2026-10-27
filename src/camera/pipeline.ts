@@ -5,6 +5,10 @@ import type { OcrResult } from '../workers/ocr.worker';
 import { createWorker } from 'tesseract.js';
 import { cropROI, applyUnsharpMask, applyCLAHE, applyOtsuThreshold } from './preprocess';
 
+const TESSERACT_WORKER_URL = new URL('../../node_modules/tesseract.js/dist/worker.min.js', import.meta.url).href;
+const TESSERACT_CORE_URL = new URL('../../node_modules/tesseract.js-core/tesseract-core-lstm.wasm.js', import.meta.url).href;
+const ENGLISH_DATA_URL = new URL('../../eng.traineddata', import.meta.url).href;
+
 class RealOcrWorker {
   onmessage: ((e: MessageEvent) => void) | null = null;
   private worker: Tesseract.Worker | null = null;
@@ -19,27 +23,32 @@ class RealOcrWorker {
   }
   
   async init() {
-    this.worker = await createWorker('eng', undefined, {
+    const response = await fetch(ENGLISH_DATA_URL);
+    if (!response.ok) throw new Error(`Failed to load English OCR data (${response.status})`);
+
+    this.worker = await createWorker([{ code: 'eng', data: new Uint8Array(await response.arrayBuffer()) }], undefined, {
+      workerPath: TESSERACT_WORKER_URL,
+      corePath: TESSERACT_CORE_URL,
       workerBlobURL: true,
     });
     await this.worker.setParameters({
       tessedit_pageseg_mode: this.psm as any,
-      user_defined_dpi: '70',
+      preserve_interword_spaces: '1',
+      user_defined_dpi: '300',
     });
     this.onmessage?.({ data: { type: 'init_done' } } as MessageEvent);
   }
   
   async postMessage(msg: any) {
     if (msg.type === 'process') {
-      await this.initPromise;
-      
-      if (!this.worker || !msg.payload.bitmap) {
-        this.onmessage?.({ data: { type: 'process_done', id: msg.payload.id, results: [] } } as MessageEvent);
-        return;
-      }
-      
+      const bmp = msg.payload.bitmap as ImageBitmap | undefined;
       try {
-        const bmp = msg.payload.bitmap as ImageBitmap;
+        await this.initPromise;
+        if (!this.worker || !bmp) {
+          this.onmessage?.({ data: { type: 'process_done', id: msg.payload.id, results: [] } } as MessageEvent);
+          return;
+        }
+
         let canvas: OffscreenCanvas;
         let ctx: OffscreenCanvasRenderingContext2D;
 
@@ -89,7 +98,9 @@ class RealOcrWorker {
         } as MessageEvent);
       } catch (err) {
         console.error("[OCR] Tesseract err:", err);
-        this.onmessage?.({ data: { type: 'process_done', id: msg.payload.id, results: [] } } as MessageEvent);
+        this.onmessage?.({ data: { type: 'process_error', id: msg.payload.id, error: String(err) } } as MessageEvent);
+      } finally {
+        bmp?.close();
       }
     }
   }

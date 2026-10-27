@@ -373,7 +373,7 @@ export class StateMachine {
         
         // Task 1.2: Branch based on mode
         if (this.mode === 'medicine') {
-          this.pipeline = new ExtractionPipeline('tesseract', '3', false);
+          this.pipeline = new ExtractionPipeline('tesseract', '11', false);
           this.ensureDbWorker();
         } else {
           this.pipeline = new ExtractionPipeline('tesseract', '3', true);
