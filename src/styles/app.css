@@ -100,10 +100,10 @@ html, body {
   background: var(--surface-card);
   border: 1px solid var(--border-subtle);
   color: var(--text-primary);
-  width: 44px;
-  height: 44px;
-  min-width: 44px;
-  min-height: 44px;
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
   border-radius: 50%;
   font-size: 1.15rem;
   display: flex;
@@ -119,50 +119,29 @@ html, body {
   background: var(--surface-hover);
 }
 
-/* ─── Mode Toggle (Pill Selector) ─── */
-.mode-toggle {
-  display: flex;
-  gap: 4px;
-  padding: 8px 16px;
-  background: var(--panel-bg);
-  border-bottom: 1px solid var(--border-subtle);
-  flex-shrink: 0;
-}
-
-.mode-btn {
-  flex: 1;
-  min-height: 46px;
-  padding: 10px 14px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
-  background: var(--surface-card);
-  color: var(--text-secondary);
-  cursor: pointer;
+/* ─── Automatic content detection status ─── */
+.auto-detect-banner {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  -webkit-tap-highlight-color: transparent;
+  min-height: 44px;
+  padding: 9px 16px;
+  background: var(--panel-bg);
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  flex-shrink: 0;
 }
 
-.mode-btn .mode-icon {
-  font-size: 1.05rem;
-}
-
-.mode-btn--active {
-  background: var(--accent-primary);
-  color: #000000;
+.auto-detect-banner strong {
+  color: var(--text-primary);
   font-weight: 700;
-  border-color: var(--accent-light);
-  box-shadow: 0 2px 10px var(--accent-glow);
 }
 
-.mode-btn:focus-visible {
-  outline: 3px solid var(--accent-primary);
-  outline-offset: 2px;
+.auto-detect-banner svg {
+  color: var(--accent-primary);
+  flex-shrink: 0;
 }
 
 /* ─── Camera Viewport & Assistive Scanner HUD ─── */
@@ -553,6 +532,7 @@ details[open] .accordion-arrow {
   line-height: 1.5;
   color: var(--text-secondary);
   word-break: break-word;
+  white-space: pre-wrap;
   max-height: 140px;
   overflow-y: auto;
 }
@@ -572,7 +552,7 @@ details[open] .accordion-arrow {
   background: var(--panel-bg);
   border: 1px solid var(--border-subtle);
   color: var(--text-primary);
-  min-height: 42px;
+  min-height: 48px;
   padding: 8px 12px;
   font-size: 0.88rem;
   font-weight: 600;
@@ -838,17 +818,6 @@ details[open] .accordion-arrow {
 
 [data-high-contrast="true"] * {
   font-size: max(inherit, 17px) !important;
-}
-
-[data-high-contrast="true"] .mode-btn {
-  border: 2px solid #ffff00;
-  color: #ffffff;
-}
-
-[data-high-contrast="true"] .mode-btn--active {
-  background: #ffff00;
-  color: #000000;
-  font-weight: 900;
 }
 
 [data-high-contrast="true"] .reticle-corner {

@@ -3,27 +3,31 @@
 > **OCR-Based Accessible Document and Medicine Label Reader with Audio Output**  
 > *Final Year Community Engagement Project (CEP) — Vidyalankar School of Information Technology (VSIT)*
 
-EchoSight is an offline-first, client-side Progressive Web App (PWA) designed to empower visually impaired and elderly users to independently and safely identify Indian medicine packaging and read printed documents through real-time camera assistance, computer vision preprocessing, multi-frame consensus, and multi-modal audio/haptic guidance.
+EchoSight is an offline-capable, client-side Progressive Web App (PWA) designed to help visually impaired and elderly users identify Indian medicine packaging and read printed medical reports through real-time camera assistance, multi-frame consensus, and audio/haptic guidance. Complete one online scan before relying on the installed app offline so its runtime OCR and medicine assets are cached.
 
 ---
 
 ## 🌟 Key Features
 
-1. **Dual Scanning Modes**:
-   - **Medicine Mode**: ROI cropping, non-destructive contrast preservation, Tesseract.js (PSM 3) / ONNX DBNet+SVTR pipeline, fuzzy trigram matching against a 7,056-brand Indian medicine SQLite database, and multi-frame consensus voting (3/5 agreement).
-   - **Document Mode**: Otsu global binarization, Tesseract.js (PSM 3) full-page reading, and verbatim text-to-speech without database lookups.
+1. **One Automatic Scanner**:
+   - Users scan once; EchoSight distinguishes medicine packaging from printed documents and clinical reports without a mode switch.
+   - Medicine labels use colour-aware preprocessing, Tesseract.js sparse-text recognition, fuzzy SQLite matching, and multi-frame consensus.
+   - Reports receive an adaptive full-page OCR pass, keep their complete recognized text, and are read aloud in browser-safe speech chunks.
 2. **Safety Architecture**:
-   - **Multi-Frame Consensus**: Eliminates single-frame hallucination by requiring rolling consensus across 5 captured frames.
-   - **Safe Abstention Gate**: After 10 failed identification cycles, gracefully abstains with a voice prompt: *"Unable to verify medicine. Please seek human assistance."*
+   - **Multi-Frame Consensus**: Uses a rolling window of 5 captured frames and requires the same medicine on at least 2 separate reads.
+   - **Safe Abstention Gate**: Unverified medicine scans eventually stop with the voice prompt: *"Unable to verify medicine. Please seek human assistance."*
    - **Expiry Date Detection**: Extracts expiry date strings (e.g. `EXP 11/27`, `Nov 2027`), verifies validity against current date, and flags expired medicine.
-3. **Accessibility (WCAG 2.1 AAA Compliant)**:
+3. **Accessibility-focused interface**:
    - **Audio Guidance**: Geiger-counter sonification clicking mode and pitch-shifted continuous tone indicating camera alignment and text proximity.
    - **Haptic Feedback**: Discrete vibration patterns for alignment lock (50ms), successful readout (100ms), and error/abstention.
-   - **High Contrast UI**: 21:1 black and yellow/white high-contrast visual layout for low-vision users.
+   - **High Contrast UI**: black and yellow/white high-contrast visual layout for low-vision users.
    - **Screen Reader Support**: Integrated ARIA live assertive and polite regions compatible with Android TalkBack.
-4. **100% Client-Side & Offline**:
-   - Runs in-browser via WebAssembly (`sql.js`, `tesseract.js`, `onnxruntime-web`) and Web Workers.
-   - Zero cloud API dependency — fully functional offline without internet access.
+4. **100% Client-Side Processing**:
+   - Runs in-browser via WebAssembly (`sql.js`, `tesseract.js`) and Web Workers.
+   - No report image or recognized text is sent to a cloud OCR service.
+5. **Official Medicine Provenance**:
+   - The bundled catalogue is generated from Mankind Pharma's official product list; every record stores its manufacturer and source URL.
+   - Ambiguous, very short, or common report words are rejected instead of being guessed as medicine names.
 
 ---
 
@@ -51,6 +55,15 @@ npm run dev
 npm run build
 npm run test
 ```
+
+### Refresh the medicine catalogue
+
+```bash
+# Downloads the current official source snapshot, validates it, then replaces the DB atomically
+npm run data:refresh
+```
+
+`data/official-medicines.json` is committed so normal builds are reproducible and do not require network access. `npm run data:build` rebuilds the SQLite file from that verified snapshot only.
 
 ---
 
@@ -81,6 +94,8 @@ Run the golden dataset benchmark evaluation:
 ```bash
 npx tsx scripts/evaluate.ts
 ```
+
+The benchmark exits with an error when no real `frame.png` samples are present. Do not report zero-sample output as OCR accuracy; use consented, de-identified medicine and clinical-report photos with ground truth.
 
 ---
 

@@ -236,6 +236,11 @@ async function evaluate(goldenDatasetPath: string) {
   const abstainCount = results.filter(r => r.abstained).length;
   const skippedCount = results.filter(r => r.notes.startsWith('SKIPPED')).length;
   const evaluated = results.filter(r => !r.notes.startsWith('SKIPPED'));
+  if (evaluated.length === 0) {
+    throw new Error(
+      'No real evaluation frames found. Add consented, de-identified frame.png samples to golden_dataset before reporting OCR accuracy.',
+    );
+  }
   const avgCER = evaluated.length > 0
     ? evaluated.reduce((s, r) => s + r.postValidationCER, 0) / evaluated.length : 0;
   const avgWER = evaluated.length > 0
@@ -270,4 +275,7 @@ async function evaluate(goldenDatasetPath: string) {
   console.log(`\nResults written to: benchmark_results.md, benchmark_results.csv`);
 }
 
-evaluate(path.join(__dirname, '..', 'golden_dataset')).catch(console.error);
+evaluate(path.join(__dirname, '..', 'golden_dataset')).catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});

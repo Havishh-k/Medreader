@@ -2,9 +2,43 @@ import { AriaAnnouncer } from './aria-announcer';
 
 export type SpeechLanguage = 'en' | 'hi' | 'mr';
 
+export function splitSpeechText(text: string, maxLength = 220): string[] {
+  const normalized = text.replace(/\s+/g, ' ').trim();
+  if (!normalized) return [];
+
+  const sentences = normalized.match(/[^.!?]+[.!?]+|[^.!?]+$/g) || [normalized];
+  const chunks: string[] = [];
+
+  for (const sentence of sentences.map(part => part.trim())) {
+    if (sentence.length <= maxLength) {
+      const last = chunks[chunks.length - 1];
+      if (last && last.length + sentence.length + 1 <= maxLength) {
+        chunks[chunks.length - 1] = `${last} ${sentence}`;
+      } else {
+        chunks.push(sentence);
+      }
+      continue;
+    }
+
+    const words = sentence.split(' ');
+    let chunk = '';
+    for (const word of words) {
+      if (chunk && chunk.length + word.length + 1 > maxLength) {
+        chunks.push(chunk);
+        chunk = word;
+      } else {
+        chunk = chunk ? `${chunk} ${word}` : word;
+      }
+    }
+    if (chunk) chunks.push(chunk);
+  }
+
+  return chunks;
+}
+
 export class TtsManager {
   private announcer = new AriaAnnouncer();
-  private eSpeakWorker: Worker | null = null;
+  private speechGeneration = 0;
   
   // By default we assume TalkBack is ON to be safe. User can toggle it in settings.
   // In a real app we might try `window.matchMedia('(prefers-reduced-motion: reduce)')` as a weak heuristic, 
@@ -58,6 +92,7 @@ export class TtsManager {
   }
   
   clear() {
+    this.speechGeneration++;
     this.announcer.clear();
     if (!this.talkbackMode && window.speechSynthesis) {
       window.speechSynthesis.cancel();
@@ -66,23 +101,24 @@ export class TtsManager {
 
   private synthNative(text: string) {
     if ('speechSynthesis' in window) {
-      // Chrome/Webkit bug: speech queue can get stuck silently. 
-      // Cancelling before speaking a new prompt ensures it fires immediately.
+      const generation = ++this.speechGeneration;
       window.speechSynthesis.cancel();
-      
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = this.rate;
-      
-      // Match voice to chosen language (en, hi, mr)
+      const chunks = splitSpeechText(text);
       const voices = window.speechSynthesis.getVoices();
-      if (voices.length > 0) {
-        const langPrefix = this.language === 'hi' ? 'hi' : this.language === 'mr' ? 'mr' : 'en';
-        const langVoice = voices.find(v => v.lang.toLowerCase().startsWith(langPrefix));
+      const langPrefix = this.language === 'hi' ? 'hi' : this.language === 'mr' ? 'mr' : 'en';
+      const langVoice = voices.find(v => v.lang.toLowerCase().startsWith(langPrefix));
+
+      const speakChunk = (index: number) => {
+        if (generation !== this.speechGeneration || index >= chunks.length) return;
+        const utterance = new SpeechSynthesisUtterance(chunks[index]);
+        utterance.rate = this.rate;
         if (langVoice) utterance.voice = langVoice;
-      }
-      
-      console.log(`[TTS] Speaking (${this.language}, ${this.rate}x): "${text}"`);
-      window.speechSynthesis.speak(utterance);
+        utterance.onend = () => speakChunk(index + 1);
+        window.speechSynthesis.speak(utterance);
+      };
+
+      console.log(`[TTS] Speaking ${chunks.length} chunk(s) (${this.language}, ${this.rate}x)`);
+      speakChunk(0);
     } else {
       console.warn('[TTS] Web Speech API not supported in this browser.');
     }

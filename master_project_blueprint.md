@@ -5,7 +5,7 @@
 **Project Type:** Community Engagement Project (CEP) — Final Year
 **Working Product Name:** EchoSight
 **Platform:** Progressive Web App (PWA) — 100% Offline, Client-Side
-**Version:** 0.1 (Pre-Demo Draft)
+**Version:** 0.2 (Historical planning document; verify implementation details against the current source and README)
 
 ---
 
@@ -38,10 +38,9 @@ The existing EchoSight repository is a Vite-based TypeScript Progressive Web App
 | Frame Buffer | `src/camera/buffer.ts` | ✅ Implemented | Rolling top-K buffer (K=6) sorted by composite quality score |
 | Image Preprocessing | `src/camera/preprocess.ts` | ✅ Implemented | ROI cropping (centre 60%), 2× upscale, 3×3 unsharp mask convolution, full CLAHE with bilinear tile interpolation |
 | Barcode Scanner | `src/camera/barcode.ts` | ✅ Scaffolded | `BarcodeDetector` API integration for QR/barcode fallback |
-| Extraction Pipeline | `src/camera/pipeline.ts` | ✅ Implemented | Orchestrator: selects best frame, dispatches to OCR worker, handles ONNX→Tesseract latency fallback |
-| OCR Worker (ONNX) | `src/workers/ocr.worker.ts` | ✅ Implemented | DBNet text detection + SVTR/CRNN CTC recognition via `onnxruntime-web` WASM |
+| Extraction Pipeline | `src/camera/pipeline.ts` | ✅ Implemented | Orchestrator: selects best frame and runs adaptive Tesseract recognition |
 | OCR Worker (Tesseract) | `src/camera/pipeline.ts` (`RealOcrWorker`) | ✅ Implemented | Tesseract.js v7 WASM, PSM 11 (Sparse Text), inline within pipeline module |
-| DB Worker (SQLite) | `src/workers/db.worker.ts` | ✅ Implemented | `sql.js` WASM loads 418 MB `medicines.db`; trigram retrieval + weighted Levenshtein matching |
+| DB Worker (SQLite) | `src/workers/db.worker.ts` | ✅ Implemented | `sql.js` WASM loads the provenance-tracked official catalogue; trigram retrieval + weighted Levenshtein matching |
 | Label Logic Engine | `src/core/label-logic.ts` | ✅ Implemented | Confusable skeleton normalisation, trigram codes, field extraction (strength regex, expiry regex), multi-frame temporal voting, safe abstention gate |
 | Sonification Engine | `src/guidance/sonification.ts` | ✅ Implemented | `AudioContext` → `OscillatorNode` (220–880 Hz) → `StereoPannerNode` → `GainNode`, maps composite score to pitch |
 | Hint Generator | `src/guidance/hints.ts` | ✅ Implemented | Throttled spoken hints (2.5 s cooldown): glare, coverage, centering, sharpness |
@@ -50,12 +49,12 @@ The existing EchoSight repository is a Vite-based TypeScript Progressive Web App
 | ARIA Announcer | `src/speech/aria-announcer.ts` | ✅ Implemented | Injects text into `#live-polite` and `#live-assertive` DOM regions |
 | State Machine | `src/ui/state-machine.ts` | ✅ Implemented | Three states: `Idle` → `Guidance` → `Readout`. Multi-frame consensus (3/5 agreement). Memory lifecycle management. |
 | Settings Screen | `src/ui/settings.ts` | ✅ Scaffolded | TalkBack toggle, speech rate, language selection |
-| Service Worker | `src/sw.ts` | ✅ Scaffolded | Cache-first offline strategy |
-| Evaluation Logger | `src/core/eval-logger.ts` | ✅ Implemented | Structured logging for automated CER/WER benchmarking |
+| Service Worker | `public/sw.js` | ✅ Implemented | Shell precache plus same-origin runtime caching after first complete load |
+| Evaluation Runner | `scripts/evaluate.ts` | ✅ Implemented | CER/WER benchmark that fails when no real frames are available |
 
 ### 1.2 The Dual-Engine Blueprint: Document Mode vs. Medicine Mode
 
-The project must support two fundamentally different OCR operating modes within a single PWA shell. The user selects the mode via a prominent, TalkBack-accessible toggle on the home screen.
+The project supports medicine labels and medical reports through one automatic scanner. The pipeline chooses sparse-label or full-page OCR behavior from scan evidence; the user does not need to select a mode.
 
 #### Module 1: Document Reader Mode
 
@@ -82,7 +81,7 @@ The project must support two fundamentally different OCR operating modes within 
 | **Sharpening** | 3×3 unsharp mask kernel `[0,-1,0,-1,5,-1,0,-1,0]` | `src/camera/preprocess.ts` L35–L86 |
 | **Contrast Enhancement** | CLAHE (8×8 tile grid, clip limit 3.0, bilinear interpolation) | `src/camera/preprocess.ts` L99–L236 |
 | **Tesseract PSM** | PSM 11 (Sparse text — find as much text as possible in no particular order) | `src/camera/pipeline.ts` L22–L24 |
-| **ONNX Pipeline** | DBNet (640×640 detection) → SVTR/CRNN (48×320 recognition) → CTC decoding | `src/workers/ocr.worker.ts` full file |
+| **OCR Pipeline** | Adaptive Tesseract recognition with medicine-specific preprocessing and a full-page report pass | `src/camera/pipeline.ts` |
 | **Confusable Skeletons** | `0→O, 1→I, L→I, 5→S, 8→B, 2→Z, 6→G, V→U, RN→M` | `src/core/label-logic.ts` L31–L33, `src/workers/db.worker.ts` L9–L11 |
 | **Trigram Inverted Index** | Base-37 trigram codes → SQLite `name_trigrams` table → Jaccard candidate retrieval | `src/workers/db.worker.ts` L35–L45, `schema.sql` L59–L64 |
 | **Weighted Levenshtein** | Confusable pairs cost 0.25 (not 1.0); length-scaled threshold: ≤4 chars → 0.5, ≤7 → 1.0, else → 1.5 | `src/workers/db.worker.ts` L47–L65 |
@@ -209,7 +208,7 @@ sequenceDiagram
 
 | Source | Description | Schema Alignment |
 |:--|:--|:--|
-| **Kaggle "A-Z Indian Medicine Dataset"** | ~354 MB CSV (`medicines.csv` already present in the workspace) containing brand names, generic/composition names, manufacturers, dosage forms, and strengths for tens of thousands of Indian-market drugs. | **Primary source.** The existing `scripts/build-db.cjs` ETL script parses this CSV and populates the SQLite schema. |
+| **Mankind Pharma official product list** | Manufacturer-published brand and molecule catalogue, captured with retrieval timestamp and source checksum. | **Current source.** `scripts/fetch-official-medicines.mjs` creates the provenance snapshot consumed by `scripts/build-db.cjs`. |
 | **CDSCO (Central Drugs Standard Control Organisation)** | India's national regulatory authority. Publishes approved drug lists, but not in machine-readable bulk format. | **Supplementary.** Manual cross-referencing for validation of brand family completeness. |
 | **National List of Essential Medicines (NLEM) 2022** | Government of India's curated list of ~384 essential medicines. | **Supplementary.** Can be used to prioritise brand families in the trigram index for faster retrieval of commonly encountered drugs. |
 
@@ -417,8 +416,6 @@ The existing codebase already implements critical memory management:
 |:--|:--|:--|
 | Tesseract WASM heap not freed on `RealOcrWorker.terminate()` | `pipeline.ts` L80–85 | The current `await this.worker.terminate()` call *should* release the WASM heap. Verify in Chrome DevTools Memory tab that the ~20–50 MB Tesseract heap is reclaimed. If not, add explicit `this.worker = null;` and `gc()` hint. |
 | `medicines.db` ArrayBuffer retained after DB Worker termination | `db.worker.ts` L73 | The `new Uint8Array(buf)` copies the ArrayBuffer into WASM linear memory. When `worker.terminate()` is called, the entire WASM context is destroyed. Verify the original `ArrayBuffer` from `fetch()` is also eligible for GC (it should be, since it's scoped to `initDb()`). |
-| ONNX model sessions not released | `ocr.worker.ts` L6–7 | `detSession` and `recSession` are module-level. When `worker.terminate()` is called, the entire WASM context is destroyed. No additional cleanup needed. |
-| `OffscreenCanvas` accumulation | `ocr.worker.ts` L188–193 | The reusable canvases (`detCanvas`, `recCanvas`, `srcCanvas`) are intentionally persistent to avoid GC thrashing. They are destroyed when the worker is terminated. This is correct behaviour. |
 
 ### 3.3 Canvas Pre-Processing Specifications
 
@@ -758,8 +755,8 @@ The following references are formatted in strict MLA 9th Edition style. All cita
 
 | Section | Content to Insert | Source |
 |:--|:--|:--|
-| 5.1 Technology Stack | TypeScript, Vite, Vitest, Tesseract.js v7 (WASM), `onnxruntime-web` (WASM), `sql.js` (WASM), Web Audio API, Web Speech API, Canvas 2D API, Service Workers. | `package.json`, This document §1.1 |
-| 5.2 Web Workers Implementation | Code walkthrough of `db.worker.ts` (trigram retrieval + weighted Levenshtein) and `ocr.worker.ts` (DBNet detection → SVTR recognition → CTC decoding). Include annotated code excerpts. | `src/workers/db.worker.ts`, `src/workers/ocr.worker.ts` |
+| 5.1 Technology Stack | TypeScript, Vite, Vitest, Tesseract.js v7 (WASM), `sql.js` (WASM), Web Audio API, Web Speech API, Canvas 2D API, Service Workers. | `package.json`, This document §1.1 |
+| 5.2 Web Workers Implementation | Code walkthrough of `db.worker.ts` (trigram retrieval + weighted Levenshtein) and the adaptive Tesseract pipeline. | `src/workers/db.worker.ts`, `src/camera/pipeline.ts` |
 | 5.3 Canvas Pre-Processing Filters | Code walkthrough of `preprocess.ts`: ROI cropping, 2× upscale, unsharp mask kernel `[0,-1,0,-1,5,-1,0,-1,0]`, CLAHE (8×8 tiles, clip limit 3.0, bilinear interpolation). Include annotated code excerpts with mathematical explanations. | `src/camera/preprocess.ts` |
 | 5.4 Frame Quality Analysis | Code walkthrough of `frame-quality.ts`: grayscale conversion, Laplacian variance computation, glare fraction, edge coverage, composite score formula. Include the mathematical formulation from this document §3.3.2. | `src/camera/frame-quality.ts` |
 | 5.5 Confusable Skeleton & Trigram Engine | Code walkthrough of `label-logic.ts` and `db.worker.ts`: skeleton mapping table, base-37 trigram code generation, Jaccard similarity retrieval, weighted edit distance (confusable pairs cost 0.25), length-scaled thresholds. | `src/core/label-logic.ts`, `src/workers/db.worker.ts` |
@@ -798,7 +795,7 @@ The following references are formatted in strict MLA 9th Edition style. All cita
 | 8.1 Summary of Achievements | Enumerate implemented features mapped to PRD goals G1–G5. Report best CER/WER and mSUS scores. | Chapters 5–7 synthesis |
 | 8.2 Limitations | WASM memory pressure on low-end devices, 418 MB database download size, PSM 11 hallucination rate before voting, lack of Devanagari OCR support in MVP, binary haptics (no directional feedback in PWA). | This document §3 |
 | 8.3 Future Scope | |
-| | **ONNX Pipeline Activation:** Replace Tesseract with DBNet + SVTR for 5× better accuracy on curved text (scaffolding already exists in `ocr.worker.ts`). | `OCR_ENHANCEMENTS.md` §3 |
+| | **Scene-text engine evaluation:** Compare a proven browser scene-text model against Tesseract on the real golden dataset before adding its download and memory cost. | `OCR_ENHANCEMENTS.md` §3 |
 | | **Devanagari/Hindi OCR:** Add `hin.traineddata` to Tesseract or train a Hindi SVTR model. | `01-PRD.md` §6 (J0.2 language selection) |
 | | **Native Android Port:** Kotlin + CameraX + PaddleOCR + Room SQLite for true directional haptics and lower memory footprint. | `03-Architecture.md` §1 |
 | | **GS1 Barcode Cross-Verification:** Parse QR/DataMatrix barcodes for GTIN, expiry, and batch number and cross-check against OCR output. | `03-Architecture.md` §M3 (GS1 parser) |

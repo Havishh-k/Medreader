@@ -28,10 +28,11 @@
 - [ ] **T2: Camera opens** — Tap "Start Scan"
   - Verify: Camera feed visible, framing guide rectangle shows
 
-- [ ] **T3: Mode toggle works** — Tap "Document" then "Medicine"
-  - Verify: Button highlights switch, active mode changes
+- [ ] **T3: Automatic reader is clear**
+  - Verify: One scan action is shown; no Document/Medicine choice is required
+  - Verify: Banner says medicines and medical reports are detected automatically
 
-### Medicine Mode
+### Medicine Scanning
 
 - [ ] **T4: Sonification** — Hold phone near a medicine label
   - Verify: Hear pitch change (continuous tone) or ticking (Geiger mode)
@@ -39,28 +40,29 @@
 - [ ] **T5: Medicine OCR** — Scan Otrivin Oxy label
   - Verify: Brand name "Otrivin" appears in results card
   - Verify: Strength shows (e.g., "10ml")
-  - Verify: Expiry date shows (if visible on label) OR "Not found on label"
+  - Verify: Expiry date shows (if visible on label) OR "Not specified"
 
 - [ ] **T6: TTS speaks result** — After medicine identified
   - Verify: Phone speaks "Otrivin Oxy. Strength: 10ml. Expiry: Nov 2027."
 
 - [ ] **T7: Multi-frame consensus** — Watch console for "[Scan] Waiting for consensus..."
-  - Verify: Result only appears after 3/5 frames agree
+  - Verify: Result appears after 2 frames agree, or after one especially strong database match
 
 - [ ] **T8: Haptic feedback** — Feel vibration on identification
   - Verify: Short vibration when medicine identified
 
-### Document Mode
+### Medical Report Scanning
 
-- [ ] **T9: Document OCR** — Switch to Document mode, scan printed A4 text
-  - Verify: "Document Text" appears in results card
-  - Verify: Scanned text shown in strength field
-  - Verify: TTS reads the document text verbatim
+- [ ] **T9: Clinical report OCR** — Scan a printed hospital or clinic report with patient, diagnosis, test, and prescription details
+  - Verify: "Clinical Report" appears without changing a mode
+  - Verify: The full recognized report is visible under "Full Report Text"
+  - Verify: TTS reads from the start through "End of report" without stopping after 250 characters
+  - Verify: Replay Voice reads the complete report again
 
 ### Safety
 
 - [ ] **T10: Safe Abstention** — Point camera at blank wall for 30+ seconds
-  - Verify: After ~10 failed attempts, phone says "Unable to verify medicine. Please seek human assistance."
+  - Verify: After the configured failure threshold, phone says "Unable to verify medicine. Please seek human assistance."
   - Verify: Error vibration pattern fires
   - Verify: Returns to Idle state
 
@@ -72,8 +74,8 @@
 
 - [ ] **T12: TalkBack navigation** — Enable Settings → Accessibility → TalkBack
   - Verify: All buttons are announced with labels
-  - Verify: Mode toggle announces "Document" / "Medicine"
-  - Verify: State transitions are announced ("Scanning started", "Medicine identified")
+  - Verify: Automatic reader banner announces support for medicines and medical reports
+  - Verify: State transitions and the detected result type are announced
 
 - [ ] **T13: High Contrast** — Open Settings → High Contrast Mode → On
   - Verify: Background turns pure black

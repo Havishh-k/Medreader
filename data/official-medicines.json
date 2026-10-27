@@ -1,0 +1,3112 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-27T07:10:18.881Z",
+  "sources": [
+    {
+      "name": "Mankind Pharma official product list",
+      "manufacturer": "Mankind Pharma Limited",
+      "url": "https://www.mankindpharma.com/products/all-products/",
+      "retrievedAt": "2026-10-27T07:10:18.882Z",
+      "sha256": "74e0a0733c5759221b9ad6dd31d4fd5bcdf884f196eec7211cc93ac000b1a1b0",
+      "productCount": 387
+    }
+  ],
+  "medicines": [
+    {
+      "brand": "Abiways",
+      "generic": "Acebrophylline + Acetylcysteine",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Abiways-200",
+      "generic": "Acebrophylline",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Abiways-M",
+      "generic": "Acebrophylline + Montelukast Sodium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Albukind",
+      "generic": "Albumin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Alfa-Maxical",
+      "generic": "Alfacalcidol + Calcium Carbonate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Alglutam",
+      "generic": "Alanyl-Glutamine",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Alograce",
+      "generic": "Soft Soap",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Alphadol",
+      "generic": "Alfacalcidol",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Amlokind",
+      "generic": "Amlodipine Besilate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Amlokind-AT",
+      "generic": "Amlodipine Besilate + Atenolol",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Amlokind-Beta",
+      "generic": "Amlodipine Besilate + Metoprolol Succinate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Amlokind-H",
+      "generic": "Amlodipine Besilate + Hydrochlorothiazide",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Amlokind-L",
+      "generic": "Amlodipine Besilate + Losartan Potassium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Amrobrut",
+      "generic": "Amorolfine Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Argipreg",
+      "generic": "Arginine Hydrochloride + Procyanidin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Argipreg D",
+      "generic": "Arginine Hydrochloride + Doconexent + Lycopene",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Arnisac",
+      "generic": "Sacubitril + Valsartan",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Arodcefa",
+      "generic": "Cefepime Hydrochloride + Tazobactam Sodium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Asthakind",
+      "generic": "Bromhexine Hydrochloride + Guaifenesin + Menthol + Terbutaline Sulfate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Asthakind Pro",
+      "generic": "Levocloperastine Fendizoate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Asthakind-DX",
+      "generic": "Chlorphenamine Maleate + Dextromethorphan Hydrobromide + Phenylephrine Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Asthakind-LS",
+      "generic": "Ambroxol Hydrochloride + Guaifenesin + Levosalbutamol Sulfate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Asthakind-P",
+      "generic": "Ambroxol Hydrochloride + Guaifenesin + Terbutaline Sulfate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Aztrohigh",
+      "generic": "Aztreonam",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Bactafuz",
+      "generic": "Fusidic Acid",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Bandy",
+      "generic": "Albendazole",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Bandy-Plus",
+      "generic": "Albendazole + Ivermectin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Bepofree",
+      "generic": "Bepotastine Besilate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Biggaba-NT",
+      "generic": "Nortriptyline Hydrochloride + Pregabalin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Bigspas-P",
+      "generic": "Camylofin + Paracetamol",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Bilachek",
+      "generic": "Bilastine",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Bilachek-M",
+      "generic": "Bilastine + Montelukast Sodium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Biopreg-F",
+      "generic": "Biotin + Folic Acid",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Bisoheart",
+      "generic": "Bisoprolol Fumarate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Bisoheart-AM",
+      "generic": "Amlodipine Besilate + Bisoprolol Fumarate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Bisoheart-T",
+      "generic": "Bisoprolol Fumarate + Telmisartan",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Brinzolast",
+      "generic": "Brimonidine Tartrate + Brinzolamide",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Bromostar-T",
+      "generic": "Brimonidine Tartrate + Timolol Maleate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Brutacef",
+      "generic": "Cefixime",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Brutacef-O",
+      "generic": "Cefixime + Ofloxacin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Brutaflam",
+      "generic": "Etoricoxib",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Brutaflam-MR",
+      "generic": "Etoricoxib + Thiocolchicoside",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Brutaflam-PG",
+      "generic": "Etoricoxib + Pregabalin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Brutaflam-Plus",
+      "generic": "Etoricoxib + Paracetamol",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Budaways",
+      "generic": "Budesonide",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Calapure-A",
+      "generic": "Aloe Barbadensis + Calamine + Paraffin Oil Oil",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Caldikind",
+      "generic": "Colecalciferol",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Caldikind Plus",
+      "generic": "Boron + Calcitriol + Calcium Carbonate + Doconexent + Folic Acid + Icosapent + Mecobalamin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Caldikind-P",
+      "generic": "Calcium Phosphate + Colecalciferol + Magnesium Hydroxide + Zinc Gluconate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Candiforce",
+      "generic": "Itraconazole",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Cardimol-Plus",
+      "generic": "Flunarizine Hydrochloride + Propranolol Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Cefakind",
+      "generic": "Cefuroxime Axetil",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Cefakind-CV",
+      "generic": "Cefuroxime Sodium Salt + Clavulanic Acid Potassium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Cefakind-XP",
+      "generic": "Ceftriaxone Disodium + Tazobactam",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Chekfall",
+      "generic": "Minoxidil",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Chekfall-F",
+      "generic": "Finasteride + Minoxidil",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Clarinova",
+      "generic": "Clarithromycin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Clindatime",
+      "generic": "Clindamycin Phosphate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Clonafit",
+      "generic": "Clonazepam",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Clonafit-Beta",
+      "generic": "Clonazepam + Propranolol Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Clonafit-Plus",
+      "generic": "Clonazepam + Escitalopram Oxalate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Clostar-GM",
+      "generic": "Clobetasol Propionate + Clotrimazole + Neomycin Sulfate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Codistar",
+      "generic": "Chlorphenamine Maleate + Codeine Sulfate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Codistar DC",
+      "generic": "Chlorphenamine Maleate + Dextromethorphan Hydrobromide + Phenylephrine Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Codistar-DX",
+      "generic": "Chlorphenamine Maleate + Dextromethorphan Hydrobromide",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Codistar-NF",
+      "generic": "Codeine Phosphate + Triprolidine Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Codistar-P",
+      "generic": "Ambroxol Hydrochloride + Guaifenesin + Terbutaline Sulfate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Coligyl",
+      "generic": "Colistin Sulfate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Coliwin-R",
+      "generic": "Chlordiazepoxide + Clidinium Bromide + Dicycloverine Hydrochloride + Rabeprazole Sodium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "D3 Must",
+      "generic": "Colecalciferol",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Daffy",
+      "generic": "Allantoin + Avena Sativa Oil + Borago Officinalis Oil + Calendula Officinalis Extract + Dimethocaine + Glycerol + Helianthus Annuus Oil + Panthenol",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Dizikind",
+      "generic": "Cinnarizine",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Dobimust",
+      "generic": "Calcium Dobesilate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Dolojust",
+      "generic": "Diclofenac Potassium Salt + Paracetamol",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Dolokind",
+      "generic": "Aceclofenac",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Dolokind Plus",
+      "generic": "Aceclofenac + Paracetamol",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Dolokind-AA",
+      "generic": "Aceclofenac + Paracetamol + Serrapeptase",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Dolokind-Aqua",
+      "generic": "Diclofenac Sodium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Dolokind-MR",
+      "generic": "Aceclofenac + Chlorzoxazone + Paracetamol",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Domways",
+      "generic": "Domperidone",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Drogyna",
+      "generic": "Dydrogesterone",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Drotikind",
+      "generic": "Drotaverine Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Drotikind-M",
+      "generic": "Drotaverine Hydrochloride + Mefenamic Acid",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Dydroboon",
+      "generic": "Dydrogesterone",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Dynaglipt",
+      "generic": "Teneligliptin Hydrobromide",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Dynaglipt L",
+      "generic": "Linagliptin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Dynaglipt-D",
+      "generic": "Dapagliflozin Propanediol + Teneligliptin Hydrobromide",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Dynaglipt-LM",
+      "generic": "Linagliptin + Metformin Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Dynaglipt-M",
+      "generic": "Metformin Hydrochloride + Teneligliptin Hydrobromide",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Electrokind",
+      "generic": "Citric Acid Sodium Salt + Glucose + Potassium Chloride + Sodium Chloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Electrokind-L",
+      "generic": "Citric Acid Sodium Salt + Glucose + Potassium Chloride + Sodium Chloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Emikind",
+      "generic": "Prochlorperazine Dimaleate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Entromax",
+      "generic": "Bacillus Clausii",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Ertasave",
+      "generic": "Ertapenem Sodium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Evakind",
+      "generic": "Traditional Indian Ayurvedic Medicine",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Evergraf",
+      "generic": "Everolimus",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Febuhelp",
+      "generic": "Febuxostat",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Ferikind",
+      "generic": "Folic Acid + Iron Ferrous Ascorbate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Ferikind-M",
+      "generic": "Folic Acid + Iron Ferrous Ascorbate + Mecobalamin + Zinc Sulfate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Ferikind-Plus",
+      "generic": "Folic Acid + Hydroxocobalamin + Iron Ferrous",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Ferikind-S",
+      "generic": "Iron Ferrous Sucrose Complex",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Flokind",
+      "generic": "Tamsulosin Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Flokind-D",
+      "generic": "Dutasteride + Tamsulosin Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Flokind-F",
+      "generic": "Finasteride + Tamsulosin Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Flozen-AA",
+      "generic": "Aceclofenac + Paracetamol + Serrapeptase",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Flozen-Plus",
+      "generic": "Diclofenac Sodium Salt + Serrapeptase",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Fynal",
+      "generic": "Levofloxacin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Fynal-OZ",
+      "generic": "Levofloxacin + Ornidazole",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Gatikind",
+      "generic": "Gatifloxacin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Gestakind",
+      "generic": "Isoxsuprine Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Glimestar",
+      "generic": "Glimepiride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Glimestar-M",
+      "generic": "Glimepiride + Metformin Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Glimestar-MV",
+      "generic": "Glimepiride + Metformin Hydrochloride + Voglibose",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Glimestar-PM",
+      "generic": "Glimepiride + Metformin Hydrochloride + Pioglitazone Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Gliptagreat",
+      "generic": "Vildagliptin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Gliptagreat D",
+      "generic": "Dapagliflozin Propanediol + Vildagliptin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Gliptagreat DM",
+      "generic": "Dapagliflozin Propanediol + Metformin Hydrochloride + Vildagliptin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Gliptagreat-M",
+      "generic": "Metformin Hydrochloride + Vildagliptin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Globugold",
+      "generic": "Immunoglobulin Base",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Glucomust-M",
+      "generic": "Glibenclamide + Metformin Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Glucomust-PM",
+      "generic": "Glibenclamide + Metformin Hydrochloride + Pioglitazone Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Glutabliss",
+      "generic": "Glutathione",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Glykind",
+      "generic": "Gliclazide",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Glykind-M",
+      "generic": "Gliclazide + Metformin Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Graniforce",
+      "generic": "Granisetron Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Gudcef",
+      "generic": "Cefpodoxime Proxetil",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Gudcef Plus",
+      "generic": "Cefpodoxime Proxetil + Ofloxacin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Gudcef-CV",
+      "generic": "Cefpodoxime Proxetil + Clavulanic Acid Potassium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Gudcef-Xl",
+      "generic": "Cefpodoxime Proxetil + Cloxacillin Sodium Salt + Lactobacillus Acidophilus",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Gudcef-Xl New",
+      "generic": "Cefpodoxime Proxetil + Dicloxacillin Sodium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Gudgesic",
+      "generic": "Traditional Indian Ayurvedic Medicine",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Gudgesic-AA",
+      "generic": "Aceclofenac + Paracetamol + Serrapeptase",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Gudgesic-AQ",
+      "generic": "Diclofenac Sodium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Gudgesic-NF",
+      "generic": "Traditional Indian Ayurvedic Medicine",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Gudgesic-Plus",
+      "generic": "Aceclofenac + Paracetamol",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Gudgesic-TH",
+      "generic": "Aceclofenac + Thiocolchicoside",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Gudlax-Plus",
+      "generic": "Magnesium Hydroxide + Paraffin Oil + Picosulfuric Acid Disodium",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Gut Ok",
+      "generic": "Bacillus Coagulans + Bacillus Mesentericus + Clostridium Butyricum + Enterococcus Faecalis",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Gynaset",
+      "generic": "Norethisterone Acetate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Hairbless",
+      "generic": "Arginine Hydrochloride + Biotin + Copper + Cysteine + Inositol + Iron Metal + Lysine Hydrochloride + Methionine + Nicotinic Acid",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Health OK",
+      "generic": "Aminoacids + Caffeine + Carbohydrates + Multivitamins And Minerals + Panax Ginseng Extract + Zinc",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Hepakind",
+      "generic": "Ursodeoxycholic Acid",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Hepaneed",
+      "generic": "Traditional Indian Ayurvedic Medicine",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Herpikind",
+      "generic": "Aciclovir",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Hicope",
+      "generic": "Hydroxyzine Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Histafree",
+      "generic": "Olopatadine",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Histafree-M",
+      "generic": "Fexofenadine Hydrochloride + Montelukast Sodium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Histakind",
+      "generic": "Fexofenadine Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Histakind-M",
+      "generic": "Fexofenadine Hydrochloride + Montelukast Sodium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Ibukind Plus",
+      "generic": "Ibuprofen + Paracetamol",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Imuza",
+      "generic": "Azathioprine",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Intiwash",
+      "generic": "Dl-Lactic Acid + Hippophae Rhamnoides + Melaleuca Alternifolia",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Ipralungs",
+      "generic": "Ipratropium Bromide + Levosalbutamol Sulfate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Itragreat",
+      "generic": "Itraconazole",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Ketostar",
+      "generic": "Ketoconazole + Pyrithione Zinc",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Lactaways",
+      "generic": "Asparagus Racemosus + Cuminum Cyminum + Glycyrrhiza Glabra Extract + Ipomoea Digitata + Saccharum Arundinaceum",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Lecope",
+      "generic": "Levocetirizine Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Lecope-AD",
+      "generic": "Ambroxol Hydrochloride + Levocetirizine Hydrochloride + Pseudoephedrine Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Letrohope",
+      "generic": "Letrozole",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Lipikind",
+      "generic": "Atorvastatin Calcium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Lipikind-AS",
+      "generic": "Acetylsalicylic Acid + Atorvastatin Calcium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Lipikind-CV",
+      "generic": "Atorvastatin Calcium Salt + Clopidogrel Bisulfate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Lipikind-F",
+      "generic": "Atorvastatin Calcium Salt + Fenofibrate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Lipikind-Plus",
+      "generic": "Acetylsalicylic Acid + Atorvastatin Calcium Salt + Clopidogrel Bisulfate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Lipirose",
+      "generic": "Rosuvastatin Calcium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Lipirose AS",
+      "generic": "Acetylsalicylic Acid + Rosuvastatin Calcium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Lipirose-F",
+      "generic": "Fenofibrate + Rosuvastatin Calcium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Lipirose-Gold",
+      "generic": "Acetylsalicylic Acid + Clopidogrel Bisulfate + Rosuvastatin Calcium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Lizoforce",
+      "generic": "Linezolid",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Longifene",
+      "generic": "Buclizine Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Longifene-A",
+      "generic": "Ammi Majus + Cuminum Cyminum + Cyperus Rotundus + Embelia Ribes + Foeniculum Vulgare + Phyllanthus Emblica + Picrorhiza Kurroa + Piper Longum + Tinospora Cordifolia",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Losakind",
+      "generic": "Losartan Potassium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Losakind-H",
+      "generic": "Hydrochlorothiazide + Losartan Potassium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Lubimoist",
+      "generic": "Hyaluronic Acid Sodium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Lubimoist-Ultra",
+      "generic": "Macrogol(S) + Propylene Glycol",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Lubistar",
+      "generic": "Carmellose",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Lubistar Old",
+      "generic": "Polyvinyl Alcohol + Povidone",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Lubistar-CMC",
+      "generic": "Carmellose Sodium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Lulibrut",
+      "generic": "Luliconazole",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Lycostar",
+      "generic": "Caroten + Lycopene + Selenium Dioxide + Triticum Vulgare + Zinc Sulfate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Magnatuss A",
+      "generic": "Ambroxol Hydrochloride + Desloratadine + Guaifenesin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Magnatuss-DX",
+      "generic": "Chlorphenamine Maleate + Dextromethorphan Hydrobromide",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Magnatuss-T",
+      "generic": "Codeine Phosphate + Triprolidine Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Mahacef",
+      "generic": "Cefixime",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Mahacef CV",
+      "generic": "Cefixime + Clavulanic Acid Potassium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Mahacef-OZ",
+      "generic": "Ofloxacin + Ornidazole",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Mahacef-Plus",
+      "generic": "Cefixime + Ofloxacin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Mahacef-SB",
+      "generic": "Ceftriaxone Disodium + Sulbactam Sodium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Mahacef-Xl",
+      "generic": "Cefixime + Dicloxacillin Sodium Salt + Lactobacillus Acidophilus",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Mahacef-Xl New",
+      "generic": "Cefixime + Dicloxacillin Sodium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Mahacort-DZ",
+      "generic": "Deflazacort",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Mahafaro",
+      "generic": "Faropenem Sodium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Mahaflox",
+      "generic": "Moxifloxacin Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Mahaflox-D",
+      "generic": "Dexamethasone Sodium Phosphate + Moxifloxacin Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Mahaflox-KT",
+      "generic": "Ketorolac Trometamine + Moxifloxacin Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Mahaflox-LP",
+      "generic": "Loteprednol Etabonate + Moxifloxacin Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Mahagaba M",
+      "generic": "Mecobalamin + Pregabalin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Mahagaba-NT",
+      "generic": "Nortriptyline Hydrochloride + Pregabalin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Mahazone-SB",
+      "generic": "Ceftriaxone Disodium + Sulbactam Sodium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Maxical",
+      "generic": "Calcium + Colecalciferol",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Maxical Active",
+      "generic": "Calcium Carbonate + Colecalciferol + Mecobalamin + Methylfolate Calcium Salt + Pyridoxal 5-Phosphate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Maxical-Plus",
+      "generic": "Calcium + Colecalciferol + Folic Acid + Pyridoxine Hydrochloride + Vitamin K2",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Mefkind",
+      "generic": "Mefenamic Acid + Paracetamol",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Mefkind-P",
+      "generic": "Mefenamic Acid",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Mefkind-Spas",
+      "generic": "Dicycloverine Hydrochloride + Mefenamic Acid",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Melabest",
+      "generic": "Hydroquinone + Mometasone Furoate + Tretinoin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Menohelp",
+      "generic": "Adhatoda Vasica + Berberis Aristata + Cyperus Rotundus + Mangifera Indica + Pterocarpus Marsupium + Symplocos Racemosa + Terminalia Bellirica + Terminalia Chebula + Woodfordia Floribunda + Zingiber Officinale",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Merohuge",
+      "generic": "Meropenem Trihydrate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Metatime",
+      "generic": "Metformin Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Mikastar",
+      "generic": "Amikacin Sulfate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Mk-Cin",
+      "generic": "Amikacin Sulfate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Moisawave",
+      "generic": "Facial Cream/Lotion",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Momstar",
+      "generic": "Mometasone Furoate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Monticope",
+      "generic": "Levocetirizine Hydrochloride + Montelukast Sodium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Monticope-A",
+      "generic": "Ambroxol Hydrochloride + Levocetirizine Hydrochloride + Montelukast Sodium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Moxiforce-CV",
+      "generic": "Amoxicillin Trihydrate + Clavulanic Acid Potassium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Moxikind-CV",
+      "generic": "Amoxicillin Sodium Salt + Clavulanic Acid Potassium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Mupiways",
+      "generic": "Mupirocin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Mycept",
+      "generic": "Mycophenolate Mofetil",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Mycept-S",
+      "generic": "Mycophenolic Acid Sodium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nataforce",
+      "generic": "Natamycin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nefacool",
+      "generic": "Chlorphenamine Maleate + Methylcellulose + Naphazoline Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nefrozon",
+      "generic": "Acetylcysteine + Taurine",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Neosmile",
+      "generic": "Tilactase",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nepastar",
+      "generic": "Nepafenac",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nimulid",
+      "generic": "Nimesulide",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nimulid HF",
+      "generic": "Nimesulide + Paracetamol",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nimulid-AP",
+      "generic": "Aceclofenac + Paracetamol",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nimulid-ATH",
+      "generic": "Aceclofenac + Thiocolchicoside",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nitrobact",
+      "generic": "Nitrofurantoin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nobel",
+      "generic": "Nimesulide",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nobel Plus Oral",
+      "generic": "Mefenamic Acid + Paracetamol",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nobel Spas",
+      "generic": "Diclofenac Sodium Salt + Dicycloverine Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nobel Spas Old",
+      "generic": "Drotaverine Hydrochloride + Nimesulide",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nobel-Cold",
+      "generic": "Caffeine + Diphenhydramine Hydrochloride + Paracetamol + Phenylephrine Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nobel-MR-Old",
+      "generic": "Chlorzoxazone + Nimesulide",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nobel-Plus",
+      "generic": "Nimesulide + Paracetamol",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Noblok",
+      "generic": "Sodium Chloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Noblok New",
+      "generic": "Caffeine + Diphenhydramine Hydrochloride + Paracetamol + Phenylephrine Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Noblok-AF",
+      "generic": "Chlorphenamine Maleate + Phenylephrine Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Normatone",
+      "generic": "Cyproheptadine Hydrochloride + Sorbitol + Tricholine Citrate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nosikind",
+      "generic": "Xylometazoline Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nosikind-P",
+      "generic": "Sorbitol + Xylometazoline Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nucort-M",
+      "generic": "Methylprednisolone Sodium Succinate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nuforce",
+      "generic": "Fluconazole",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nuforce Mout.Paint",
+      "generic": "Clotrimazole",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nuforce Topical",
+      "generic": "Ketoconazole + Pyrithione Zinc",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nuforce-CD",
+      "generic": "Clindamycin Phosphate + Clotrimazole",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nuforce-GM",
+      "generic": "Beclometasone Dipropionate + Clotrimazole + Neomycin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nuforce-Gm Old",
+      "generic": "Beclometasone Dipropionate + Clotrimazole + Gentamicin Sulfate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nurokind",
+      "generic": "Multivitamins And Minerals",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nurokind Forte",
+      "generic": "Mecobalamin + Nicotinamide + Pyridoxine Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nurokind Forte Z",
+      "generic": "Chromium + Folic Acid + Mecobalamin + Nicotinamide + Pyridoxine Hydrochloride + Zinc Sulfate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nurokind NF",
+      "generic": "Aminoacids + Multivitamins + Zinc",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nurokind Plus-NF",
+      "generic": "Mecobalamin + Nicotinamide + Pyridoxine Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nurokind Plus-RF",
+      "generic": "Mecobalamin + Nicotinamide + Pyridoxine Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nurokind-Fast",
+      "generic": "Mecobalamin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nurokind-G",
+      "generic": "Gabapentin + Mecobalamin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nurokind-Gold",
+      "generic": "Multivitamins And Minerals",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nurokind-LC",
+      "generic": "Folic Acid + Levocarnitine Hydrochloride + Mecobalamin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nurokind-More",
+      "generic": "Folic Acid + Mecobalamin + Nicotinamide + Pantothenic Acid Calcium Salt + Picolinic Acid Chromium Salt + Pyridoxine Hydrochloride + Thiamine Hydrochloride + Zinc Sulfate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nurokind-More-RF",
+      "generic": "Chromium + Folic Acid + Mecobalamin + Nicotinamide + Pyridoxine Hydrochloride + Zinc Sulfate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nurokind-Z More",
+      "generic": "Chromium Picolinate + Folic Acid + Mecobalamin + Nicotinamide + Pyridoxine Hydrochloride + Zinc Sulfate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Nurostar-C1",
+      "generic": "Folic Acid + Mecobalamin + Nicotinamide",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Olmetime",
+      "generic": "Olmesartan Medoxomil",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Olmetime H",
+      "generic": "Hydrochlorothiazide + Olmesartan Medoxomil",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Olmetime-AM",
+      "generic": "Amlodipine + Olmesartan Medoxomil",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Olmetime-AMH",
+      "generic": "Amlodipine + Hydrochlorothiazide + Olmesartan Medoxomil",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Olmetime-CT",
+      "generic": "Chlortalidone + Olmesartan Medoxomil",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Opthoblis",
+      "generic": "Dexpanthenol",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Oraways",
+      "generic": "Triamcinolone Acetonide",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Ornigreat",
+      "generic": "Chlorhexidine Gluconate + Ornidazole",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Orthoboon",
+      "generic": "Ascorbic Acid + Collagen + Glucosamine",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Oskar",
+      "generic": "Omeprazole",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Oskar-DSR",
+      "generic": "Domperidone Acetate + Omeprazole",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Otocin-C",
+      "generic": "Acetic Acid + Benzocaine + Chloramphenicol + Prednisolone Acetate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Otocin-D",
+      "generic": "Chloramphenicol + Dexamethasone Sodium Phosphate + Polymyxin B Sulfate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Ovabless",
+      "generic": "Arginine Hydrochloride + Ascorbic Acid + Folic Acid + Inositol + Nicotinic Acid + Pyridoxine Hydrochloride + Retinol + Riboflavin + Thiamine Hydrochloride + Vitamin E Acetate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Ovabless-Myo",
+      "generic": "Chromium + Colecalciferol + D- Chiro-Inositol + Inositol",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Ovaflo-Q10",
+      "generic": "Prasterone + Ubidecarenone",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Overzyme",
+      "generic": "Alpha-Galactosidase + Diastase + Pepsin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Pacemero",
+      "generic": "Meropenem Trihydrate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Pangraf",
+      "generic": "Tacrolimus",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Panimun Bioral",
+      "generic": "Ciclosporin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Pantakind",
+      "generic": "Pantoprazole Sodium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Pantakind-DSR",
+      "generic": "Domperidone + Pantoprazole Sodium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Pantakind-Flux",
+      "generic": "Cinitapride Bitartrate + Pantoprazole Magnesium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Pilorute",
+      "generic": "Calcium Dobesilate + Hydrocortisone Acetate + Lidocaine Hydrochloride + Phenylephrine Hydrochloride + Troxerutin + Zinc Oxide",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Pilorute-EP",
+      "generic": "Euphorbia Prostata Extract",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Piokind",
+      "generic": "Pioglitazone Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Piokind-M",
+      "generic": "Metformin Hydrochloride + Pioglitazone Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Placida",
+      "generic": "Flupentixol Hydrochloride + Melitracen Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Placida Plus",
+      "generic": "Escitalopram Oxalate + Etizolam",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Polmaforce",
+      "generic": "Polmacoxib",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Posaforce",
+      "generic": "Posaconazole",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Protijump",
+      "generic": "General Nutrients",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Rabekind",
+      "generic": "Rabeprazole Sodium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Rabekind-DSR",
+      "generic": "Domperidone + Rabeprazole Sodium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Rabekind-Plus",
+      "generic": "Levosulpiride + Rabeprazole Sodium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Racigyl-SB",
+      "generic": "Racecadotril + Saccharomyces Boulardii",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Ranidom",
+      "generic": "Domperidone Maleate + Omeprazole",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Ranidom-MPS",
+      "generic": "Magaldrate + Simeticone",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Ranidom-O R.F.",
+      "generic": "Magaldrate + Oxetacaine + Simeticone",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Ranidom-O-Old",
+      "generic": "Magaldrate + Oxetacaine + Simeticone",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Ranidom-Old",
+      "generic": "Domperidone + Magaldrate + Simeticone",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Ranidom-PD",
+      "generic": "Ranitidine Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Ranidom-RD",
+      "generic": "Domperidone + Esomeprazole Magnesium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Ranispas",
+      "generic": "Dicycloverine Hydrochloride + Omeprazole",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Reheptin",
+      "generic": "Folic Acid + Metadoxine + Ornithine Aspartate + Pyridoxine Hydrochloride + Silymarin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Rituxipan",
+      "generic": "Rituximab Recombinant",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Rutoheal",
+      "generic": "Bromelains + Rutoside + Trypsin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Scabelice",
+      "generic": "Cetrimide + Lindane",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Scarend",
+      "generic": "Allantoin + Allium Cepa Extract + Heparin Sodium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Scarend Silicone",
+      "generic": "Ceramide + Silicon Dioxide",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Sgltd",
+      "generic": "Dapagliflozin Propanediol",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Sgltd-M",
+      "generic": "Dapagliflozin Propanediol + Metformin Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Sgltd-S",
+      "generic": "Dapagliflozin Propanediol + Sitagliptin Phosphate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Sgltd-Trio",
+      "generic": "Dapagliflozin Propanediol + Metformin Hydrochloride + Sitagliptin Phosphate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Sgltr",
+      "generic": "Remogliflozin Etabonate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Sgltr-M",
+      "generic": "Metformin Hydrochloride + Remogliflozin Etabonate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Sgltr-V",
+      "generic": "Remogliflozin Etabonate + Vildagliptin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Siropan",
+      "generic": "Sirolimus",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Sitaday",
+      "generic": "Sitagliptin Phosphate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Sitaday D",
+      "generic": "Dapagliflozin Propanediol + Sitagliptin Phosphate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Sitaday DM",
+      "generic": "Dapagliflozin Propanediol + Metformin Hydrochloride + Sitagliptin Phosphate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Sitaday M",
+      "generic": "Metformin Hydrochloride + Sitagliptin Phosphate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Skinbless",
+      "generic": "Body Cream",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Somifiz",
+      "generic": "Esomeprazole",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Somifiz-L",
+      "generic": "Esomeprazole + Levosulpiride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Sulbagreat",
+      "generic": "Cefoperazone Sodium Salt + Sulbactam Sodium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "T-98",
+      "generic": "Paracetamol",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Telmikind",
+      "generic": "Telmisartan",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Telmikind CT",
+      "generic": "Chlortalidone + Telmisartan",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Telmikind-AM",
+      "generic": "Amlodipine Besilate + Telmisartan",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Telmikind-AMH",
+      "generic": "Amlodipine + Hydrochlorothiazide + Telmisartan",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Telmikind-Beta",
+      "generic": "Metoprolol Tartrate + Telmisartan",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Telmikind-H",
+      "generic": "Hydrochlorothiazide + Telmisartan",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Telmikind-LN",
+      "generic": "Cilnidipine + Telmisartan",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Telmikind-LNB",
+      "generic": "Cilnidipine + Metoprolol Succinate + Telmisartan",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Telmikind-Trio",
+      "generic": "Chlortalidone + Cilnidipine + Telmisartan",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Terbinaforce",
+      "generic": "Terbinafine Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Terbinaforce-Lite",
+      "generic": "Clobetasol + Clotrimazole Hydrochloride + Neomycin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Terbinaforce-M",
+      "generic": "Mometasone Furoate + Terbinafine Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Terbinaforce-Plus",
+      "generic": "Clobetasol Propionate + Clotrimazole + Neomycin Sulfate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Terozesta",
+      "generic": "Dienogest",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Texakind",
+      "generic": "Tranexamic Acid",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Texakind-MF",
+      "generic": "Mefenamic Acid + Tranexamic Acid",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Thermokind",
+      "generic": "Chlorhexidine Gluconate + Fluorine Sodium Salt + Zinc Chloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Tigecross",
+      "generic": "Tigecycline",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Timostar",
+      "generic": "Timolol Maleate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Tobastar",
+      "generic": "Tobramycin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Tobastar-F",
+      "generic": "Fluorometholone + Tobramycin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Toff-Dc",
+      "generic": "Chlorphenamine Maleate + Dextromethorphan Hydrochloride + Phenylephrine Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Totalax",
+      "generic": "Lactulose",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Tramadin",
+      "generic": "Tramadol Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Tramadin-Plus",
+      "generic": "Paracetamol + Tramadol Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Travopure",
+      "generic": "Travoprost",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Ubinext-LC",
+      "generic": "Levocarnitine Hydrochloride + Ubidecarenone",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Ubinext-Plus",
+      "generic": "Folic Acid + Levocarnitine Tartrate + Lycopene + Ubiquinol + Zinc",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Unwanted-Kit",
+      "generic": "Mifepristone + Misoprostol",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Urikind-K",
+      "generic": "Citric Acid + Potassium Citrate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Urikind-KM",
+      "generic": "Magnesium Citrate + Mannose + Potassium Citrate + Vaccinium Macrocarpon Extract",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Urikind-KM6",
+      "generic": "Magnesium Citrate + Potassium Citrate + Pyridoxine Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Uvsmart",
+      "generic": "Sun Screen Lotions/Creams",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Uvsmart Matt",
+      "generic": "Sun Screen Lotions/Creams",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Vagacyte",
+      "generic": "Valganciclovir Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Valanext",
+      "generic": "Valaciclovir Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Venbruta",
+      "generic": "Vancomycin Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Ventidox-Bro",
+      "generic": "Ambroxol Hydrochloride + Doxofylline",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Ventidox-M",
+      "generic": "Doxofylline + Montelukast Sodium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Vermikind",
+      "generic": "Ivermectin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Vertistar",
+      "generic": "Betahistine Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Vitakind-I",
+      "generic": "Copper + Lycopene + Mecobalamin + Selenium + Xantofyl + Zeaxanthin + Zinc",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Vitakind-ZIT",
+      "generic": "Ascorbic Acid + Chromium + Dunaliella Salina Extract + Selenium + Silymarin + Vitamin E Acetate + Zinc",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Volapride-Plus",
+      "generic": "Levosulpiride + Pantoprazole Sodium Salt",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Vomikind",
+      "generic": "Ondansetron Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Vomilast",
+      "generic": "Doxylamine Succinate + Folic Acid + Pyridoxine Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Vomilast-G",
+      "generic": "Doxylamine Succinate + Pyridoxine Hydrochloride",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Vomivert",
+      "generic": "Cinnarizine + Dimenhydrinate",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Xampu KZ",
+      "generic": "Ketoconazole",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Zady",
+      "generic": "Azithromycin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Zenflox",
+      "generic": "Ofloxacin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Zenflox-OZ",
+      "generic": "Ofloxacin + Ornidazole",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Zenflox-Plus",
+      "generic": "Cefixime + Ofloxacin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Zenflox-UTI",
+      "generic": "Flavoxate Hydrochloride + Ofloxacin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Zitblow",
+      "generic": "Isotretinoin",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    },
+    {
+      "brand": "Zymogreat",
+      "generic": "Carum Carvi Oil + Cinnamomum Zeylanicum Oil + Diastase + Elettaria Cardamomum Oil + Papain + Simeticone",
+      "strength": "",
+      "type": "Medicine",
+      "manufacturer": "Mankind Pharma Limited",
+      "sourceUrl": "https://www.mankindpharma.com/products/all-products/"
+    }
+  ]
+}

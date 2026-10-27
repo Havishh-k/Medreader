@@ -6,6 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "data:fetch": "node scripts/fetch-official-medicines.mjs",
+    "data:build": "node scripts/build-db.cjs",
+    "data:refresh": "npm run data:fetch && npm run data:build",
     "test": "vitest run",
     "test:watch": "vitest"
   },
@@ -19,8 +22,6 @@
     "vitest": "^3.0.0"
   },
   "dependencies": {
-    "csv-parser": "^3.2.1",
-    "onnxruntime-web": "^1.30.0",
     "tesseract.js": "^7.0.0"
   }
 }

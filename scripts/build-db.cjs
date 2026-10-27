@@ -1,21 +1,54 @@
 const Database = require('better-sqlite3');
 const fs = require('fs');
 const path = require('path');
-const csv = require('csv-parser');
+
+const snapshotPath = path.join(__dirname, '../data/official-medicines.json');
+if (!fs.existsSync(snapshotPath)) {
+  throw new Error('Official medicine snapshot missing. Run npm run data:refresh first.');
+}
+
+const snapshot = JSON.parse(fs.readFileSync(snapshotPath, 'utf8'));
+if (snapshot.schemaVersion !== 1 || !Array.isArray(snapshot.sources) || !Array.isArray(snapshot.medicines)) {
+  throw new Error('Official medicine snapshot has an unsupported schema.');
+}
+if (snapshot.medicines.length < 100) {
+  throw new Error(`Official snapshot has only ${snapshot.medicines.length} products; refusing to build.`);
+}
+if (snapshot.medicines.some(medicine => !medicine.manufacturer || !medicine.sourceUrl)) {
+  throw new Error('Every medicine must include manufacturer and source URL provenance.');
+}
 
 const dbPath = path.join(__dirname, '../public/medicines.db');
-if (fs.existsSync(dbPath)) fs.unlinkSync(dbPath);
+const tempDbPath = `${dbPath}.tmp`;
+if (fs.existsSync(tempDbPath)) fs.unlinkSync(tempDbPath);
 
-const db = new Database(dbPath);
+const db = new Database(tempDbPath);
 
 // ─── Simple drugs table (backward compat) ───
 db.exec(`
+  CREATE TABLE meta (
+    key TEXT PRIMARY KEY,
+    value TEXT NOT NULL
+  ) WITHOUT ROWID;
+
+  CREATE TABLE data_sources (
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    manufacturer TEXT NOT NULL,
+    url TEXT NOT NULL,
+    retrieved_at TEXT NOT NULL,
+    sha256 TEXT NOT NULL,
+    product_count INTEGER NOT NULL
+  );
+
   CREATE TABLE drugs (
     id TEXT PRIMARY KEY,
-    brand_name TEXT,
-    generic_name TEXT,
-    strength TEXT,
-    type TEXT
+    brand_name TEXT NOT NULL,
+    generic_name TEXT NOT NULL,
+    strength TEXT NOT NULL,
+    type TEXT NOT NULL,
+    manufacturer TEXT NOT NULL,
+    source_url TEXT NOT NULL
   );
   CREATE INDEX idx_brand ON drugs(brand_name);
 `);
@@ -79,27 +112,15 @@ function trigramCodes(skel) {
   return [...codes].sort((a, b) => a - b);
 }
 
-// ─── OCR Data Cleaning ───
-// This strips packaging fluff so the DB exactly matches what the camera sees
-function cleanBrandForOCR(rawName) {
-  if (!rawName) return '';
-  let clean = rawName;
-  
-  // 1. Remove anything inside parentheses e.g., "(15 Tablets)"
-  clean = clean.replace(/\s*\(.*?\)/g, '');
-  
-  // 2. Remove common form suffixes 
-  clean = clean.replace(/\s+(Tablet|Syrup|Capsule|Injection|Drops|Spray|Gel|Ointment|Cream)\b.*/i, '');
-  
-  // 3. Remove package sizing e.g., "100ml", "50gm"
-  clean = clean.replace(/\s+\d+(ml|gm|g|mg|mcg)\b/i, '');
-  
-  return clean.trim();
-}
-
 // ─── Database Builder ───
 
-const insertDrug = db.prepare('INSERT INTO drugs (id, brand_name, generic_name, strength, type) VALUES (?, ?, ?, ?, ?)');
+const insertMeta = db.prepare('INSERT INTO meta (key, value) VALUES (?, ?)');
+const insertSource = db.prepare(`INSERT INTO data_sources
+  (name, manufacturer, url, retrieved_at, sha256, product_count)
+  VALUES (?, ?, ?, ?, ?, ?)`);
+const insertDrug = db.prepare(`INSERT INTO drugs
+  (id, brand_name, generic_name, strength, type, manufacturer, source_url)
+  VALUES (?, ?, ?, ?, ?, ?, ?)`);
 const insertFamily = db.prepare('INSERT OR IGNORE INTO brand_families (family_key) VALUES (?)');
 const getFamily = db.prepare('SELECT id FROM brand_families WHERE family_key = ?');
 const insertName = db.prepare('INSERT OR IGNORE INTO brand_names (family_id, name_norm, display_name, skeleton) VALUES (?, ?, ?, ?)');
@@ -107,13 +128,31 @@ const getName = db.prepare('SELECT id FROM brand_names WHERE name_norm = ?');
 const insertTrigram = db.prepare('INSERT OR IGNORE INTO name_trigrams (tri, name_id) VALUES (?, ?)');
 const insertStrength = db.prepare('INSERT OR IGNORE INTO family_strengths (family_id, strength_canon) VALUES (?, ?)');
 
-function populateDatabase(medicinesData) {
+function populateDatabase(snapshot) {
+  const medicinesData = snapshot.medicines;
   db.transaction(() => {
+    insertMeta.run('schema_version', String(snapshot.schemaVersion));
+    insertMeta.run('generated_at', snapshot.generatedAt);
+    insertMeta.run('record_count', String(medicinesData.length));
+    for (const source of snapshot.sources) {
+      insertSource.run(
+        source.name,
+        source.manufacturer,
+        source.url,
+        source.retrievedAt,
+        source.sha256,
+        source.productCount,
+      );
+    }
+
     medicinesData.forEach((med, idx) => {
       if (!med.brand) return;
       
       // Simple drugs table
-      insertDrug.run(String(idx + 1), med.brand, med.generic || '', med.strength || '', med.type || '');
+      insertDrug.run(
+        String(idx + 1), med.brand, med.generic || '', med.strength || '', med.type || 'Medicine',
+        med.manufacturer, med.sourceUrl,
+      );
 
       // Advanced tables
       const familyKey = normalizeName(med.brand).split(' ')[0];
@@ -143,83 +182,9 @@ function populateDatabase(medicinesData) {
     });
   })();
 
-  console.log(`Successfully built medicines.db with ${medicinesData.length} medicines (simple + fuzzy tables).`);
+  console.log(`Built medicines.db with ${medicinesData.length} officially sourced products.`);
   db.close();
+  fs.renameSync(tempDbPath, dbPath);
 }
 
-// ─── Data Loading Logic ───
-
-const medicines = [];
-const fallbackMedicines = [
-  { brand: 'Crocin', generic: 'Paracetamol', strength: '500mg', type: 'Tablet' },
-  { brand: 'Dolo', generic: 'Paracetamol', strength: '650mg', type: 'Tablet' },
-  { brand: 'Calpol', generic: 'Paracetamol', strength: '250mg', type: 'Syrup' },
-  { brand: 'Augmentin', generic: 'Amoxicillin and Clavulanate', strength: '625mg', type: 'Tablet' },
-  { brand: 'Thyronorm', generic: 'Thyroxine', strength: '50mcg', type: 'Tablet' },
-  { brand: 'Ecosprin', generic: 'Aspirin', strength: '75mg', type: 'Tablet' },
-  { brand: 'Pan', generic: 'Pantoprazole', strength: '40mg', type: 'Tablet' },
-  { brand: 'Allegra', generic: 'Fexofenadine', strength: '120mg', type: 'Tablet' },
-  { brand: 'Amlokind', generic: 'Amlodipine', strength: '5mg', type: 'Tablet' },
-  { brand: 'Glycomet', generic: 'Metformin', strength: '500mg', type: 'Tablet' },
-  { brand: 'Telmikind', generic: 'Telmisartan', strength: '40mg', type: 'Tablet' },
-  { brand: 'Azithral', generic: 'Azithromycin', strength: '500mg', type: 'Tablet' },
-  { brand: 'Ascoril', generic: 'Ambroxol + Guaifenesin', strength: '100ml', type: 'Syrup' },
-  { brand: 'Combiflam', generic: 'Ibuprofen + Paracetamol', strength: '400mg/325mg', type: 'Tablet' },
-  { brand: 'Levocet', generic: 'Levocetirizine', strength: '5mg', type: 'Tablet' },
-  { brand: 'Volini', generic: 'Diclofenac', strength: '30g', type: 'Gel' },
-  { brand: 'Betadine', generic: 'Povidone Iodine', strength: '10%', type: 'Ointment' },
-  { brand: 'Shelcal', generic: 'Calcium + Vitamin D3', strength: '500mg', type: 'Tablet' },
-  { brand: 'Cheston Cold', generic: 'Cetirizine + Paracetamol', strength: 'Tablet', type: 'Tablet' },
-  { brand: 'Meftal Spas', generic: 'Mefenamic Acid', strength: '250mg', type: 'Tablet' },
-  { brand: 'O2', generic: 'Ofloxacin + Ornidazole', strength: '200mg/500mg', type: 'Tablet' },
-  { brand: 'Zerodol', generic: 'Aceclofenac', strength: '100mg', type: 'Tablet' },
-  { brand: 'Taxim O', generic: 'Cefixime', strength: '200mg', type: 'Tablet' },
-  { brand: 'Cipcal', generic: 'Calcium', strength: '500mg', type: 'Tablet' },
-  { brand: 'Zincovit', generic: 'Multivitamin', strength: 'Syrup', type: 'Syrup' },
-  { brand: 'Otrivin', generic: 'Xylometazoline', strength: '10ml', type: 'Nasal Drops' },
-  { brand: 'Otrivin Oxy', generic: 'Oxymetazoline', strength: '10ml', type: 'Nasal Spray' },
-];
-
-const csvPath = path.join(__dirname, '../medicines.csv');
-
-if (fs.existsSync(csvPath)) {
-  console.log(`Found medicines.csv! Parsing and cleaning data for OCR...`);
-  const uniqueMap = new Map();
-  
-  // Also preload our fallback verified medicines to ensure top medicines are always included
-  for (const f of fallbackMedicines) {
-    uniqueMap.set(f.brand.toUpperCase(), f);
-  }
-
-  fs.createReadStream(csvPath)
-    .pipe(csv())
-    .on('data', (row) => {
-      const rawBrand = row.product_name || row.brand || row.name || row.Brand || '';
-      if (!rawBrand) return;
-      
-      const pureBrand = cleanBrandForOCR(rawBrand);
-      if (pureBrand.length < 2) return;
-      const key = pureBrand.toUpperCase();
-      
-      if (!uniqueMap.has(key)) {
-        uniqueMap.set(key, {
-          brand: pureBrand,
-          generic: row.salt_composition || row.generic || row.Generic || '',
-          strength: row.medicine_desc || row.strength || row.Strength || '',
-          type: 'Medicine'
-        });
-      }
-    })
-    .on('end', () => {
-      const uniqueMedicines = Array.from(uniqueMap.values());
-      console.log(`Loaded ${uniqueMedicines.length} unique Indian medicine brands from CSV.`);
-      populateDatabase(uniqueMedicines);
-    })
-    .on('error', (err) => {
-      console.error('Error reading CSV:', err);
-    });
-} else {
-  console.log(`medicines.csv not found in the root directory.
-Using the default 27 medicines fallback dataset.`);
-  populateDatabase(fallbackMedicines);
-}
+populateDatabase(snapshot);

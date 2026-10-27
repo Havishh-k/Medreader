@@ -1,7 +1,7 @@
 # Database Design & Schema Document
 
 **Companion docs:** PRD (01) · TRD (02) · System Architecture (03) · Frontend/Accessibility UX (05)
-**Nature of this DB:** read-only asset shipped inside the APK, built entirely offline (Colab/desktop, from CDSCO/Jan Aushadhi-sourced data — see TRD-OQ3 on final sourcing), never written to on-device. Every number in §5 was measured against a runnable prototype (`schema.sql` + `label_logic.py`), not estimated.
+**Nature of this DB:** read-only asset shipped with the PWA and built from the committed Mankind Pharma official-product snapshot. Each runtime medicine row includes manufacturer and source URL provenance. The database is never written by the browser.
 
 ---
 
@@ -236,7 +236,7 @@ def add_brand(db, names: list[str], strengths: list[str], generic: str, form: st
     ...
 ```
 
-Source data flows: CDSCO/Jan Aushadhi-derived generic and brand lists (licence and coverage to be confirmed per TRD-OQ3 — the public Jan Aushadhi list covers **generics**, not branded strengths, so a separate branded-product source is required for `medicine_ingredients`/`family_strengths` to be populated correctly) → cleaning/normalization script → `add_brand()` calls → schema-versioned SQLite file → committed to the Android `assets/` folder, never regenerated on-device.
+Current source flow: Mankind Pharma official product page → `npm run data:fetch` provenance snapshot → validation and normalization in `scripts/build-db.cjs` → atomically replaced, schema-versioned `public/medicines.db`. Future manufacturers must be added only through an equally attributable official source.
 
 ---
 

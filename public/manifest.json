@@ -1,8 +1,19 @@
 {
   "name": "EchoSight - Accessible Medicine & Document Reader",
   "short_name": "EchoSight",
+  "description": "Accessible medicine label and medical report reader",
+  "id": "/",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#000000"
+  "background_color": "#0a0c0f",
+  "theme_color": "#0a0c0f",
+  "icons": [
+    {
+      "src": "/icons/echosight.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
 }

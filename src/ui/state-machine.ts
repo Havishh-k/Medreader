@@ -5,8 +5,18 @@ import { ExtractionPipeline } from '../camera/pipeline';
 import { CameraStream } from '../camera/stream';
 import { vibrateLock, vibrateSuccess, vibrateError } from '../guidance/vibration';
 import { ICONS } from './icons';
+import {
+  bestScannedText,
+  findMedicineConsensus,
+  isLikelyClinicalDocument,
+  isReadableDocument,
+  type MedicineRead,
+} from '../core/scan-content';
 
 export type AppState = 'Idle' | 'Guidance' | 'Readout';
+type ReadoutKind = 'medicine' | 'document';
+const MAX_SCAN_ATTEMPTS = 12;
+const GUIDANCE_REMINDER_INTERVAL = 4;
 
 function parseDosageAndUsage(raw: string): { dosage: string; usage: string } {
   if (!raw || !raw.trim()) {
@@ -42,8 +52,8 @@ export class StateMachine {
   private pipeline: ExtractionPipeline | null = null;
   private camera = new CameraStream('camera');
   
-  // Task 1.2: Document/Medicine mode
-  private mode: 'document' | 'medicine' = 'medicine';
+  private readoutKind: ReadoutKind = 'medicine';
+  private fullReadoutText = '';
   
   // DOM Elements
   private triggerBtn: HTMLElement;
@@ -61,6 +71,10 @@ export class StateMachine {
   private resDescription: HTMLElement;
   private resReplayBtn: HTMLElement;
   private resCopyBtn: HTMLElement;
+  private resultCategory: HTMLElement;
+  private strengthLabel: HTMLElement;
+  private expiryLabel: HTMLElement;
+  private accordionTitle: HTMLElement;
   private scanInstructions: HTMLElement;
   private liveAssertive: HTMLElement;
   private cameraContainer: HTMLElement;
@@ -97,6 +111,10 @@ export class StateMachine {
     this.resDescription = document.getElementById('res-description')!;
     this.resReplayBtn = document.getElementById('res-replay-btn')!;
     this.resCopyBtn = document.getElementById('res-copy-btn')!;
+    this.resultCategory = document.querySelector('.result-category-label')!;
+    this.strengthLabel = document.querySelector('#chip-dosage .chip-label')!;
+    this.expiryLabel = document.querySelector('#chip-expiry .chip-label')!;
+    this.accordionTitle = document.querySelector('.accordion-title-wrap span:last-child')!;
     this.scanInstructions = document.getElementById('scan-instructions')!;
     this.liveAssertive = document.getElementById('live-assertive')!;
     this.cameraContainer = document.getElementById('camera-container')!;
@@ -120,17 +138,17 @@ export class StateMachine {
 
     // Replay speech button
     this.resReplayBtn.addEventListener('click', () => {
-      const expiryText = this.resExpiry.textContent || '';
-      const readStr = `${this.resBrand.textContent}. Strength: ${this.resStrength.textContent}. Expiry: ${expiryText}.`;
-      this.tts.speakAssertive(readStr);
+      this.tts.speakAssertive(this.buildReadoutSpeech());
       if ('vibrate' in navigator) {
         try { navigator.vibrate(30); } catch {}
       }
     });
 
-    // Copy prescription info to clipboard
+    // Copy the complete recognized result to clipboard
     this.resCopyBtn.addEventListener('click', async () => {
-      const textToCopy = `EchoSight Prescription Info:\nBrand: ${this.resBrand.textContent}\nStrength: ${this.resStrength.textContent}\nExpiry: ${this.resExpiry.textContent}\n${this.resDescription.textContent ? 'Details: ' + this.resDescription.textContent : ''}`;
+      const textToCopy = this.readoutKind === 'document'
+        ? `EchoSight scanned report:\n\n${this.fullReadoutText}`
+        : `EchoSight medicine information:\nBrand: ${this.resBrand.textContent}\nStrength: ${this.resStrength.textContent}\nExpiry: ${this.resExpiry.textContent}\n${this.resDescription.textContent ? 'Details: ' + this.resDescription.textContent : ''}`;
       try {
         await navigator.clipboard.writeText(textToCopy);
         this.setToast('Copied to clipboard!', ICONS.check(18));
@@ -172,15 +190,6 @@ export class StateMachine {
       }
     });
 
-    // Wire mode toggle buttons
-    const modeButtons = document.querySelectorAll('#mode-toggle .mode-btn');
-    modeButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const newMode = (btn as HTMLElement).dataset.mode as 'document' | 'medicine';
-        this.switchMode(newMode);
-      });
-    });
-
     // Listen for tick mode changes from settings
     window.addEventListener('tickModeChanged', (e: Event) => {
       const isTick = (e as CustomEvent).detail;
@@ -216,6 +225,16 @@ export class StateMachine {
           this.dbWorker!.postMessage({ type: 'query', payload: { text: this.pendingDbQuery } });
           this.pendingDbQuery = null;
         }
+      } else if (e.data.type === 'init_error') {
+        if (this.state === 'Guidance') {
+          const message = 'Medicine reference data is unavailable. Please try again after reloading the app.';
+          vibrateError();
+          void this.transitionTo('Idle').then(() => {
+            this.setToast(message, ICONS.warning(18));
+            this.liveAssertive.textContent = message;
+            this.tts.speakAssertive(message);
+          });
+        }
       } else if (e.data.type === 'query_result') {
         const found = e.data.result;
         
@@ -226,35 +245,29 @@ export class StateMachine {
              this.accumulatedReads.shift();
           }
           
-          // Check for consensus (2 out of 5 frames must agree on the brand name)
-          const brandCounts = new Map<string, number>();
-          for (const read of this.accumulatedReads) {
-             brandCounts.set(read.brand_name, (brandCounts.get(read.brand_name) || 0) + 1);
-          }
+          const consensusRead = findMedicineConsensus(this.accumulatedReads);
           
-          let consensusBrand = null;
-          let bestStrength = '';
-          for (const [brand, count] of brandCounts.entries()) {
-             // Confirm if 2 frames agree, or on distance <= 0.5 (strong match)
-             if (count >= 2 || (found.distance <= 0.5 && this.accumulatedReads.length >= 1)) {
-               consensusBrand = brand;
-               const lastRead = [...this.accumulatedReads].reverse().find(r => r.brand_name === brand);
-               if (lastRead) bestStrength = lastRead.strength;
-               break;
-             }
-          }
-          
-          if (consensusBrand) {
-            this.resBrand.textContent = consensusBrand;
-            const { dosage, usage } = parseDosageAndUsage(bestStrength);
-            this.resStrength.textContent = dosage || 'Standard';
-            
-            if (usage && usage.length > 40) {
-              this.resDescription.innerHTML = `<strong>Directions & Details:</strong><br/>${usage}`;
+          if (consensusRead) {
+            this.readoutKind = 'medicine';
+            this.fullReadoutText = '';
+            this.configureMedicineResult();
+            this.resBrand.textContent = consensusRead.brand_name;
+            const { dosage, usage } = parseDosageAndUsage(consensusRead.strength || '');
+            this.resStrength.textContent = dosage === 'Standard' ? 'Not listed' : dosage;
+
+            const details = [
+              consensusRead.generic_name ? `Active ingredient: ${consensusRead.generic_name}` : '',
+              usage && usage.length > 40 ? `Product details: ${usage}` : '',
+              consensusRead.manufacturer ? `Manufacturer: ${consensusRead.manufacturer}` : '',
+              consensusRead.source_url ? 'Source: official manufacturer product catalogue' : '',
+            ].filter(Boolean);
+
+            if (details.length > 0) {
+              this.resDescription.textContent = details.join('\n');
               this.resAccordion.hidden = false;
               this.resAccordion.open = false;
             } else {
-              this.resDescription.innerHTML = '';
+              this.resDescription.textContent = '';
               this.resAccordion.hidden = true;
             }
             
@@ -283,16 +296,16 @@ export class StateMachine {
                 this.resStatus.className = "status-badge";
               }
             } else {
-              this.resExpiry.textContent = "Not specified";
-              this.resStatus.textContent = "Valid";
-              this.resStatus.className = "status-badge";
+              this.resExpiry.textContent = "Expiry unknown";
+              this.resStatus.textContent = "Unknown";
+              this.resStatus.className = "status-badge unknown";
             }
             
             this.transitionTo('Readout');
           } else {
             console.log('[Scan] Waiting for consensus... reads:', this.accumulatedReads.map(r => r.brand_name));
             this.consensusAttempts++;
-            if (this.consensusAttempts >= 120) {
+            if (this.consensusAttempts >= MAX_SCAN_ATTEMPTS) {
               this.liveAssertive.textContent = 'Unable to verify medicine. Please seek human assistance.';
               this.tts.speakAssertive('Unable to verify medicine. Please seek human assistance.');
               vibrateError();
@@ -300,15 +313,21 @@ export class StateMachine {
             }
           }
         } else if (!found && this.state === 'Guidance') {
-          // No match at all — give user at least 25-30 seconds (120 frames) of guidance
+          const documentText = bestScannedText([e.data.rawText || '']);
+          if (isReadableDocument(documentText)) {
+            this.showDocumentResult(documentText);
+            return;
+          }
+
+          // Bound repeated OCR attempts so an unreadable item fails safely instead of scanning indefinitely.
           this.consensusAttempts++;
-          if (this.consensusAttempts >= 120) {
+          if (this.consensusAttempts >= MAX_SCAN_ATTEMPTS) {
             this.liveAssertive.textContent = 'Unable to verify medicine. Please seek human assistance.';
             this.tts.speakAssertive('Unable to verify medicine. Please seek human assistance.');
             vibrateError();
             this.transitionTo('Idle');
-          } else if (this.consensusAttempts > 0 && this.consensusAttempts % 35 === 0) {
-            this.tts.speakPolite('Scanning medicine... hold steady.');
+          } else if (this.consensusAttempts % GUIDANCE_REMINDER_INTERVAL === 0) {
+            this.tts.speakPolite('Still reading. Hold the item steady.');
           }
         }
       }
@@ -371,15 +390,19 @@ export class StateMachine {
         this.scanBtnIcon.innerHTML = ICONS.stop(20);
         if (this.scannerLaser) this.scannerLaser.hidden = false;
         
-        // Task 1.2: Branch based on mode
-        if (this.mode === 'medicine') {
-          this.pipeline = new ExtractionPipeline('tesseract', '11', false);
-          this.ensureDbWorker();
-        } else {
-          this.pipeline = new ExtractionPipeline('tesseract', '3', true);
-        }
+        this.pipeline = new ExtractionPipeline('11', 'auto');
+        this.ensureDbWorker();
         
-        await this.camera.start();
+        try {
+          await this.camera.start();
+        } catch {
+          await this.transitionTo('Idle');
+          const message = 'Camera access is required to scan. Please allow camera permission and try again.';
+          this.setToast(message, ICONS.warning(18));
+          this.liveAssertive.textContent = message;
+          this.tts.speakAssertive(message);
+          return;
+        }
         await this.sonification.init();
         
         // Only unmute if TalkBack mode active or user unmuted via header
@@ -391,11 +414,7 @@ export class StateMachine {
         this.hints.resetThrottle();
         this.capturingFrames = 0;
         this.lastCaptureTime = 0;
-        this.tts.speakPolite(
-          this.mode === 'medicine'
-            ? "Guiding. Hold the medicine steady."
-            : "Guiding. Hold the document steady."
-        );
+        this.tts.speakPolite('Guiding. Hold the medicine or report steady inside the frame.');
         this.loop();
         break;
         
@@ -419,23 +438,13 @@ export class StateMachine {
           this.pipeline = null;
         }
         
-        // Build concise speech string
-        const expiryText = this.resExpiry.textContent || '';
-        let readStr = `${this.resBrand.textContent}. Strength: ${this.resStrength.textContent}. Expiry: ${expiryText}.`;
-        
-        if (this.resDescription.textContent && this.resDescription.textContent.trim().length > 0) {
-          readStr += ' Double tap or hold screen for detailed clinical instructions.';
-        } else {
-          readStr += ' Double tap or swipe up to scan another medicine.';
-        }
-        
-        this.tts.speakAssertive(readStr);
+        this.tts.speakAssertive(this.buildReadoutSpeech());
         break;
     }
   }
 
   private isExtracting = false;
-  private accumulatedReads: any[] = [];
+  private accumulatedReads: MedicineRead[] = [];
   private lastCaptureTime = 0;
   private consensusAttempts = 0;
   
@@ -495,27 +504,15 @@ export class StateMachine {
             this.pipeline.extractBuffered().then((res) => {
                this.isExtracting = false;
                
-               const allText = res.texts.join(' ').toLowerCase();
+               const allText = bestScannedText(res.texts);
                console.log('[Scan] OCR result text length:', allText.length, 'text:', JSON.stringify(allText.slice(0, 200)));
-               if (allText.replace(/[^a-z0-9]/g, '').length < 2) return;
-               
-               // Task 1.2: Branch based on mode
-               if (this.mode === 'document') {
-                 // Document Mode: speak text verbatim, no DB lookup
-                 this.resBrand.textContent = 'Document Text';
-                 this.resStrength.textContent = 'Document';
-                 this.resExpiry.textContent = 'N/A';
-                 this.resDescription.textContent = allText;
-                 this.resAccordion.hidden = false;
-                 this.resAccordion.open = true;
-                 this.resStatus.textContent = 'Read';
-                 this.resStatus.className = 'status-badge';
-                 this.transitionTo('Readout');
-                 this.tts.speakAssertive(allText.slice(0, 250));
+               if (allText.replace(/[^a-z0-9]/gi, '').length < 2) return;
+
+               if (isLikelyClinicalDocument(allText)) {
+                 this.showDocumentResult(allText);
                  return;
                }
-               
-               // Medicine Mode: query the DB for fuzzy matching
+
                this.queryDb(allText);
             });
           }
@@ -546,11 +543,54 @@ export class StateMachine {
       this.resAccordion.open = false;
     }
     if (this.resDescription) {
-      this.resDescription.innerHTML = '';
+      this.resDescription.textContent = '';
     }
     this.scanBtnText.textContent = 'Start Scan';
     this.scanBtnIcon.innerHTML = ICONS.zap(20);
     this.triggerBtn.removeAttribute('disabled');
+  }
+
+  private configureMedicineResult() {
+    this.resultCategory.textContent = 'Identified Medicine';
+    this.strengthLabel.textContent = 'Dosage / Strength';
+    this.expiryLabel.textContent = 'Expiry Date';
+    this.accordionTitle.textContent = 'Verified Medicine Details';
+    this.resReplayBtn.setAttribute('aria-label', 'Replay medicine summary');
+    this.resCopyBtn.setAttribute('aria-label', 'Copy medicine details');
+  }
+
+  private showDocumentResult(text: string) {
+    if (this.state !== 'Guidance') return;
+    this.readoutKind = 'document';
+    this.fullReadoutText = text;
+    this.resultCategory.textContent = 'Detected Document';
+    this.resBrand.textContent = isLikelyClinicalDocument(text) ? 'Clinical Report' : 'Printed Document';
+    this.strengthLabel.textContent = 'Content';
+    this.resStrength.textContent = 'Full text';
+    this.expiryLabel.textContent = 'Readout';
+    this.resExpiry.textContent = 'Complete';
+    this.resStatus.textContent = 'Ready';
+    this.resStatus.className = 'status-badge';
+    this.accordionTitle.textContent = 'Full Report Text';
+    this.resDescription.textContent = text;
+    this.resAccordion.hidden = false;
+    this.resAccordion.open = true;
+    this.resReplayBtn.setAttribute('aria-label', 'Read the full report aloud again');
+    this.resCopyBtn.setAttribute('aria-label', 'Copy full report text');
+    this.transitionTo('Readout');
+  }
+
+  private buildReadoutSpeech(): string {
+    if (this.readoutKind === 'document') {
+      return `Document detected. Reading the complete report. ${this.fullReadoutText}. End of report. Swipe up to scan another item.`;
+    }
+
+    const expiryText = this.resExpiry.textContent || 'Not specified';
+    let speech = `${this.resBrand.textContent}. Strength: ${this.resStrength.textContent}. Expiry: ${expiryText}.`;
+    const details = this.resDescription.textContent?.trim();
+    if (details) speech += ` ${details}.`;
+    speech += ' Swipe up to scan another item.';
+    return speech;
   }
 
   // Enhanced ARIA with state transition announcements
@@ -563,35 +603,10 @@ export class StateMachine {
     
     const announcements: Record<AppState, string> = {
       'Idle': 'Scanning stopped.',
-      'Guidance': 'Scanning started. Follow audio guidance.',
-      'Readout': `Medicine identified. ${this.resBrand.textContent}. Strength: ${this.resStrength.textContent}. Expiry: ${this.resExpiry.textContent}.`,
+      'Guidance': 'Scanning started. Hold a medicine or medical report inside the frame and follow audio guidance.',
+      'Readout': this.readoutKind === 'document' ? 'Document text ready.' : 'Medicine information ready.',
     };
     this.liveAssertive.textContent = announcements[this.state];
-  }
-
-  public switchMode(newMode: 'document' | 'medicine') {
-    if (newMode === this.mode) return;
-    this.mode = newMode;
-
-    const modeButtons = document.querySelectorAll('#mode-toggle .mode-btn');
-    modeButtons.forEach(btn => {
-      const isTarget = (btn as HTMLElement).dataset.mode === newMode;
-      btn.setAttribute('aria-checked', isTarget ? 'true' : 'false');
-      btn.classList.toggle('mode-btn--active', isTarget);
-    });
-
-    const modeName = newMode === 'medicine' ? 'Medicine Mode' : 'Document Mode';
-    this.setToast(modeName, newMode === 'medicine' ? ICONS.pill(18) : ICONS.document(18));
-    this.tts.speakPolite(`Switched to ${modeName}`);
-
-    if ('vibrate' in navigator) {
-      try { navigator.vibrate(40); } catch {}
-    }
-
-    if (this.state === 'Guidance') {
-      this.transitionTo('Idle');
-      this.transitionTo('Guidance');
-    }
   }
 
   public async toggleTorch(): Promise<boolean> {
@@ -619,6 +634,13 @@ export class StateMachine {
   private speakFullInstructions() {
     if (this.state !== 'Readout') return;
 
+    if (this.readoutKind === 'document') {
+      this.resAccordion.open = true;
+      this.setToast('Reading full report...', ICONS.document(18));
+      this.tts.speakAssertive(this.buildReadoutSpeech());
+      return;
+    }
+
     const brand = this.resBrand.textContent || 'Identified medicine';
     const strength = this.resStrength.textContent || '';
     const expiry = this.resExpiry.textContent || '';
@@ -645,7 +667,7 @@ export class StateMachine {
     } else {
       speech += `Standard packaging. No additional clinical warnings or directions on label. `;
     }
-    speech += `Swipe down to silence, or double tap to scan another medicine.`;
+    speech += `Swipe down to silence, or swipe up to scan another item.`;
 
     this.tts.speakAssertive(speech);
   }
@@ -698,7 +720,7 @@ export class StateMachine {
         } else if (this.state === 'Guidance') {
           this.toggleTorch();
         } else if (this.state === 'Idle') {
-          this.tts.speakPolite('EchoSight ready. Double tap or swipe up to begin scanning.');
+          this.tts.speakPolite('EchoSight ready. Double tap or swipe up to scan a medicine or medical report.');
         }
 
         if ('vibrate' in navigator) {
@@ -760,22 +782,11 @@ export class StateMachine {
               this.transitionTo('Guidance');
             } else if (this.state === 'Guidance') {
               this.hints.resetThrottle();
-              this.tts.speakPolite(
-                this.mode === 'medicine'
-                  ? 'Guiding. Hold medicine steady inside frame.'
-                  : 'Guiding. Hold document flat and steady.'
-              );
+              this.tts.speakPolite('Guiding. Hold the medicine or report steady inside the frame.');
             }
           }
         } else {
-          // Horizontal swipe
-          if (dx < -45) {
-            // Swipe Left: Document mode
-            this.switchMode('document');
-          } else if (dx > 45) {
-            // Swipe Right: Medicine mode
-            this.switchMode('medicine');
-          }
+          this.tts.speakPolite('One scanner now detects medicines and medical reports automatically.');
         }
         return;
       }
@@ -842,15 +853,12 @@ export class StateMachine {
               this.setToast('Focused', ICONS.check(18));
             }
           } else if (this.state === 'Readout') {
-            // Single tap in readout re-reads concise prescription summary
-            const expiryText = this.resExpiry.textContent || '';
-            const readStr = `${this.resBrand.textContent}. Strength: ${this.resStrength.textContent}. Expiry: ${expiryText}.`;
-            this.tts.speakAssertive(readStr);
+            this.tts.speakAssertive(this.buildReadoutSpeech());
             if ('vibrate' in navigator) {
               try { navigator.vibrate(30); } catch {}
             }
           } else if (this.state === 'Idle') {
-            this.tts.speakPolite('EchoSight ready. Double tap to scan medicine.');
+            this.tts.speakPolite('EchoSight ready. Double tap to scan a medicine or medical report.');
           }
         }, 280);
       }

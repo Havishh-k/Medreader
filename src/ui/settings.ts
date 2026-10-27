@@ -82,7 +82,7 @@ export class SettingsScreen {
             <div class="settings-row">
               <div class="settings-row-label">
                 <span class="settings-label-title">High Contrast Mode</span>
-                <span class="settings-label-desc">WCAG 2.1 AAA Yellow-on-Black</span>
+                <span class="settings-label-desc">Yellow-on-black low-vision theme</span>
               </div>
               <select id="contrast-toggle" class="settings-select" aria-label="High contrast toggle">
                 <option value="off">Off (Standard Dark)</option>
@@ -112,19 +112,15 @@ export class SettingsScreen {
             </div>
             <div class="gesture-card">
               <span class="gesture-icon-title">${ICONS.tap(18)} <span>Swipe Up</span></span>
-              <span class="gesture-desc">Start new scan or scan next medicine immediately.</span>
-            </div>
-            <div class="gesture-card">
-              <span class="gesture-icon-title">${ICONS.swipeHorizontal(18)} <span>Swipe Left / Right</span></span>
-              <span class="gesture-desc">Switch between Medicine scanner and Document reading modes.</span>
+              <span class="gesture-desc">Start a new medicine or medical-report scan immediately.</span>
             </div>
             <div class="gesture-card">
               <span class="gesture-icon-title">${ICONS.shake(18)} <span>Device Shake</span></span>
-              <span class="gesture-desc">Shake phone to toggle flashlight or repeat prescription details.</span>
+              <span class="gesture-desc">Shake phone to toggle flashlight or repeat the complete scan result.</span>
             </div>
             <div class="gesture-card">
               <span class="gesture-icon-title">${ICONS.target(18)} <span>Single Tap</span></span>
-              <span class="gesture-desc">Autofocus camera lens, or replay concise prescription summary.</span>
+              <span class="gesture-desc">Autofocus camera lens, or replay the current scan result.</span>
             </div>
             <div class="gesture-card">
               <span class="gesture-icon-title">${ICONS.keyboard(18)} <span>Bluetooth Clicker</span></span>

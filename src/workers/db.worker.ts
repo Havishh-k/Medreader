@@ -1,4 +1,5 @@
 import initSqlJs from 'sql.js';
+import { chooseUnambiguousMatch, isSafeMedicineToken } from '../core/medicine-match-policy';
 // @ts-ignore
 import sqlWasmUrl from 'sql.js/dist/sql-wasm.wasm?url';
 
@@ -109,72 +110,18 @@ async function initDb() {
   try {
     const SQL = await initSqlJs({ locateFile: () => sqlWasmUrl });
     const response = await fetch('/medicines.db');
+    if (!response.ok) throw new Error(`Medicine database returned HTTP ${response.status}`);
     const buf = await response.arrayBuffer();
     db = new SQL.Database(new Uint8Array(buf));
     console.log('[DB Worker] Database loaded');
     self.postMessage({ type: 'init_done' });
   } catch (err) {
     console.error('[DB Worker] Init failed:', err);
+    self.postMessage({ type: 'init_error', error: String(err) });
   }
 }
 
 initDb();
-
-const STOP_WORDS = new Set(['THE', 'FOR', 'AND', 'WITH', 'NOT', 'USE', 'SOLUTION', 'TABLET', 'SYRUP', 'DROPS', 'FAST', 'RELIEF', 'NASAL', 'HYDROCHLORIDE', 'ONLY', 'KEEP']);
-
-function querySimple(text: string): any {
-  if (!db) return null;
-  // Extract words with at least 2 characters and ignore common packaging stop words
-  const words = text
-    .split(/[^A-Za-z0-9]+/)
-    .map(w => w.toUpperCase().trim())
-    .filter(w => w.length >= 2 && !STOP_WORDS.has(w));
-  
-  for (const word of words) {
-    try {
-      // 1. Exact whole word token in brand_name: e.g. "OXY" in "OTRIVIN OXY"
-      let stmt = db.prepare(
-        'SELECT brand_name, generic_name, strength FROM drugs WHERE UPPER(brand_name) = ? OR UPPER(brand_name) LIKE ? OR UPPER(brand_name) LIKE ? OR UPPER(brand_name) LIKE ? LIMIT 1'
-      );
-      stmt.bind([word, `${word} %`, `% ${word}`, `% ${word} %`]);
-      if (stmt.step()) {
-        const row = stmt.getAsObject();
-        stmt.free();
-        return row;
-      }
-      stmt.free();
-
-      // 2. If word length >= 3, allow substring match
-      if (word.length >= 3) {
-        stmt = db.prepare(
-          'SELECT brand_name, generic_name, strength FROM drugs WHERE UPPER(brand_name) LIKE ? OR UPPER(generic_name) LIKE ? LIMIT 1'
-        );
-        stmt.bind([`%${word}%`, `%${word}%`]);
-        if (stmt.step()) {
-          const row = stmt.getAsObject();
-          stmt.free();
-          return row;
-        }
-        stmt.free();
-      }
-
-      // 3. Known OCR letter-drop: e.g. "XY" (dropped 'O' from "OXY")
-      if (word === 'XY') {
-        stmt = db.prepare('SELECT brand_name, generic_name, strength FROM drugs WHERE UPPER(brand_name) LIKE ? LIMIT 1');
-        stmt.bind(['%OXY%']);
-        if (stmt.step()) {
-          const row = stmt.getAsObject();
-          stmt.free();
-          return row;
-        }
-        stmt.free();
-      }
-    } catch {
-      // continue to next candidate word
-    }
-  }
-  return null;
-}
 
 function queryFuzzy(text: string): any {
   if (!db) return null;
@@ -187,45 +134,25 @@ function queryFuzzy(text: string): any {
     for (let j = i + 1; j <= Math.min(i + 3, words.length); j++) {
       const window = words.slice(i, j).join(' ');
       const norm = normalizeName(window);
-      if (norm.length >= 2 && !STOP_WORDS.has(norm)) candidates.add(norm);
+      if (isSafeMedicineToken(norm)) candidates.add(norm);
     }
     const single = normalizeName(words[i]);
-    if (single.length >= 2 && !STOP_WORDS.has(single)) candidates.add(single);
+    if (isSafeMedicineToken(single)) candidates.add(single);
   }
 
-  let bestMatch: { brand_name: string; generic_name: string; strength: string; distance: number } | null = null;
+  type Match = {
+    familyId: number;
+    brand_name: string;
+    generic_name: string;
+    strength: string;
+    manufacturer: string;
+    source_url: string;
+    distance: number;
+  };
+  const bestByFamily = new Map<number, Match>();
 
   for (const cand of candidates) {
-    if (cand.length < 2) continue;
-
-    // Direct lookup for 2-letter tokens (e.g. XY, O2, D3)
-    if (cand.length === 2) {
-      try {
-        const stmt = db.prepare(
-          'SELECT id, family_id, name_norm, display_name FROM brand_names WHERE name_norm LIKE ? OR name_norm LIKE ? OR name_norm LIKE ? LIMIT 5'
-        );
-        stmt.bind([`% ${cand}`, `% ${cand} %`, `${cand} %`]);
-        if (stmt.step()) {
-          const row = stmt.getAsObject();
-          let drugInfo = null;
-          try {
-            const dStmt = db.prepare('SELECT brand_name, generic_name, strength FROM drugs WHERE brand_name = ?');
-            dStmt.bind([row.display_name]);
-            if (dStmt.step()) drugInfo = dStmt.getAsObject();
-            dStmt.free();
-          } catch {}
-          stmt.free();
-          return {
-            brand_name: drugInfo?.brand_name || row.display_name,
-            generic_name: drugInfo?.generic_name || '',
-            strength: drugInfo?.strength || '',
-            distance: 0.5,
-          };
-        }
-        stmt.free();
-      } catch {}
-      continue;
-    }
+    if (cand.length < 4) continue;
 
     // Trigram-based retrieval from the fuzzy index
     const codes = trigramCodes(skeleton(cand));
@@ -265,11 +192,14 @@ function queryFuzzy(text: string): any {
       }
       
       if (dist <= threshold) {
-        if (!bestMatch || dist < bestMatch.distance) {
+        const familyId = Number(row.family_id);
+        const existing = bestByFamily.get(familyId);
+        if (!existing || dist < existing.distance) {
           // Look up the drug details from the simple table
           let drugInfo = null;
           try {
-            const dStmt = db.prepare('SELECT brand_name, generic_name, strength FROM drugs WHERE brand_name = ?');
+            const dStmt = db.prepare(`SELECT brand_name, generic_name, strength, manufacturer, source_url
+              FROM drugs WHERE brand_name = ?`);
             dStmt.bind([row.display_name]);
             if (dStmt.step()) drugInfo = dStmt.getAsObject();
             dStmt.free();
@@ -277,21 +207,26 @@ function queryFuzzy(text: string): any {
             // Fall back to display_name
           }
           
-          bestMatch = {
+          bestByFamily.set(familyId, {
+            familyId,
             brand_name: drugInfo?.brand_name || row.display_name,
             generic_name: drugInfo?.generic_name || '',
             strength: drugInfo?.strength || '',
+            manufacturer: drugInfo?.manufacturer || '',
+            source_url: drugInfo?.source_url || '',
             distance: dist,
-          };
+          });
         }
       }
     }
   }
 
-  if (bestMatch) {
-    console.log(`[DB Worker] Fuzzy match: "${bestMatch.brand_name}" (distance: ${bestMatch.distance.toFixed(2)})`);
-  }
-  return bestMatch;
+  const bestMatch = chooseUnambiguousMatch([...bestByFamily.values()]);
+  if (!bestMatch) return null;
+
+  console.log(`[DB Worker] Fuzzy match: "${bestMatch.brand_name}" (distance: ${bestMatch.distance.toFixed(2)})`);
+  const { familyId: _, ...result } = bestMatch;
+  return result;
 }
 
 // ─── Message handler ───
@@ -300,9 +235,7 @@ self.onmessage = (e: MessageEvent) => {
   if (e.data.type === 'query') {
     const { text } = e.data.payload;
     
-    // Try fuzzy match first (more robust), fall back to simple
-    let result = queryFuzzy(text);
-    if (!result) result = querySimple(text);
+    const result = queryFuzzy(text);
     
     // Extract expiry date from the raw OCR text
     const expiry = extractExpiry(text);
